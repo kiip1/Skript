@@ -63,8 +63,11 @@ public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Ti
 				for (LivingEntity entity : entities)
 					entity.setNoDamageTicks(Math.max(entity.getNoDamageTicks() + amount, 0));
 				break;
-			case DELETE:
 			case RESET:
+				for (LivingEntity entity : entities)
+					entity.setNoDamageTicks(10);
+				break;
+			case DELETE:
 			case SET:
 				for (LivingEntity entity : entities)
 					entity.setNoDamageTicks(Math.max(amount, 0));

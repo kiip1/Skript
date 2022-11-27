@@ -40,7 +40,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEntity, Timespan> {
 	
 	static {
-		if (Skript.methodExists(LivingEntity.class, "getMaxFuseTicks"))
+		if (Skript.methodExists(Creeper.class, "getMaxFuseTicks"))
 			register(ExprCreeperMaxFuseTicks.class, Timespan.class, "[creeper] max[imum] fuse (time|duration)", "livingentities");
 	}
 	
@@ -67,8 +67,12 @@ public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEnti
 					if (entity instanceof Creeper)
 						((Creeper) entity).setMaxFuseTicks(Math.max(((Creeper) entity).getMaxFuseTicks() + amount, 0));
 				break;
-			case DELETE:
 			case RESET:
+				for (LivingEntity entity : entities)
+					if (entity instanceof Creeper)
+						((Creeper) entity).setMaxFuseTicks(30);
+				break;
+			case DELETE:
 			case SET:
 				for (LivingEntity entity : entities)
 					if (entity instanceof Creeper)
