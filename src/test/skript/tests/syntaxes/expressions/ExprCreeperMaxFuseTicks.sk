@@ -18,3 +18,5 @@ test "creeper max fuse duration":
 	assert {_m}'s max fuse time is 1 tick with "max fuse time add ##2 failed"
 	delete {_m}'s max fuse time
 	assert {_m}'s max fuse time is 0 seconds with "max fuse time delete failed"
+	delete {_m}
+	delete {_n}

@@ -14,3 +14,4 @@ test "no damage duration":
 	assert {_m}'s invulnerability time is 1 tick with "no damage time add ##2 failed"
 	delete {_m}'s invulnerability time
 	assert {_m}'s invulnerability time is 0 seconds with "no damage time delete failed"
+	delete {_m}
