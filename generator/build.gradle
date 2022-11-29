@@ -1,0 +1,20 @@
+plugins {
+	id 'com.github.johnrengelman.shadow' version '7.1.2'
+	id 'application'
+}
+
+application {
+	mainClass = 'org.skriptlang.skript.generator.CodeGenerator'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	implementation group: 'com.squareup', name: 'javapoet', version: '1.13.0'
+}
+
+run {
+	args = [project.rootProject.projectDir.toPath().resolve('src/generated/java').toAbsolutePath()]
+}
