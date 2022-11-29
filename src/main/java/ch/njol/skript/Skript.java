@@ -529,14 +529,15 @@ public final class Skript extends JavaPlugin implements Listener {
 		
 		ChatMessages.registerListeners();
 		
-		try {
-			getAddonInstance().loadClasses("ch.njol.skript",
-				"conditions", "effects", "events", "expressions", "entity", "sections", "structures");
-		} catch (final Exception e) {
-			exception(e, "Could not load required .class files: " + e.getLocalizedMessage());
-			setEnabled(false);
-			return;
-		}
+		long start = System.nanoTime();
+		Conditions.init();
+		Effects.init();
+		Entities.init();
+		Events.init();
+		Expressions.init();
+		Sections.init();
+		Structures.init();
+		info("Took " + (System.nanoTime() - start) / 1e6 + "ms");
 
 		Commands.registerListeners();
 		
