@@ -46,7 +46,7 @@ public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEnti
 	
 	@Override
 	public Timespan convert(LivingEntity entity) {
-		return Timespan.fromTicks_i(Math.max(entity instanceof Creeper ? ((Creeper) entity).getMaxFuseTicks() : 0, 0));
+		return Timespan.fromTicks_i(entity instanceof Creeper ? ((Creeper) entity).getMaxFuseTicks() : 0);
 	}
 	
 	@Override
