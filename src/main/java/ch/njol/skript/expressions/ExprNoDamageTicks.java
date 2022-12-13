@@ -34,7 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Description("How much time an entity is invulnerable for.")
 @Examples({"on damage:",
 		"	set victim's invulnerability time to 1 second #Victim will not take damage for the next second"})
-@Since("2.5")
+@Since("2.5, INSERT VERSION (Use Timespan)")
 public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Timespan> {
 	
 	static {
