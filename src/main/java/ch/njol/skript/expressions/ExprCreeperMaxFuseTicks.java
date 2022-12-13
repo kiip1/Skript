@@ -59,27 +59,26 @@ public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEnti
 	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
 		LivingEntity[] entities = getExpr().getArray(event);
 		int amount = delta == null ? 0 : (int) ((Timespan) delta[0]).getTicks_i();
-		switch (mode) {
-			case REMOVE:
-				amount = -amount;
-			case ADD:
-				for (LivingEntity entity : entities)
-					if (entity instanceof Creeper)
-						((Creeper) entity).setMaxFuseTicks(Math.max(((Creeper) entity).getMaxFuseTicks() + amount, 0));
-				break;
-			case RESET:
-				for (LivingEntity entity : entities)
-					if (entity instanceof Creeper)
-						((Creeper) entity).setMaxFuseTicks(30);
-				break;
-			case DELETE:
-			case SET:
-				for (LivingEntity entity : entities)
-					if (entity instanceof Creeper)
-						((Creeper) entity).setMaxFuseTicks(Math.max(amount, 0));
-				break;
-			default:
-				assert false;
+		for (LivingEntity entity : entities) {
+			if (!(entity instanceof Creeper)) continue;
+			Creeper creeper = (Creeper) entity;
+			
+			switch (mode) {
+				case REMOVE:
+					amount = -amount;
+				case ADD:
+					creeper.setMaxFuseTicks(Math.max(creeper.getMaxFuseTicks() + amount, 0));
+					break;
+				case RESET:
+					creeper.setMaxFuseTicks(30);
+					break;
+				case DELETE:
+				case SET:
+					creeper.setMaxFuseTicks(Math.max(amount, 0));
+					break;
+				default:
+					assert false;
+			}
 		}
 	}
 

@@ -33,7 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("No Damage Duration")
 @Description("How much time an entity is invulnerable for.")
 @Examples({"on damage:",
-		"	set victim's invulnerability time to 1 second #Victim will not take damage for the next second"})
+		"\tset victim's invulnerability time to 1 second # victim will not take damage for the next second"})
 @Since("2.5, INSERT VERSION (Use Timespan)")
 public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Timespan> {
 	
@@ -56,24 +56,23 @@ public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Ti
 	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
 		LivingEntity[] entities = getExpr().getArray(event);
 		int amount = delta == null ? 0 : (int) ((Timespan) delta[0]).getTicks_i();
-		switch (mode) {
-			case REMOVE:
-				amount = -amount;
-			case ADD:
-				for (LivingEntity entity : entities)
+		for (LivingEntity entity : entities) {
+			switch (mode) {
+				case REMOVE:
+					amount = -amount;
+				case ADD:
 					entity.setNoDamageTicks(Math.max(entity.getNoDamageTicks() + amount, 0));
-				break;
-			case RESET:
-				for (LivingEntity entity : entities)
-					entity.setNoDamageTicks(10);
-				break;
-			case DELETE:
-			case SET:
-				for (LivingEntity entity : entities)
+					break;
+				case RESET:
+					entity.setNoDamageTicks(10); // Default value from https://minecraft.fandom.com/wiki/Damage
+					break;
+				case DELETE:
+				case SET:
 					entity.setNoDamageTicks(Math.max(amount, 0));
-				break;
-			default:
-				assert false;
+					break;
+				default:
+					assert false;
+			}
 		}
 	}
 	
