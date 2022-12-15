@@ -21,11 +21,8 @@ package ch.njol.skript.sections;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAPIException;
 import ch.njol.skript.config.SectionNode;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.Section;
+import ch.njol.skript.lang.*;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.lang.TriggerItem;
-import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.util.ContainerExpression;
 import ch.njol.skript.util.Container;
 import ch.njol.skript.util.Container.ContainerType;
@@ -33,13 +30,14 @@ import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class SecLoop extends Section {
+public class SecLoop extends Section implements Loopable {
 
 	static {
 		Skript.registerSection(SecLoop.class, "loop %objects%");
@@ -53,7 +51,7 @@ public class SecLoop extends Section {
 
 	@Nullable
 	private TriggerItem actualNext;
-
+	
 	@Override
 	public boolean init(Expression<?>[] exprs,
 						int matchedPattern,
@@ -78,8 +76,13 @@ public class SecLoop extends Section {
 			Skript.error("Can't loop " + expr + " because it's only a single value");
 			return false;
 		}
-
-		loadOptionalCode(sectionNode);
+		
+		try {
+			getParser().pushLoop(this);
+			loadOptionalCode(sectionNode);
+		} finally {
+			getParser().popLoop();
+		}
 		super.setNext(this);
 
 		return true;
@@ -112,13 +115,14 @@ public class SecLoop extends Section {
 	public String toString(@Nullable Event e, boolean debug) {
 		return "loop " + expr.toString(e, debug);
 	}
-
-	@Nullable
-	public Object getCurrent(Event e) {
-		return current.get(e);
+	
+	@Override
+	public @Nullable Object getCurrent(@NotNull Event event) {
+		return current.get(event);
 	}
-
-	public Expression<?> getLoopedExpression() {
+	
+	@Override
+	public @NotNull Expression<?> getLoopedExpression() {
 		return expr;
 	}
 
