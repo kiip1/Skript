@@ -45,7 +45,11 @@ import java.util.stream.LongStream;
 @Examples({"command /uuids:",
 	"/ttrigger:",
 	"\t\tdo add uuid of loop-player to {_uuids::*} for every element in all players",
-	"\t\tsend (join {_uuids::*} by \", \") to player"})
+	"\t\tsend (join {_uuids::*} by \", \") to player",
+	
+	"on join:",
+	"\tdo send \"Hello, world!\" to player 5 times"
+})
 @Since("INSERT VERSION")
 public class EffLoop extends Effect implements Loopable {
 	
