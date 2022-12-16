@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffWhile extends Effect {
 	
 	static {
-		Skript.registerEffect(EffWhile.class, "[(1:do)] <.+> while <.+>");
+		Skript.registerEffect(EffWhile.class, "do [effect] <.+> [(1:((now|once) [and] [then]))] while <.+>");
 	}
 	
 	private Effect effect;
