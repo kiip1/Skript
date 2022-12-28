@@ -104,16 +104,10 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 			final EntityDataInfo<?> info = getInfo(codeName);
 			if (info == null)
 				throw new StreamCorruptedException("Invalid EntityData code name " + codeName);
-			try {
-				final EntityData<?> d = info.c.newInstance();
-				d.deserialize(fields);
-				return d;
-			} catch (final InstantiationException e) {
-				Skript.exception(e);
-			} catch (final IllegalAccessException e) {
-				Skript.exception(e);
-			}
-			throw new StreamCorruptedException();
+			
+			final EntityData<?> data = info.instance();
+			data.deserialize(fields);
+			return data;
 		}
 		
 //		return getInfo((Class<? extends EntityData<?>>) d.getClass()).codeName + ":" + d.serialize();
@@ -128,16 +122,16 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 			final EntityDataInfo<?> i = getInfo(split[0]);
 			if (i == null)
 				return null;
-			EntityData<?> d;
+			EntityData<?> data;
 			try {
-				d = i.c.newInstance();
+				data = i.instance();
 			} catch (final Exception e) {
 				Skript.exception(e, "Can't create an instance of " + i.c.getCanonicalName());
 				return null;
 			}
-			if (!d.deserialize(split[1]))
+			if (!data.deserialize(split[1]))
 				return null;
-			return d;
+			return data;
 		}
 		
 		@Override
@@ -517,9 +511,9 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 			if (info.entityClass != Entity.class && (e == null ? info.entityClass.isAssignableFrom(c) : info.entityClass.isInstance(e))) {
 				try {
 					@SuppressWarnings("unchecked")
-					final EntityData<E> d = (EntityData<E>) info.c.newInstance();
-					if (d.init(c, e))
-						return d;
+					final EntityData<E> data = (EntityData<E>) info.instance();
+					if (data.init(c, e))
+						return data;
 				} catch (final Exception ex) {
 					throw Skript.exception(ex);
 				}

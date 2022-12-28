@@ -72,7 +72,7 @@ public class SyntaxElementInfo<E extends SyntaxElement> {
 	public E instance() {
 		if (supplier == null) {
 			try {
-				return c.newInstance();
+				return getElementClass().newInstance();
 			} catch (InstantiationException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
