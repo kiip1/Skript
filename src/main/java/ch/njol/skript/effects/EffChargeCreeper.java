@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffChargeCreeper extends Effect {
 
 	static {
-		Skript.registerEffect(EffChargeCreeper.class,
+		Skript.registerEffect(EffChargeCreeper.class, EffChargeCreeper::new,
 				"make %livingentities% [a[n]] (charged|powered|1¦((un|non[-])charged|(un|non[-])powered)) [creeper[s]]",
 				"(charge|power|1¦(uncharge|unpower)) %livingentities%");
 	}

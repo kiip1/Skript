@@ -70,9 +70,9 @@ public class EffMessage extends Effect {
 	
 	static {
 		if (SUPPORTS_SENDER)
-			Skript.registerEffect(EffMessage.class, "(message|send [message[s]]) %objects% [to %commandsenders%] [from %-player%]");
+			Skript.registerEffect(EffMessage.class, EffMessage::new, "(message|send [message[s]]) %objects% [to %commandsenders%] [from %-player%]");
 		else
-			Skript.registerEffect(EffMessage.class, "(message|send [message[s]]) %objects% [to %commandsenders%]");
+			Skript.registerEffect(EffMessage.class, EffMessage::new, "(message|send [message[s]]) %objects% [to %commandsenders%]");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

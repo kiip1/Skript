@@ -52,7 +52,7 @@ import java.util.WeakHashMap;
 public class Delay extends Effect {
 
 	static {
-		Skript.registerEffect(Delay.class, "(wait|halt) [for] %timespan%");
+		Skript.registerEffect(Delay.class, Delay::new, "(wait|halt) [for] %timespan%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

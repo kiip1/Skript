@@ -50,7 +50,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffHealth extends Effect {
 
 	static {
-		Skript.registerEffect(EffHealth.class,
+		Skript.registerEffect(EffHealth.class, EffHealth::new,
 			"damage %livingentities/itemtypes% by %number% [heart[s]] [with fake cause %-damagecause%]",
 			"heal %livingentities% [by %-number% [heart[s]]]",
 			"repair %itemtypes% [by %-number%]");

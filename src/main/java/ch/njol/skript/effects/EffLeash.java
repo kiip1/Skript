@@ -40,7 +40,7 @@ import ch.njol.util.Kleenean;
 public class EffLeash extends Effect {
 
 	static {
-		Skript.registerEffect(EffLeash.class,
+		Skript.registerEffect(EffLeash.class, EffLeash::new,
 			"(leash|lead) %livingentities% to %entity%",
 			"make %entity% (leash|lead) %livingentities%",
 			"un(leash|lead) [holder of] %livingentities%");

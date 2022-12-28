@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 @Since("1.4")
 public class EffIgnite extends Effect {
 	static {
-		Skript.registerEffect(EffIgnite.class,
+		Skript.registerEffect(EffIgnite.class, EffIgnite::new,
 				"(ignite|set fire to) %entities% [for %-timespan%]", "(set|light) %entities% on fire [for %-timespan%]",
 				"extinguish %entities%");
 	}

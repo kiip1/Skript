@@ -55,7 +55,7 @@ public class EffTeleport extends Effect {
 	private static final boolean CAN_RUN_ASYNC = PaperLib.getEnvironment() instanceof PaperEnvironment;
 
 	static {
-		Skript.registerEffect(EffTeleport.class, "[(1¦force)] teleport %entities% (to|%direction%) %location%");
+		Skript.registerEffect(EffTeleport.class, EffTeleport::new, "[(1¦force)] teleport %entities% (to|%direction%) %location%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

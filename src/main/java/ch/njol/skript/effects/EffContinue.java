@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 public class EffContinue extends Effect {
 
 	static {
-		Skript.registerEffect(EffContinue.class, "continue [loop]");
+		Skript.registerEffect(EffContinue.class, EffContinue::new, "continue [loop]");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

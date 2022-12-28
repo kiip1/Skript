@@ -49,7 +49,7 @@ import ch.njol.util.Kleenean;
 @Since("2.0, 2.2-dev27 (ambient and particle-less potion effects), 2.5 (replacing existing effect), 2.5.2 (potion effects)")
 public class EffPotion extends Effect {
 	static {
-		Skript.registerEffect(EffPotion.class,
+		Skript.registerEffect(EffPotion.class, EffPotion::new,
 			"apply %potioneffects% to %livingentities%",
 			"apply [potion of] %potioneffecttypes% [potion] [[[of] tier] %-number%] to %livingentities% [for %-timespan%] [(1¦replacing [the] existing effect)]",
 			"apply ambient [potion of] %potioneffecttypes% [potion] [[[of] tier] %-number%] to %livingentities% [for %-timespan%] [(1¦replacing [the] existing effect)]",

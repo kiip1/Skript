@@ -48,7 +48,7 @@ public class EffOpenInventory extends Effect {
 	private final static int WORKBENCH = 0, CHEST = 1, ANVIL = 2, HOPPER = 3, DROPPER = 4, DISPENSER = 5;
 	
 	static {
-		Skript.registerEffect(EffOpenInventory.class,
+		Skript.registerEffect(EffOpenInventory.class, EffOpenInventory::new,
 				"(open|show) ((0¦(crafting [table]|workbench)|1¦chest|2¦anvil|3¦hopper|4¦dropper|5¦dispenser) (view|window|inventory|)|%-inventory/inventorytype%) (to|for) %players%",
 				"close [the] inventory [view] (to|of|for) %players%", "close %players%'[s] inventory [view]");
 	}

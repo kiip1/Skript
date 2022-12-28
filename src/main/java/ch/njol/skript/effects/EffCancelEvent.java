@@ -53,7 +53,7 @@ import ch.njol.util.Kleenean;
 @Since("1.0")
 public class EffCancelEvent extends Effect {
 	static {
-		Skript.registerEffect(EffCancelEvent.class, "cancel [the] event", "uncancel [the] event");
+		Skript.registerEffect(EffCancelEvent.class, EffCancelEvent::new, "cancel [the] event", "uncancel [the] event");
 	}
 	
 	private boolean cancel;

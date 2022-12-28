@@ -55,11 +55,11 @@ public class EffStopSound extends Effect {
 	static {
 		if (Skript.methodExists(Player.class, "stopSound", String.class)) {
 			if (SOUND_CATEGORIES_EXIST) {
-				Skript.registerEffect(EffStopSound.class,
+				Skript.registerEffect(EffStopSound.class, EffStopSound::new,
 						"stop sound[s] %strings% [(in|from) %-soundcategory%] [(from playing to|for) %players%]",
 						"stop playing sound[s] %strings% [(in|from) %-soundcategory%] [(to|for) %players%]");
 			} else {
-				Skript.registerEffect(EffStopSound.class,
+				Skript.registerEffect(EffStopSound.class, EffStopSound::new,
 						"stop sound[s] %strings% [(in|from) %-soundcategory%] [(from playing to|for) %players%]",
 						"stop playing sound[s] %strings% [(in|from) %-soundcategory%] [(to|for) %players%]");
 			}

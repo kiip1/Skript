@@ -55,7 +55,7 @@ import java.util.List;
 public class EffBroadcast extends Effect {
 
 	static {
-		Skript.registerEffect(EffBroadcast.class, "broadcast %objects% [(to|in) %-worlds%]");
+		Skript.registerEffect(EffBroadcast.class, EffBroadcast::new, "broadcast %objects% [(to|in) %-worlds%]");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

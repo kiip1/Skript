@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class EffIncendiary extends Effect {
 
 	static {
-		Skript.registerEffect(EffIncendiary.class,
+		Skript.registerEffect(EffIncendiary.class, EffIncendiary::new,
 				"make %entities% [(1¦not)] incendiary",
 				"make %entities%'[s] explosion [(1¦not)] (incendiary|fiery)",
 				"make [the] [event(-| )]explosion [(1¦not)] (incendiary|fiery)"

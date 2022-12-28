@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class EffDoIf extends Effect  {
 
 	static {
-		Skript.registerEffect(EffDoIf.class, "<.+> if <.+>");
+		Skript.registerEffect(EffDoIf.class, EffDoIf::new, "<.+> if <.+>");
 	}
 
 	@SuppressWarnings("null")

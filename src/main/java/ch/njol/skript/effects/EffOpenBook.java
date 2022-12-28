@@ -45,7 +45,7 @@ public class EffOpenBook extends Effect {
 	
 	static {
 		if (Skript.methodExists(Player.class, "openBook", ItemStack.class)) {
-			Skript.registerEffect(EffOpenBook.class, "(open|show) book %itemtype% (to|for) %players%");
+			Skript.registerEffect(EffOpenBook.class, EffOpenBook::new, "(open|show) book %itemtype% (to|for) %players%");
 		}
 	}
 	

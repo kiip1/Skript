@@ -59,7 +59,7 @@ import ch.njol.util.Kleenean;
 public class EffEquip extends Effect {
 
 	static {
-		Skript.registerEffect(EffEquip.class,
+		Skript.registerEffect(EffEquip.class, EffEquip::new,
 				"equip [%livingentities%] with %itemtypes%",
 				"make %livingentities% wear %itemtypes%");
 	}

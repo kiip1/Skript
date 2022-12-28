@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 @Since("2.0")
 public class EffVehicle extends Effect {
 	static {
-		Skript.registerEffect(EffVehicle.class,
+		Skript.registerEffect(EffVehicle.class, EffVehicle::new,
 				"(make|let|force) %entities% [to] (ride|mount) [(in|on)] %"+ (PassengerUtils.hasMultiplePassenger() ? "entities" : "entity") +"/entitydatas%",
 				"(make|let|force) %entities% [to] (dismount|(dismount|leave) (from|of|) (any|the[ir]|his|her|) vehicle[s])",
 				"(eject|dismount) (any|the|) passenger[s] (of|from) %entities%");

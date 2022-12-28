@@ -59,13 +59,13 @@ public class EffPlaySound extends Effect {
 	
 	static {
 		if (SOUND_CATEGORIES_EXIST) {
-			Skript.registerEffect(EffPlaySound.class,
+			Skript.registerEffect(EffPlaySound.class, EffPlaySound::new,
 					"play sound[s] %strings% [(in|from) %-soundcategory%] " +
 							"[(at|with) volume %-number%] [(and|at|with) pitch %-number%] at %locations% [(to|for) %-players%]",
 					"play sound[s] %strings% [(in|from) %-soundcategory%] " +
 							"[(at|with) volume %-number%] [(and|at|with) pitch %-number%] [(to|for) %players%] [(at|from) %-locations%]");
 		} else {
-			Skript.registerEffect(EffPlaySound.class,
+			Skript.registerEffect(EffPlaySound.class, EffPlaySound::new,
 					"play sound[s] %strings% [(at|with) volume %-number%] " +
 							"[(and|at|with) pitch %-number%] at %locations% [(to|for) %-players%]",
 					"play sound[s] %strings% [(at|with) volume %-number%] " +

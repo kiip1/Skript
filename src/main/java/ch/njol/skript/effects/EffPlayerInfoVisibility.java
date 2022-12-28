@@ -50,7 +50,7 @@ import ch.njol.util.Kleenean;
 public class EffPlayerInfoVisibility extends Effect {
 
 	static {
-		Skript.registerEffect(EffPlayerInfoVisibility.class,
+		Skript.registerEffect(EffPlayerInfoVisibility.class, EffPlayerInfoVisibility::new,
 				"hide [all] player [related] info[rmation] [(in|on|from) [the] server list]",
 				"(show|reveal) [all] player [related] info[rmation] [(in|to|on|from) [the] server list]");
 	}

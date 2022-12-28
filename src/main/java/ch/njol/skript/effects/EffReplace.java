@@ -54,7 +54,7 @@ import java.util.regex.Matcher;
 public class EffReplace extends Effect {
 
 	static {
-		Skript.registerEffect(EffReplace.class,
+		Skript.registerEffect(EffReplace.class, EffReplace::new,
 				"replace (all|every|) %strings% in %strings% with %string% [(1¦with case sensitivity)]",
 				"replace (all|every|) %strings% with %string% in %strings% [(1¦with case sensitivity)]",
 				"replace first %strings% in %strings% with %string% [(1¦with case sensitivity)]",

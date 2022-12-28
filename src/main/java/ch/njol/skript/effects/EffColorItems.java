@@ -53,7 +53,7 @@ public class EffColorItems extends Effect {
 	private static final boolean MAPS_AND_POTIONS_COLORS = Skript.methodExists(PotionMeta.class, "setColor", org.bukkit.Color.class);
 	
 	static {
-		Skript.registerEffect(EffColorItems.class,
+		Skript.registerEffect(EffColorItems.class, EffColorItems::new,
 				"(dye|colo[u]r|paint) %itemtypes% %color%",
 				"(dye|colo[u]r|paint) %itemtypes% \\(%number%, %number%, %number%\\)");
 	}

@@ -43,7 +43,7 @@ public class EffAssert extends Effect  {
 
 	static {
 		if (TestMode.ENABLED)
-			Skript.registerEffect(EffAssert.class, "assert <.+> [(1¦to fail)] with %string%");
+			Skript.registerEffect(EffAssert.class, EffAssert::new, "assert <.+> [(1¦to fail)] with %string%");
 	}
 
 	@SuppressWarnings("null")

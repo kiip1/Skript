@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class EffSwingHand extends Effect {
 	
 	static {
-		Skript.registerEffect(EffSwingHand.class,
+		Skript.registerEffect(EffSwingHand.class, EffSwingHand::new,
 			"make %livingentities% swing [their] [main] hand",
 			"make %livingentities% swing [their] off[ ]hand");
 	}

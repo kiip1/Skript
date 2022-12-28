@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class EffForceAttack extends Effect {
 	
 	static {
-		Skript.registerEffect(EffForceAttack.class,
+		Skript.registerEffect(EffForceAttack.class, EffForceAttack::new,
 			"make %livingentities% attack %entity%",
 			"force %livingentities% to attack %entity%");
 	}

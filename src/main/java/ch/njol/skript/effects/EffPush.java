@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 @Since("1.4.6")
 public class EffPush extends Effect {
 	static {
-		Skript.registerEffect(EffPush.class, "(push|thrust) %entities% %direction% [(at|with) (speed|velocity|force) %-number%]");
+		Skript.registerEffect(EffPush.class, EffPush::new, "(push|thrust) %entities% %direction% [(at|with) (speed|velocity|force) %-number%]");
 	}
 	
 	@SuppressWarnings("null")

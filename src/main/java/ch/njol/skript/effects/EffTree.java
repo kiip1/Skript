@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class EffTree extends Effect {
 	
 	static {
-		Skript.registerEffect(EffTree.class,
+		Skript.registerEffect(EffTree.class, EffTree::new,
 				"(grow|create|generate) tree [of type %structuretype%] %directions% %locations%",
 				"(grow|create|generate) %structuretype% %directions% %locations%");
 	}

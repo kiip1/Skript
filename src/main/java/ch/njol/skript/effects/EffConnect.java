@@ -44,7 +44,7 @@ public class EffConnect extends Effect {
 	public static final String CONNECT_CHANNEL = "Connect";
 
 	static {
-		Skript.registerEffect(EffConnect.class,
+		Skript.registerEffect(EffConnect.class, EffConnect::new,
 				"connect %players% to [server] %string%",
 				"send %players% to server %string%"
 		);

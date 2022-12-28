@@ -47,7 +47,7 @@ import ch.njol.util.Kleenean;
 public class EffExplosion extends Effect {
 
 	static {
-		Skript.registerEffect(EffExplosion.class,
+		Skript.registerEffect(EffExplosion.class, EffExplosion::new,
 				"[(create|make)] [an] explosion (of|with) (force|strength|power) %number% [%directions% %locations%] [(1¦with fire)]",
 				"[(create|make)] [a] safe explosion (of|with) (force|strength|power) %number% [%directions% %locations%]",
 				"[(create|make)] [a] fake explosion [%directions% %locations%]",

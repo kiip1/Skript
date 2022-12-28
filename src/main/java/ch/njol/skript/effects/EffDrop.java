@@ -50,7 +50,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffDrop extends Effect {
 
 	static {
-		Skript.registerEffect(EffDrop.class, "drop %itemtypes/experiences% [%directions% %locations%] [(1¦without velocity)]");
+		Skript.registerEffect(EffDrop.class, EffDrop::new, "drop %itemtypes/experiences% [%directions% %locations%] [(1¦without velocity)]");
 	}
 
 	@Nullable

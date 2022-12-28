@@ -49,7 +49,7 @@ import java.io.IOException;
 public class EffScriptFile extends Effect {
 
 	static {
-		Skript.registerEffect(EffScriptFile.class,
+		Skript.registerEffect(EffScriptFile.class, EffScriptFile::new,
 			"(1:(enable|load)|2:reload|3:(disable|unload)) s(c|k)ript [file] %string%"
 		);
 	}

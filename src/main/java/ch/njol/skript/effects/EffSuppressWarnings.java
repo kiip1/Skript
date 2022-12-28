@@ -41,7 +41,7 @@ import org.skriptlang.skript.lang.script.ScriptWarning;
 public class EffSuppressWarnings extends Effect {
 
 	static {
-		Skript.registerEffect(EffSuppressWarnings.class,
+		Skript.registerEffect(EffSuppressWarnings.class, EffSuppressWarnings::new,
 			"[local[ly]] suppress [the] (1:conflict|2:variable save|3:[missing] conjunction[s]|4:starting [with] expression[s]) warning[s]"
 		);
 	}

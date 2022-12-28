@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class EffBreakNaturally extends Effect {
 	
 	static {
-		Skript.registerEffect(EffBreakNaturally.class, "break %blocks% [naturally] [using %-itemtype%]");
+		Skript.registerEffect(EffBreakNaturally.class, EffBreakNaturally::new, "break %blocks% [naturally] [using %-itemtype%]");
 	}
 	
 	@SuppressWarnings("null")

@@ -45,7 +45,7 @@ public class EffExplodeCreeper extends Effect {
 
 	static {
 		if (Skript.methodExists(Creeper.class, "explode")) {
-			Skript.registerEffect(EffExplodeCreeper.class, 
+			Skript.registerEffect(EffExplodeCreeper.class, EffExplodeCreeper::new, 
 					"instantly explode [creeper[s]] %livingentities%",
 					"explode [creeper[s]] %livingentities% instantly",
 					"ignite creeper[s] %livingentities%",

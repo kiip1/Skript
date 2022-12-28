@@ -53,7 +53,7 @@ public class EffCancelDrops extends Effect {
 	private static final boolean CAN_CANCEL_BLOCK_ITEM_DROPS = Skript.methodExists(BlockBreakEvent.class, "setDropItems", boolean.class);
 
 	static {
-		Skript.registerEffect(EffCancelDrops.class,
+		Skript.registerEffect(EffCancelDrops.class, EffCancelDrops::new,
 			"(cancel|clear|delete) [the] drops [of (1¦items|2¦[e]xp[erience][s])]",
 			"(cancel|clear|delete) [the] (1¦item|2¦[e]xp[erience]) drops");
 	}

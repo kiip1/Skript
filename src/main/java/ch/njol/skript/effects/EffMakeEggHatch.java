@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffMakeEggHatch extends Effect {
 
 	static {
-		Skript.registerEffect(EffMakeEggHatch.class,
+		Skript.registerEffect(EffMakeEggHatch.class, EffMakeEggHatch::new,
 				"make [the] egg [:not] hatch"
 		);
 	}

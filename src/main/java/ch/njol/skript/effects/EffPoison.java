@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 @Since("1.3.2")
 public class EffPoison extends Effect {
 	static {
-		Skript.registerEffect(EffPoison.class,
+		Skript.registerEffect(EffPoison.class, EffPoison::new,
 				"poison %livingentities% [for %-timespan%]",
 				"(cure|unpoison) %livingentities% [(from|of) poison]");
 	}

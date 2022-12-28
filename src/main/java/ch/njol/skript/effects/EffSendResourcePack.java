@@ -50,7 +50,7 @@ import ch.njol.util.StringUtils;
 public class EffSendResourcePack extends Effect {
 
 	static {
-		Skript.registerEffect(EffSendResourcePack.class,
+		Skript.registerEffect(EffSendResourcePack.class, EffSendResourcePack::new,
 				"send [the] resource pack [from [[the] URL]] %string% to %players%",
 				"send [the] resource pack [from [[the] URL]] %string% with hash %string% to %players%");
 	}

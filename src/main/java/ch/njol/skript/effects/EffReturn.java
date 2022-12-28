@@ -51,7 +51,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EffReturn extends Effect {
 	
 	static {
-		Skript.registerEffect(EffReturn.class, "return %objects%");
+		Skript.registerEffect(EffReturn.class, EffReturn::new, "return %objects%");
 	}
 	
 	@SuppressWarnings("NotNullFieldNotInitialized")

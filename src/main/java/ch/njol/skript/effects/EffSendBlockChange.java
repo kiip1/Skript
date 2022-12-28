@@ -55,7 +55,7 @@ public class EffSendBlockChange extends Effect {
 			);
 
 	static {
-		Skript.registerEffect(EffSendBlockChange.class,
+		Skript.registerEffect(EffSendBlockChange.class, EffSendBlockChange::new,
 				BLOCK_DATA_SUPPORT ? "make %players% see %blocks% as %itemtype/blockdata%" : "make %players% see %blocks% as %itemtype%"
 		);
 	}

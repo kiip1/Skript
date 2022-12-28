@@ -42,7 +42,7 @@ public class EffInvisible extends Effect {
 
 	static {
 		if (Skript.methodExists(LivingEntity.class, "isInvisible"))
-			Skript.registerEffect(EffInvisible.class,
+			Skript.registerEffect(EffInvisible.class, EffInvisible::new,
 				"make %livingentities% (invisible|not visible)",
 				"make %livingentities% (visible|not invisible)");
 	}

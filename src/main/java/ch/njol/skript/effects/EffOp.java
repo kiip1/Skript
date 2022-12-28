@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class EffOp extends Effect {
 	
 	static {
-		Skript.registerEffect(EffOp.class, "[de[-]]op %offlineplayers%");
+		Skript.registerEffect(EffOp.class, EffOp::new, "[de[-]]op %offlineplayers%");
 	}
 	
 	@SuppressWarnings("null")

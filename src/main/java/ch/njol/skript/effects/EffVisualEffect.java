@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 public class EffVisualEffect extends Effect {
 
 	static {
-		Skript.registerEffect(EffVisualEffect.class,
+		Skript.registerEffect(EffVisualEffect.class, EffVisualEffect::new,
 			"(play|show) %visualeffects% (on|%directions%) %entities/locations% [(to %-players%|in (radius|range) of %-number%)]",
 			"(play|show) %number% %visualeffects% (on|%directions%) %locations% [(to %-players%|in (radius|range) of %-number%)]");
 	}

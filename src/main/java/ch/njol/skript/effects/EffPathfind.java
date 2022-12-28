@@ -49,7 +49,7 @@ public class EffPathfind extends Effect {
 
 	static {
 		if (Skript.classExists("org.bukkit.entity.Mob") && Skript.methodExists(Mob.class, "getPathfinder"))
-			Skript.registerEffect(EffPathfind.class,
+			Skript.registerEffect(EffPathfind.class, EffPathfind::new,
 				"make %livingentities% (pathfind|move) to[wards] %livingentity/location% [at speed %-number%]",
 				"make %livingentities% stop (pathfinding|moving)");
 	}
