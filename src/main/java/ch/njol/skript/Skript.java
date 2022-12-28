@@ -1481,7 +1481,9 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @deprecated Use {@link #registerEvent(String, Class, Supplier, Class, String...)}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Class<? extends Event> event, String... patterns) {
+	@Deprecated
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
+	                                                                       Class<? extends Event> event, String... patterns) {
 		return registerEvent(name, clazz, new Class[] { event }, patterns);
 	}
 	
@@ -1497,7 +1499,9 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier, Class<? extends Event> event, String... patterns) {
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier,
+	                                                                       Class<? extends Event> event, String... patterns) {
+		
 		return registerEvent(name, clazz, supplier, new Class[] { event }, patterns);
 	}
 	
@@ -1509,7 +1513,9 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param events The Bukkit events this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
+	 * @deprecated Use {@link #registerEvent(String, Class, Supplier, Class[], String...)}
 	 */
+	@Deprecated
 	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
 	                                                                       Class<? extends Event>[] events, String... patterns) {
 		
