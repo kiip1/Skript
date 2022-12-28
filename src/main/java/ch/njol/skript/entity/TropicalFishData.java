@@ -37,7 +37,7 @@ public class TropicalFishData extends EntityData<TropicalFish> {
 	private static Object[] patterns;
 
 	static {
-		register(TropicalFishData.class, "tropical fish", TropicalFish.class, 0,
+		register(TropicalFishData.class, TropicalFishData::new, "tropical fish", TropicalFish.class, 0,
 				"tropical fish", "kob", "sunstreak", "snooper",
 				"dasher", "brinely", "spotty", "flopper",
 				"stripey", "glitter", "blockfish", "betty", "clayfish");

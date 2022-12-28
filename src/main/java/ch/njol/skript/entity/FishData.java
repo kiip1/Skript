@@ -34,7 +34,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 public class FishData extends EntityData<Fish> {
 
 	static {
-		register(FishData.class, "fish", Fish.class, 0,
+		register(FishData.class, FishData::new, "fish", Fish.class, 0,
 				"fish", "cod", "puffer fish", "salmon", "tropical fish");
 	}
 	

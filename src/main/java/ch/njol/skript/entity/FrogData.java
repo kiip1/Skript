@@ -29,7 +29,7 @@ public class FrogData extends EntityData<Frog> {
 
 	static {
 		if (Skript.classExists("org.bukkit.entity.Frog")) {
-			EntityData.register(FrogData.class, "frog", Frog.class, 0,
+			EntityData.register(FrogData.class, FrogData::new, "frog", Frog.class, 0,
 				"frog", "temperate frog", "warm frog", "cold frog");
 		}
 	}

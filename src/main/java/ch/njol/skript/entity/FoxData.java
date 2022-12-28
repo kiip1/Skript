@@ -30,7 +30,7 @@ public class FoxData extends EntityData<Fox> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.entity.Fox"))
-			EntityData.register(FoxData.class, "fox", Fox.class, 1,
+			EntityData.register(FoxData.class, FoxData::new, "fox", Fox.class, 1,
 					"fox", "red fox", "snow fox");
 	}
 	

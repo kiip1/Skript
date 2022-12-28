@@ -30,7 +30,7 @@ public class MooshroomData extends EntityData<MushroomCow> {
 	
 	static {
 		if (Skript.methodExists(MushroomCow.class, "getVariant")) {
-			EntityData.register(MooshroomData.class, "mooshroom", MushroomCow.class, 1,
+			EntityData.register(MooshroomData.class, MooshroomData::new, "mooshroom", MushroomCow.class, 1,
 				"mooshroom", "red mooshroom", "brown mooshroom");
 		}
 	}

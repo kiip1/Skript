@@ -42,7 +42,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class EndermanData extends EntityData<Enderman> {
 	
 	static {
-		EntityData.register(EndermanData.class, "enderman", Enderman.class, "enderman");
+		EntityData.register(EndermanData.class, EndermanData::new, "enderman", Enderman.class, "enderman");
 	}
 
 	@Nullable

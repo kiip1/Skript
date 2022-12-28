@@ -38,7 +38,7 @@ import ch.njol.util.coll.CollectionUtils;
  */
 public class SheepData extends EntityData<Sheep> {
 	static {
-		EntityData.register(SheepData.class, "sheep", Sheep.class, 1, "unsheared sheep", "sheep", "sheared sheep");
+		EntityData.register(SheepData.class, SheepData::new, "sheep", Sheep.class, 1, "unsheared sheep", "sheep", "sheared sheep");
 	}
 	
 	@Nullable

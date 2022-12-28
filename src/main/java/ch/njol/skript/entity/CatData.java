@@ -30,7 +30,7 @@ public class CatData extends EntityData<Cat> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.entity.Cat"))
-			EntityData.register(CatData.class, "cat", Cat.class, "cat");
+			EntityData.register(CatData.class, CatData::new, "cat", Cat.class, "cat");
 	}
 	
 	private Cat.@Nullable Type race = null;

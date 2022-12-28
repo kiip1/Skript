@@ -29,7 +29,7 @@ import ch.njol.skript.util.Color;
 public class WolfData extends EntityData<Wolf> {
 
 	static {
-		EntityData.register(WolfData.class, "wolf", Wolf.class, 1,
+		EntityData.register(WolfData.class, WolfData::new, "wolf", Wolf.class, 1,
 				"peaceful wolf", "wolf", "angry wolf",
 				"wild wolf", "tamed wolf");
 	}

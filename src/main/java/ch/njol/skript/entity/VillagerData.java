@@ -51,14 +51,14 @@ public class VillagerData extends EntityData<Villager> {
 		Variables.yggdrasil.registerSingleClass(Profession.class, "Villager.Profession");
 		
 		if (Skript.isRunningMinecraft(1, 14)) {
-			EntityData.register(VillagerData.class, "villager", Villager.class, 0,
+			EntityData.register(VillagerData.class, VillagerData::new, "villager", Villager.class, 0,
 					"villager", "normal", "armorer", "butcher", "cartographer",
 					"cleric", "farmer", "fisherman", "fletcher",
 					"leatherworker", "librarian", "mason", "nitwit",
 					"shepherd", "toolsmith", "weaponsmith");
 			professions = Arrays.asList(Profession.values());
 		} else { // Post 1.10: Not all professions go for villagers
-			EntityData.register(VillagerData.class, "villager", Villager.class, 0,
+			EntityData.register(VillagerData.class, VillagerData::new, "villager", Villager.class, 0,
 					"normal", "villager", "farmer", "librarian",
 					"priest", "blacksmith", "butcher", "nitwit");
 			// Normal is for zombie villagers, but needs to be here, since someone thought changing first element in enum was good idea :(

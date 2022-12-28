@@ -33,11 +33,11 @@ public class LlamaData extends EntityData<Llama> {
 	private final static boolean TRADER_SUPPORT = Skript.classExists("org.bukkit.entity.TraderLlama");
 	static {
 		if (TRADER_SUPPORT)
-			EntityData.register(LlamaData.class, "llama", Llama.class, 0,
+			EntityData.register(LlamaData.class, LlamaData::new, "llama", Llama.class, 0,
 					"llama", "creamy llama", "white llama", "brown llama", "gray llama",
 				"trader llama", "creamy trader llama", "white trader llama", "brown trader llama", "gray trader llama");
 		else if (Skript.classExists("org.bukkit.entity.Llama"))
-			EntityData.register(LlamaData.class, "llama", Llama.class, 0,
+			EntityData.register(LlamaData.class, LlamaData::new, "llama", Llama.class, 0,
 					"llama", "creamy llama",
 					"white llama", "brown llama", "gray llama");
 	}

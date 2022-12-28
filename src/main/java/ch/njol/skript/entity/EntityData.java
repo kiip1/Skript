@@ -236,6 +236,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		
 	}
 	
+	@Deprecated
 	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name, Class<E> entityClass,
 	                                                                        String codeName) throws IllegalArgumentException {
 		
@@ -248,6 +249,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		register(dataClass, supplier, name, entityClass, 0, codeName);
 	}
 	
+	@Deprecated
 	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name,
 	                                                                        Class<E> entityClass, int defaultName,
 	                                                                        String... codeNames) throws IllegalArgumentException {

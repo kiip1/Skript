@@ -38,7 +38,7 @@ import ch.njol.util.coll.CollectionUtils;
  */
 public class DroppedItemData extends EntityData<Item> {
 	static {
-		EntityData.register(DroppedItemData.class, "dropped item", Item.class, "dropped item");
+		EntityData.register(DroppedItemData.class, DroppedItemData::new, "dropped item", Item.class, "dropped item");
 	}
 	
 	private final static Adjective m_adjective = new Adjective("entities.dropped item.adjective");

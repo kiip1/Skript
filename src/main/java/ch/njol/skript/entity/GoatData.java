@@ -28,7 +28,7 @@ public class GoatData extends EntityData<Goat> {
 
 	static {
 		if (Skript.classExists("org.bukkit.entity.Goat"))
-			EntityData.register(GoatData.class, "goat", Goat.class, 0,
+			EntityData.register(GoatData.class, GoatData::new, "goat", Goat.class, 0,
 				"goat", "screaming goat", "quiet goat");
 	}
 

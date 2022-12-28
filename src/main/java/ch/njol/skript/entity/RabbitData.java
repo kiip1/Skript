@@ -29,7 +29,7 @@ public class RabbitData extends EntityData<Rabbit> {
 	
     static {
     	if(Skript.classExists("org.bukkit.entity.Rabbit")){
-	        EntityData.register(RabbitData.class, "rabbit", Rabbit.class, 0, "rabbit", "black rabbit", "black and white rabbit",
+	        EntityData.register(RabbitData.class, RabbitData::new, "rabbit", Rabbit.class, 0, "rabbit", "black rabbit", "black and white rabbit",
 	                "brown rabbit", "gold rabbit", "salt and pepper rabbit", "killer rabbit", "white rabbit");
     	}
     }

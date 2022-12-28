@@ -34,10 +34,10 @@ public class OcelotData extends EntityData<Ocelot> {
 	private static final boolean TAMEABLE = Skript.methodExists(Ocelot.class, "setTamed");
 	static {
 		if (TAMEABLE) {
-			EntityData.register(OcelotData.class, "ocelot", Ocelot.class, 1,
+			EntityData.register(OcelotData.class, OcelotData::new, "ocelot", Ocelot.class, 1,
 					"wild ocelot", "ocelot", "cat");
 		} else {
-			EntityData.register(OcelotData.class, "ocelot", Ocelot.class, "ocelot");
+			EntityData.register(OcelotData.class, OcelotData::new, "ocelot", Ocelot.class, "ocelot");
 		}
 	}
 	

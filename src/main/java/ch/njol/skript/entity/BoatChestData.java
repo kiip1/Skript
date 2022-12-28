@@ -47,7 +47,7 @@ public class BoatChestData extends EntityData<ChestBoat> {
 			jungleBoat = Aliases.javaItemType("jungle chest boat");
 			acaciaBoat = Aliases.javaItemType("acacia chest boat");
 			darkOakBoat = Aliases.javaItemType("dark oak chest boat");
-			EntityData.register(BoatChestData.class, "chest boat", ChestBoat.class, 0,
+			EntityData.register(BoatChestData.class, BoatChestData::new, "chest boat", ChestBoat.class, 0,
 				"chest boat", "any chest boat", "oak chest boat", "spruce chest boat", "birch chest boat",
 				"jungle chest boat", "acacia chest boat", "dark oak chest boat");
 		}

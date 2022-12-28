@@ -29,7 +29,7 @@ public class AxolotlData extends EntityData<Axolotl> {
 
 	static {
 		if (Skript.classExists("org.bukkit.entity.Axolotl")) {
-			EntityData.register(AxolotlData.class, "axolotl", Axolotl.class, 0,
+			EntityData.register(AxolotlData.class, AxolotlData::new, "axolotl", Axolotl.class, 0,
 				"axolotl", "lucy axolotl", "wild axolotl", "gold axolotl", "cyan axolotl", "blue axolotl");
 		}
 	}

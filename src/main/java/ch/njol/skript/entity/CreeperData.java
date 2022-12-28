@@ -29,7 +29,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
  */
 public class CreeperData extends EntityData<Creeper> {
 	static {
-		EntityData.register(CreeperData.class, "creeper", Creeper.class, 1, "unpowered creeper", "creeper", "powered creeper");
+		EntityData.register(CreeperData.class, CreeperData::new, "creeper", Creeper.class, 1, "unpowered creeper", "creeper", "powered creeper");
 	}
 	
 	private int powered = 0;

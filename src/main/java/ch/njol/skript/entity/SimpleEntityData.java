@@ -320,7 +320,7 @@ public class SimpleEntityData extends EntityData<Entity> {
 		for (final SimpleEntityDataInfo info : types) {
 			codeNames[i++] = info.codeName;
 		}
-		EntityData.register(SimpleEntityData.class, "simple", Entity.class, 0, codeNames);
+		EntityData.register(SimpleEntityData.class, SimpleEntityData::new, "simple", Entity.class, 0, codeNames);
 	}
 	
 	private transient SimpleEntityDataInfo info;

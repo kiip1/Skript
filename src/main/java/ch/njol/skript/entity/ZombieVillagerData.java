@@ -35,11 +35,11 @@ public class ZombieVillagerData extends EntityData<ZombieVillager> {
 
 	static {
 		if (PROFESSION_UPDATE)
-			EntityData.register(ZombieVillagerData.class, "zombie villager", ZombieVillager.class, 0,
+			EntityData.register(ZombieVillagerData.class, ZombieVillagerData::new, "zombie villager", ZombieVillager.class, 0,
 				"zombie villager", "zombie armorer", "zombie butcher", "zombie cartographer", "zombie cleric", "zombie farmer", "zombie fisherman",
 				"zombie fletcher", "zombie leatherworker", "zombie librarian", "zombie mason", "zombie nitwit", "zombie shepherd", "zombie toolsmith", "zombie weaponsmith");
 		else
-			EntityData.register(ZombieVillagerData.class, "zombie villager", ZombieVillager.class, 0,
+			EntityData.register(ZombieVillagerData.class, ZombieVillagerData::new, "zombie villager", ZombieVillager.class, 0,
 					"zombie villager", "zombie farmer", "zombie librarian", "zombie priest", "zombie blacksmith", "zombie butcher", "zombie nitwit");
 	}
 	

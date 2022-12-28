@@ -33,7 +33,7 @@ public class PandaData extends EntityData<Panda> {
 	
 	static {
 		if (Skript.isRunningMinecraft(1, 14))
-			EntityData.register(PandaData.class, "panda", Panda.class, "panda");
+			EntityData.register(PandaData.class, PandaData::new, "panda", Panda.class, "panda");
 	}
 	
 	@Nullable

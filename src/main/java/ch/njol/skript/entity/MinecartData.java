@@ -77,7 +77,7 @@ public class MinecartData extends EntityData<Minecart> {
 	}
 	
 	static {
-		EntityData.register(MinecartData.class, "minecart", Minecart.class, 0, MinecartType.codeNames);
+		EntityData.register(MinecartData.class, MinecartData::new, "minecart", Minecart.class, 0, MinecartType.codeNames);
 		
 		Variables.yggdrasil.registerSingleClass(MinecartType.class, "MinecartType");
 	}

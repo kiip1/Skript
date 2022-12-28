@@ -31,7 +31,7 @@ public class BeeData extends EntityData<Bee> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.entity.Bee")) {
-			EntityData.register(BeeData.class, "bee", Bee.class, 2,
+			EntityData.register(BeeData.class, BeeData::new, "bee", Bee.class, 2,
 				"no nectar bee", "happy bee", "bee", "nectar bee", "angry bee", "angry nectar bee");
 		}
 	}
