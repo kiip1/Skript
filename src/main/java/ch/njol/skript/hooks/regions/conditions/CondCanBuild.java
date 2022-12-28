@@ -52,7 +52,7 @@ import ch.njol.util.Kleenean;
 @Since("2.0")
 public class CondCanBuild extends Condition {
 	static {
-		Skript.registerCondition(CondCanBuild.class,
+		Skript.registerCondition(CondCanBuild.class, CondCanBuild::new,
 				"%players% (can|(is|are) allowed to) build %directions% %locations%",
 				"%players% (can('t|not)|(is|are)(n't| not) allowed to) build %directions% %locations%");
 	}

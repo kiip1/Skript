@@ -47,7 +47,7 @@ import ch.njol.util.Kleenean;
 public class CondMatches extends Condition {
 	
 	static {
-		Skript.registerCondition(CondMatches.class,
+		Skript.registerCondition(CondMatches.class, CondMatches::new,
 			"%strings% (1¦match[es]|2¦do[es](n't| not) match) %strings%",
 			"%strings% (1¦partially match[es]|2¦do[es](n't| not) partially match) %strings%");
 	}

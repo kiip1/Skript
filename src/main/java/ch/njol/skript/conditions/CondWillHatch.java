@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondWillHatch extends Condition {
 
 	static {
-		Skript.registerCondition(CondWillHatch.class,
+		Skript.registerCondition(CondWillHatch.class, CondWillHatch::new,
 				"[the] egg (:will|will not|won't) hatch"
 		);
 	}

@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondHasMetadata extends Condition {
 
 	static {
-		Skript.registerCondition(CondHasMetadata.class,
+		Skript.registerCondition(CondHasMetadata.class, CondHasMetadata::new,
 				"%metadataholders% (has|have) metadata [(value|tag)[s]] %strings%",
 				"%metadataholders% (doesn't|does not|do not|don't) have metadata [(value|tag)[s]] %strings%"
 		);

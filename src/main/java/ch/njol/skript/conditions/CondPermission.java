@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 public class CondPermission extends Condition {
 	
 	static {
-		Skript.registerCondition(CondPermission.class,
+		Skript.registerCondition(CondPermission.class, CondPermission::new,
 				"%commandsenders% (has|have) [the] permission[s] %strings%",
 				"%commandsenders% (doesn't|does not|do not|don't) have [the] permission[s] %strings%");
 	}

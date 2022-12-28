@@ -49,7 +49,7 @@ import ch.njol.util.Kleenean;
 public class CondCanHold extends Condition {
 	
 	static {
-		Skript.registerCondition(CondCanHold.class,
+		Skript.registerCondition(CondCanHold.class, CondCanHold::new,
 				"%inventories% (can hold|ha(s|ve) [enough] space (for|to hold)) %itemtypes%",
 				"%inventories% (can(no|')t hold|(ha(s|ve) not|ha(s|ve)n't|do[es]n't have) [enough] space (for|to hold)) %itemtypes%");
 	}

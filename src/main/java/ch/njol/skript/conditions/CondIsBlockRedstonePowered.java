@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class CondIsBlockRedstonePowered extends Condition {
 	
 	static {
-		Skript.registerCondition(CondIsBlockRedstonePowered.class,
+		Skript.registerCondition(CondIsBlockRedstonePowered.class, CondIsBlockRedstonePowered::new,
 			"%blocks% (is|are) redstone powered",
 			"%blocks% (is|are) indirectly redstone powered",
 			"%blocks% (is|are)(n't| not) redstone powered",

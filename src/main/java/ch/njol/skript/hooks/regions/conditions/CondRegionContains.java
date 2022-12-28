@@ -48,7 +48,7 @@ import ch.njol.util.Kleenean;
 @Since("2.1")
 public class CondRegionContains extends Condition {
 	static {
-		Skript.registerCondition(CondRegionContains.class,
+		Skript.registerCondition(CondRegionContains.class, CondRegionContains::new,
 				"[[the] region] %regions% contain[s] %directions% %locations%", "%locations% (is|are) ([contained] in|part of) [[the] region] %regions%",
 				"[[the] region] %regions% (do|does)(n't| not) contain %directions% %locations%", "%locations% (is|are)(n't| not) (contained in|part of) [[the] region] %regions%");
 	}

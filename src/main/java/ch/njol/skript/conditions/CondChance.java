@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class CondChance extends Condition {
 	
 	static {
-		Skript.registerCondition(CondChance.class, "chance of %number%(1¦\\%|)");
+		Skript.registerCondition(CondChance.class, CondChance::new, "chance of %number%(1¦\\%|)");
 	}
 	
 	@SuppressWarnings("null")

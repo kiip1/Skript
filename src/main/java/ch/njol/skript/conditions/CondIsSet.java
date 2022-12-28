@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 @Since("1.2")
 public class CondIsSet extends Condition {
 	static {
-		Skript.registerCondition(CondIsSet.class,
+		Skript.registerCondition(CondIsSet.class, CondIsSet::new,
 				"%~objects% (exist[s]|(is|are) set)",
 				"%~objects% (do[es](n't| not) exist|(is|are)(n't| not) set)");
 	}

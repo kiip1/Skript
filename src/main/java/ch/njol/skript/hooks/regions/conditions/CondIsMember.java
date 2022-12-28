@@ -47,7 +47,7 @@ import ch.njol.util.Kleenean;
 @Since("2.1")
 public class CondIsMember extends Condition {
 	static {
-		Skript.registerCondition(CondIsMember.class,
+		Skript.registerCondition(CondIsMember.class, CondIsMember::new,
 				"%offlineplayers% (is|are) (0¦[a] member|1¦[(the|an)] owner) of [[the] region] %regions%",
 				"%offlineplayers% (is|are)(n't| not) (0¦[a] member|1¦[(the|an)] owner) of [[the] region] %regions%");
 	}

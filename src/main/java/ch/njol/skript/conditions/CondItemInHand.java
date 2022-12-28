@@ -45,7 +45,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondItemInHand extends Condition {
 	
 	static {
-		Skript.registerCondition(CondItemInHand.class,
+		Skript.registerCondition(CondItemInHand.class, CondItemInHand::new,
 				"[%livingentities%] ha(s|ve) %itemtypes% in [main] hand",
 				"[%livingentities%] (is|are) holding %itemtypes% [in main hand]",
 				"[%livingentities%] ha(s|ve) %itemtypes% in off[(-| )]hand",

@@ -43,7 +43,7 @@ public class CondIgnitionProcess extends PropertyCondition<LivingEntity> {
 
 	static {
 		if (Skript.methodExists(Creeper.class, "isIgnited")) {
-			Skript.registerCondition(CondIgnitionProcess.class,
+			Skript.registerCondition(CondIgnitionProcess.class, CondIgnitionProcess::new,
 					"[creeper[s]] %livingentities% ((is|are)|1¦(isn't|is not|aren't|are not)) going to explode",
 					"[creeper[s]] %livingentities% ((is|are)|1¦(isn't|is not|aren't|are not)) in the (ignition|explosion) process",
 					"creeper[s] %livingentities% ((is|are)|1¦(isn't|is not|aren't|are not)) ignited");

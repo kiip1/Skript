@@ -51,7 +51,7 @@ import java.util.Objects;
 public class CondContains extends Condition {
 
 	static {
-		Skript.registerCondition(CondContains.class,
+		Skript.registerCondition(CondContains.class, CondContains::new,
 			"%inventories% (has|have) %itemtypes% [in [(the[ir]|his|her|its)] inventory]",
 			"%inventories% (doesn't|does not|do not|don't) have %itemtypes% [in [(the[ir]|his|her|its)] inventory]",
 			"%inventories/strings/objects% contain[(1¦s)] %itemtypes/strings/objects%",

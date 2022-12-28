@@ -42,7 +42,7 @@ import ch.njol.util.Kleenean;
 public class CondCanSee extends Condition {
 
 	static {
-		Skript.registerCondition(CondCanSee.class,
+		Skript.registerCondition(CondCanSee.class, CondCanSee::new,
 				"%players% (is|are) [(1¦in)]visible for %players%",
 				"%players% can see %players%",
 				"%players% (is|are)(n't| not) [(1¦in)]visible for %players%",

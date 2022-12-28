@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondIsLoaded extends Condition {
 	
 	static {
-		Skript.registerCondition(CondIsLoaded.class,
+		Skript.registerCondition(CondIsLoaded.class, CondIsLoaded::new,
 			"chunk[s] %directions% [%locations%] (is|are)[(1¦(n't| not))] loaded",
 			"chunk [at] %number%, %number% (in|of) [world] %world% is[(1¦(n't| not))] loaded",
 			"[world[s]] %worlds% (is|are)[(1¦(n't| not))] loaded");

@@ -42,7 +42,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondPlayedBefore extends Condition {
 	
 	static {
-		Skript.registerCondition(CondPlayedBefore.class,
+		Skript.registerCondition(CondPlayedBefore.class, CondPlayedBefore::new,
 				"%offlineplayers% [(has|have|did)] [already] play[ed] [on (this|the) server] (before|already)",
 				"%offlineplayers% (has not|hasn't|have not|haven't|did not|didn't) [(already|yet)] play[ed] [on (this|the) server] (before|already|yet)");
 	}

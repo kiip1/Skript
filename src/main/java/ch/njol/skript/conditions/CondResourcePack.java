@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class CondResourcePack extends Condition {
 
 	static {
-		Skript.registerCondition(CondResourcePack.class,
+		Skript.registerCondition(CondResourcePack.class, CondResourcePack::new,
 				"[the] resource pack (was|is|has) [been] %resourcepackstate%",
 				"[the] resource pack (was|is|has)(n't| not) [been] %resourcepackstate%");
 	}

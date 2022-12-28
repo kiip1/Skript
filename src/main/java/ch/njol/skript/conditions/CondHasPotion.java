@@ -45,7 +45,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondHasPotion extends Condition {
 
 	static {
-		Skript.registerCondition(CondHasPotion.class,
+		Skript.registerCondition(CondHasPotion.class, CondHasPotion::new,
 				"%livingentities% (has|have) potion[s] [effect[s]] %potioneffecttypes%",
 				"%livingentities% (doesn't|does not|do not|don't) have potion[s] [effect[s]] %potioneffecttypes%");
 	}

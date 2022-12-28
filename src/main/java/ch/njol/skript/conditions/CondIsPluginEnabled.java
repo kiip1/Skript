@@ -46,7 +46,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondIsPluginEnabled extends Condition {
 
 	static {
-		Skript.registerCondition(CondIsPluginEnabled.class,
+		Skript.registerCondition(CondIsPluginEnabled.class, CondIsPluginEnabled::new,
 			"plugin[s] %strings% (is|are) enabled",
 			"plugin[s] %strings% (is|are)(n't| not) enabled",
 			"plugin[s] %strings% (is|are) disabled");

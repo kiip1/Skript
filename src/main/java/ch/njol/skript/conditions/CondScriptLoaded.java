@@ -43,7 +43,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondScriptLoaded extends Condition {
 	
 	static {
-		Skript.registerCondition(CondScriptLoaded.class,
+		Skript.registerCondition(CondScriptLoaded.class, CondScriptLoaded::new,
 				"script[s] [%-strings%] (is|are) loaded",
 				"script[s] [%-strings%] (isn't|is not|aren't|are not) loaded");
 	}

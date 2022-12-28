@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class CondIncendiary extends Condition {
 
 	static {
-		Skript.registerCondition(CondIncendiary.class,
+		Skript.registerCondition(CondIncendiary.class, CondIncendiary::new,
 				"%entities% ((is|are) incendiary|cause[s] a[n] (incendiary|fiery) explosion)",
 				"%entities% ((is not|are not|isn't|aren't) incendiary|(does not|do not|doesn't|don't) cause[s] a[n] (incendiary|fiery) explosion)",
 				"the [event(-| )]explosion (is|1¦(is not|isn't)) (incendiary|fiery)"

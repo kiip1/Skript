@@ -40,7 +40,7 @@ import ch.njol.util.Kleenean;
 public class CondIsWhitelisted extends Condition {
 	
 	static {
-		Skript.registerCondition(CondIsWhitelisted.class,
+		Skript.registerCondition(CondIsWhitelisted.class, CondIsWhitelisted::new,
 			"[the] server (is|1¦is(n't| not)) white[ ]listed",
 			"%players% (is|are)(|1¦(n't| not)) white[ ]listed");
 	}

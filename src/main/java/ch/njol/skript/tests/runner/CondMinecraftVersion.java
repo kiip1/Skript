@@ -39,7 +39,7 @@ import ch.njol.util.Kleenean;
 public class CondMinecraftVersion extends Condition {
 	
 	static {
-		Skript.registerCondition(CondMinecraftVersion.class, "running [(1¦below)] minecraft %string%");
+		Skript.registerCondition(CondMinecraftVersion.class, CondMinecraftVersion::new, "running [(1¦below)] minecraft %string%");
 	}
 
 	@SuppressWarnings("null")
