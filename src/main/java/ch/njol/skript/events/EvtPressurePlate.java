@@ -38,7 +38,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 public class EvtPressurePlate extends SkriptEvent {
 	static {
 		// TODO is EntityInteractEvent similar for entities?
-		Skript.registerEvent("Pressure Plate / Trip", EvtPressurePlate.class, PlayerInteractEvent.class,
+		Skript.registerEvent("Pressure Plate / Trip", EvtPressurePlate.class, EvtPressurePlate::new, PlayerInteractEvent.class,
 				"[step[ping] on] [a] [pressure] plate",
 				"(trip|[step[ping] on] [a] tripwire)")
 				.description("Called when a <i>player</i> steps on a pressure plate or tripwire respectively.")

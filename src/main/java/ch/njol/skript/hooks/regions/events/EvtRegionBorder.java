@@ -51,7 +51,7 @@ import ch.njol.util.Checker;
  */
 public class EvtRegionBorder extends SelfRegisteringSkriptEvent {
 	static {
-		Skript.registerEvent("Region Enter/Leave", EvtRegionBorder.class, RegionBorderEvent.class,
+		Skript.registerEvent("Region Enter/Leave", EvtRegionBorder.class, EvtRegionBorder::new, RegionBorderEvent.class,
 				"(0¦enter[ing]|1¦leav(e|ing)|1¦exit[ing]) [of] ([a] region|[[the] region] %-regions%)",
 				"region (0¦enter[ing]|1¦leav(e|ing)|1¦exit[ing])")
 				.description("Called when a player enters or leaves a <a href='../classes.html#region'>region</a>.",

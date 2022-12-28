@@ -31,7 +31,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 public class EvtResourcePackResponse extends SkriptEvent {
 
 	static {
-		Skript.registerEvent("Resource Pack Request Response", EvtResourcePackResponse.class, PlayerResourcePackStatusEvent.class,
+		Skript.registerEvent("Resource Pack Request Response", EvtResourcePackResponse.class, EvtResourcePackResponse::new, PlayerResourcePackStatusEvent.class,
 				"resource pack [request] response",
 				"resource pack [request] %resourcepackstates%")
 				.description("Called when a player takes action on a resource pack request sent via the ",

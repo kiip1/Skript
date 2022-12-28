@@ -44,7 +44,7 @@ public class EvtGrow extends SkriptEvent {
 	public static final int ANY = 0, STRUCTURE = 1, BLOCK = 2;
 	
 	static {
-		Skript.registerEvent("Grow", EvtGrow.class, CollectionUtils.array(StructureGrowEvent.class, BlockGrowEvent.class),
+		Skript.registerEvent("Grow", EvtGrow.class, EvtGrow::new, CollectionUtils.array(StructureGrowEvent.class, BlockGrowEvent.class),
 				"grow [of (1¦%-structuretype%|2¦%-itemtype%)]")
 				.description("Called when a tree, giant mushroom or plant grows to next stage.")
 				.examples("on grow:", "on grow of a tree:", "on grow of a huge jungle tree:")

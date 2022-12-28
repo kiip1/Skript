@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class EvtBookEdit extends SkriptEvent{
 	
 	static {
-		Skript.registerEvent("Book Edit", EvtBookEdit.class, PlayerEditBookEvent.class, "book (edit|change|write)")
+		Skript.registerEvent("Book Edit", EvtBookEdit.class, EvtBookEdit::new, PlayerEditBookEvent.class, "book (edit|change|write)")
 			.description("Called when a player edits a book.")
 			.examples("on book edit:")
 			.since("2.2-dev31");

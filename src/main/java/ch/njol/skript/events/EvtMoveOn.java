@@ -53,7 +53,7 @@ public class EvtMoveOn extends SelfRegisteringSkriptEvent { // TODO on jump
 	static {
 		// Register EvtPressurePlate before EvtMoveOn, https://github.com/SkriptLang/Skript/issues/2555
 		new EvtPressurePlate();
-		Skript.registerEvent("Move On", EvtMoveOn.class, PlayerMoveEvent.class, "(step|walk)[ing] (on|over) %*itemtypes%")
+		Skript.registerEvent("Move On", EvtMoveOn.class, EvtMoveOn::new, PlayerMoveEvent.class, "(step|walk)[ing] (on|over) %*itemtypes%")
 				.description("Called when a player moves onto a certain type of block. Please note that using this event can cause lag if there are many players online.")
 				.examples("on walking on dirt or grass:", "on stepping on stone:")
 				.since("2.0");

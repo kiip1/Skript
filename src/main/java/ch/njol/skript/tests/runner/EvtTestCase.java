@@ -32,7 +32,7 @@ public class EvtTestCase extends SkriptEvent {
 	
 	static {
 		if (TestMode.ENABLED)
-			Skript.registerEvent("Test Case", EvtTestCase.class, SkriptTestEvent.class, "test %string% [when <.+>]")
+			Skript.registerEvent("Test Case", EvtTestCase.class, EvtTestCase::new, SkriptTestEvent.class, "test %string% [when <.+>]")
 				.description("Contents represent one test case.")
 				.examples("")
 				.since("2.5");

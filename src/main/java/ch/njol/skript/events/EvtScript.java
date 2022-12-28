@@ -35,7 +35,7 @@ import ch.njol.skript.lang.Trigger;
 public class EvtScript extends SelfRegisteringSkriptEvent {
 	
 	static {
-		Skript.registerEvent("Script Load/Unload", EvtScript.class, ScriptEvent.class,
+		Skript.registerEvent("Script Load/Unload", EvtScript.class, EvtScript::new, ScriptEvent.class,
 			"[(1¦async)] [script] (load|init|enable)",
 			"[(1¦async)] [script] (unload|stop|disable)"
 		)

@@ -38,7 +38,7 @@ import java.util.Locale;
 public class EvtEntityBlockChange extends SkriptEvent {
 	
 	static {
-		Skript.registerEvent("Enderman/Sheep/Silverfish/Falling Block", EvtEntityBlockChange.class, EntityChangeBlockEvent.class, ChangeEvent.patterns)
+		Skript.registerEvent("Enderman/Sheep/Silverfish/Falling Block", EvtEntityBlockChange.class, EvtEntityBlockChange::new, EntityChangeBlockEvent.class, ChangeEvent.patterns)
 				.description("Called when an enderman places or picks up a block, a sheep eats grass, ",
 						"a silverfish boops into/out of a block or a falling block lands and turns into a block respectively.")
 				.examples("on sheep eat:",
