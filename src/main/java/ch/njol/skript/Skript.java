@@ -1300,7 +1300,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * registers a {@link Condition}.
 	 *
 	 * @param condition The condition's class
-	 * @param supplier Supplier for the condition
+	 * @param supplier Supplier which will instantiate the condition
 	 * @param patterns Skript patterns to match this condition
 	 */
 	public static <E extends Condition> void registerCondition(Class<E> condition, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
@@ -1331,7 +1331,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * Registers an {@link Effect}.
 	 *
 	 * @param effect The effect's class
-	 * @param supplier Supplier for the effect
+	 * @param supplier Supplier which will instantiate the effect
 	 * @param patterns Skript patterns to match this effect
 	 */
 	public static <E extends Effect> void registerEffect(Class<E> effect, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
@@ -1361,7 +1361,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * Registers a {@link Section}.
 	 *
 	 * @param section The section's class
-	 * @param supplier Supplier for the section
+	 * @param supplier Supplier which will instantiate the section
 	 * @param patterns Skript patterns to match this section
 	 * @see Section
 	 */
@@ -1423,7 +1423,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * Registers an expression.
 	 *
 	 * @param clazz The expression's class
-	 * @param supplier Supplier for the expression
+	 * @param supplier Supplier which will instantiate the expression
 	 * @param returnType The superclass of all values returned by the expression
 	 * @param type The expression's {@link ExpressionType type}. This is used to determine in which order to try to parse expressions.
 	 * @param patterns Skript patterns that match this expression
@@ -1484,6 +1484,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	@Deprecated
 	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
 	                                                                       Class<? extends Event> event, String... patterns) {
+		
 		return registerEvent(name, clazz, new Class[] { event }, patterns);
 	}
 	
@@ -1493,13 +1494,13 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param name Capitalised name of the event without leading "On" which is added automatically (Start the name with an asterisk to prevent this). Used for error messages and
 	 *            the documentation.
 	 * @param clazz The event's class
-	 * @param supplier Supplier for the event
+	 * @param supplier Supplier which will instantiate the event
 	 * @param event The Bukkit event this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier,
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, @Nullable Supplier<E> supplier,
 	                                                                       Class<? extends Event> event, String... patterns) {
 		
 		return registerEvent(name, clazz, supplier, new Class[] { event }, patterns);
@@ -1536,7 +1537,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param name The name of the event, used for error messages
 	 * @param clazz The event's class
-	 * @param supplier The event supplier
+	 * @param supplier Supplier which will instantiate the event
 	 * @param events The Bukkit events this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.

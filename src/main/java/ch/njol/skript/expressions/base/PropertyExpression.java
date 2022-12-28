@@ -59,7 +59,7 @@ public abstract class PropertyExpression<F, T> extends SimpleExpression<T> {
 	/**
 	 * Registers an expression as {@link ExpressionType#PROPERTY} with the two default property patterns "property of %types%" and "%types%'[s] property"
 	 *
-	 * @param supplier The supplier for the property
+	 * @param supplier Supplier which will instantiate the property
 	 * @param property The name of the property
 	 * @param fromType Should be plural but doesn't have to be
 	 */

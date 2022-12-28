@@ -36,6 +36,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 /**
  * A SkriptEvent is like a condition. It is called when any of the registered events occurs.
@@ -44,8 +45,8 @@ import java.util.Locale;
  * not).<br/>
  * It is also needed if the event has parameters.
  *
- * @see Skript#registerEvent(String, Class, Class, String...)
- * @see Skript#registerEvent(String, Class, Class[], String...)
+ * @see Skript#registerEvent(String, Class, Supplier, Class, String...)
+ * @see Skript#registerEvent(String, Class, Supplier, Class[], String...)
  */
 @SuppressWarnings("NotNullFieldNotInitialized")
 public abstract class SkriptEvent extends Structure {
