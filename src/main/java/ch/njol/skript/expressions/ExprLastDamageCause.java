@@ -47,7 +47,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprLastDamageCause extends PropertyExpression<LivingEntity, DamageCause>{
 	
 	static {
-		register(ExprLastDamageCause.class, DamageCause.class, "last damage (cause|reason|type)", "livingentities");
+		register(ExprLastDamageCause.class, ExprLastDamageCause::new, DamageCause.class, "last damage (cause|reason|type)", "livingentities");
 	}
 
 	@SuppressWarnings({"unchecked", "null"})

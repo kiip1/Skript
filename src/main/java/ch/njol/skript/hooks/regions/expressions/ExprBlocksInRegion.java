@@ -52,7 +52,7 @@ import ch.njol.util.coll.iterator.EmptyIterator;
 @Since("2.1")
 public class ExprBlocksInRegion extends SimpleExpression<Block> {
 	static {
-		Skript.registerExpression(ExprBlocksInRegion.class, Block.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprBlocksInRegion.class, ExprBlocksInRegion::new, Block.class, ExpressionType.COMBINED,
 				"[(all|the)] blocks (in|of) [[the] region[s]] %regions%");
 	}
 	

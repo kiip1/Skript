@@ -44,7 +44,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprMinecartDerailedFlyingVelocity extends SimplePropertyExpression<Entity, Vector> {
 	
 	static {
-		register(ExprMinecartDerailedFlyingVelocity.class, Vector.class,
+		register(ExprMinecartDerailedFlyingVelocity.class, ExprMinecartDerailedFlyingVelocity::new, Vector.class,
 			"[minecart] (1¦derailed|2¦flying) velocity", "entities");
 	}
 	

@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class ExprNumberOfCharacters extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprNumberOfCharacters.class, Long.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprNumberOfCharacters.class, ExprNumberOfCharacters::new, Long.class, ExpressionType.SIMPLE,
 				"number of upper[ ]case char(acters|s) in %string%",
 				"number of lower[ ]case char(acters|s) in %string%",
 				"number of digit char(acters|s) in %string%");

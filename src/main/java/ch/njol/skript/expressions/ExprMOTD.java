@@ -47,7 +47,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprMOTD extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprMOTD.class, String.class, ExpressionType.SIMPLE, "[the] [(1¦default)|(2¦shown|displayed)] (MOTD|message of [the] day)");
+		Skript.registerExpression(ExprMOTD.class, ExprMOTD::new, String.class, ExpressionType.SIMPLE, "[the] [(1¦default)|(2¦shown|displayed)] (MOTD|message of [the] day)");
 	}
 
 	private static final boolean PAPER_EVENT_EXISTS = Skript.classExists("com.destroystokyo.paper.event.server.PaperServerListPingEvent");

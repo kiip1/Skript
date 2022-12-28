@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprPickupDelay extends SimplePropertyExpression<Entity, Timespan> {
 
 	static {
-		register(ExprPickupDelay.class, Timespan.class, "pick[ ]up delay", "entities");
+		register(ExprPickupDelay.class, ExprPickupDelay::new, Timespan.class, "pick[ ]up delay", "entities");
 	}
 
 	@Override

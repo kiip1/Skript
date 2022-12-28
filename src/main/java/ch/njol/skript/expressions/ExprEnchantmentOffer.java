@@ -56,7 +56,7 @@ public class ExprEnchantmentOffer extends SimpleExpression<EnchantmentOffer> {
 
 	static {
 		if (Skript.classExists("org.bukkit.enchantments.EnchantmentOffer")) {
-			Skript.registerExpression(ExprEnchantmentOffer.class, EnchantmentOffer.class, ExpressionType.SIMPLE, 
+			Skript.registerExpression(ExprEnchantmentOffer.class, ExprEnchantmentOffer::new, EnchantmentOffer.class, ExpressionType.SIMPLE, 
 					"[all [of]] [the] enchant[ment] offers",
 					"enchant[ment] offer[s] %numbers%",
 					"[the] %number%(st|nd|rd|th) enchant[ment] offer");

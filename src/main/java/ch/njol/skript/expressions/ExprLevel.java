@@ -46,7 +46,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 @Events("level change")
 public class ExprLevel extends SimplePropertyExpression<Player, Long> {
 	static {
-		register(ExprLevel.class, Long.class, "level", "players");
+		register(ExprLevel.class, ExprLevel::new, Long.class, "level", "players");
 	}
 	
 	@Override

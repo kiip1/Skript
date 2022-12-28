@@ -52,7 +52,7 @@ import java.util.List;
 public class ExprGroup extends SimpleExpression<String> {
 
 	static {
-		PropertyExpression.register(ExprGroup.class, String.class, "group[(1¦s)]", "offlineplayers");
+		PropertyExpression.register(ExprGroup.class, ExprGroup::new, String.class, "group[(1¦s)]", "offlineplayers");
 	}
 
 	private boolean primary;

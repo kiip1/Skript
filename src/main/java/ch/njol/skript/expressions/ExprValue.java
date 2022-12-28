@@ -35,7 +35,7 @@ import ch.njol.util.Kleenean;
  */
 public class ExprValue extends SimpleExpression<Unit> {
 //	static { // REMIND add this (>2.0)
-//		Skript.registerExpression(ExprValue.class, Unit.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, "%~number% %*unit%");
+//		Skript.registerExpression(ExprValue.class, ExprValue::new, Unit.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, "%~number% %*unit%");
 //	}
 	
 	@SuppressWarnings("null")

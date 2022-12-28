@@ -50,7 +50,7 @@ public class ExprHatchingType extends SimpleExpression<EntityData<?>> {
 
 	static {
 		//noinspection unchecked
-		Skript.registerExpression(ExprHatchingType.class, (Class<EntityData<?>>) (Class<?>) EntityData.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprHatchingType.class, ExprHatchingType::new, (Class<EntityData<?>>) (Class<?>) EntityData.class, ExpressionType.SIMPLE,
 				"[the] hatching entity [type]"
 		);
 	}

@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class ExprRandomUUID extends SimpleExpression<String> {
 	
 	static {
-		Skript.registerExpression(ExprRandomUUID.class, String.class, ExpressionType.SIMPLE, "[a] random uuid");
+		Skript.registerExpression(ExprRandomUUID.class, ExprRandomUUID::new, String.class, ExpressionType.SIMPLE, "[a] random uuid");
 	}
 	
 	@Override

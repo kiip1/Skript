@@ -46,7 +46,7 @@ public class ExprTPS extends SimpleExpression<Number> {
 	private String expr = "tps";
 
 	static {
-		Skript.registerExpression(ExprTPS.class, Number.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprTPS.class, ExprTPS::new, Number.class, ExpressionType.SIMPLE,
 				"tps from [the] last ([1] minute|1[ ]m[inute])",
 				"tps from [the] last 5[ ]m[inutes]",
 				"tps from [the] last 15[ ]m[inutes]",

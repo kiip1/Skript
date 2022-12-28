@@ -58,7 +58,7 @@ import java.util.Map.Entry;
 public class ExprIndices extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprIndices.class, String.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprIndices.class, ExprIndices::new, String.class, ExpressionType.COMBINED,
 				"[(the|all [[of] the])] (indexes|indices) of %~objects%",
 				"%~objects%'[s] (indexes|indices)",
 				"[sorted] (indices|indexes) of %~objects% in (ascending|1¦descending) order",

@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 public class ExprLastColor extends SimplePropertyExpression<String, String> {
 
 	static {
-		register(ExprLastColor.class, String.class, "last color[s]", "strings");
+		register(ExprLastColor.class, ExprLastColor::new, String.class, "last color[s]", "strings");
 	}
 
 	@Nullable

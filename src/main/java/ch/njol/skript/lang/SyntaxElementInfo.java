@@ -18,7 +18,10 @@
  */
 package ch.njol.skript.lang;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
  * @author Peter Güttinger
@@ -27,22 +30,34 @@ import java.util.Arrays;
 public class SyntaxElementInfo<E extends SyntaxElement> {
 	
 	public final Class<E> c;
+	@Nullable
+	public final Supplier<E> supplier;
 	public final String[] patterns;
 	public final String originClassPath;
 	
-	public SyntaxElementInfo(final String[] patterns, final Class<E> c, final String originClassPath) throws IllegalArgumentException {
+	public SyntaxElementInfo(String[] patterns, Class<E> elementClass,
+	                         String originClassPath) throws IllegalArgumentException {
+		
+		this(patterns, elementClass, null, originClassPath);
+	}
+	
+	public SyntaxElementInfo(String[] patterns, Class<E> elementClass, @Nullable Supplier<E> supplier,
+	                         String originClassPath) throws IllegalArgumentException {
+		
+		this.c = elementClass;
+		this.supplier = supplier;
 		this.patterns = patterns;
-		this.c = c;
 		this.originClassPath = originClassPath;
-		try {
-			c.getConstructor();
-//			if (!c.getDeclaredConstructor().isAccessible())
-//				throw new IllegalArgumentException("The nullary constructor of class "+c.getName()+" is not public");
-		} catch (final NoSuchMethodException e) {
-			// throwing an Exception throws an (empty) ExceptionInInitializerError instead, thus an Error is used
-			throw new Error(c + " does not have a public nullary constructor", e);
-		} catch (final SecurityException e) {
-			throw new IllegalStateException("Skript cannot run properly because a security manager is blocking it!");
+		
+		if (supplier == null) {
+			try {
+				elementClass.getConstructor();
+			} catch (NoSuchMethodException e) {
+				// throwing an Exception throws an (empty) ExceptionInInitializerError instead, thus an Error is used
+				throw new Error(elementClass + " does not have a public nullary constructor", e);
+			} catch (SecurityException e) {
+				throw new IllegalStateException("Skript cannot run properly because a security manager is blocking it!");
+			}
 		}
 	}
 	
@@ -52,6 +67,18 @@ public class SyntaxElementInfo<E extends SyntaxElement> {
 	 */
 	public Class<E> getElementClass() {
 		return c;
+	}
+	
+	public E instance() {
+		if (supplier == null) {
+			try {
+				return c.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		return supplier.get();
 	}
 	
 	/**

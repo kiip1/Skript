@@ -48,7 +48,7 @@ public class ExprItemFrameSlot extends SimplePropertyExpression<Entity, Slot> {
 	private static final boolean PROJECTILE_SUPPORT = Skript.classExists("org.bukkit.entity.ThrowableProjectile");
 	
 	static {
-		register(ExprItemFrameSlot.class, Slot.class, "item", "entities");
+		register(ExprItemFrameSlot.class, ExprItemFrameSlot::new, Slot.class, "item", "entities");
 	}
 	
 	@Override

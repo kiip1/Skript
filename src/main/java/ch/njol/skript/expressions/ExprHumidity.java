@@ -32,7 +32,7 @@ import org.bukkit.block.Block;
 public class ExprHumidity extends SimplePropertyExpression<Block, Number> {
 
     static {
-        register(ExprHumidity.class, Number.class, "humidit(y|ies)", "blocks");
+        register(ExprHumidity.class, ExprHumidity::new, Number.class, "humidit(y|ies)", "blocks");
     }
 
     @Override

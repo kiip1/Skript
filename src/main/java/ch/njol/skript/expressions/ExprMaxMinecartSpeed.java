@@ -40,7 +40,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprMaxMinecartSpeed extends SimplePropertyExpression<Entity, Number> {
 	
 	static {
-		register(ExprMaxMinecartSpeed.class, Number.class, "max[imum] minecart (speed|velocity)", "entities");
+		register(ExprMaxMinecartSpeed.class, ExprMaxMinecartSpeed::new, Number.class, "max[imum] minecart (speed|velocity)", "entities");
 	}
 	
 	@Nullable

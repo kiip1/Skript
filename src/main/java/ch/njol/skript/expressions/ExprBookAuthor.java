@@ -40,7 +40,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprBookAuthor extends SimplePropertyExpression<ItemType, String> {
 	
 	static {
-		register(ExprBookAuthor.class, String.class, "[book] (author|writer|publisher)", "itemtypes");
+		register(ExprBookAuthor.class, ExprBookAuthor::new, String.class, "[book] (author|writer|publisher)", "itemtypes");
 	}
 	
 	@Nullable

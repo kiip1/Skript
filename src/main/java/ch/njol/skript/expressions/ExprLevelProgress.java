@@ -57,7 +57,7 @@ import ch.njol.util.Math2;
 public class ExprLevelProgress extends SimplePropertyExpression<Player, Number> {
 	
 	static {
-		register(ExprLevelProgress.class, Number.class, "level progress", "players");
+		register(ExprLevelProgress.class, ExprLevelProgress::new, Number.class, "level progress", "players");
 	}
 	
 	@Override

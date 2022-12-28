@@ -45,8 +45,8 @@ import ch.njol.util.Kleenean;
 @Since("2.0")
 public class ExprLocation extends WrapperExpression<Location> {
 	static {
-		Skript.registerExpression(ExprLocation.class, Location.class, ExpressionType.SIMPLE, "[the] [event-](location|position)");
-		Skript.registerExpression(ExprLocation.class, Location.class, ExpressionType.COMBINED, "[the] (location|position) %directions% [%location%]");
+		Skript.registerExpression(ExprLocation.class, ExprLocation::new, Location.class, ExpressionType.SIMPLE, "[the] [event-](location|position)");
+		Skript.registerExpression(ExprLocation.class, ExprLocation::new, Location.class, ExpressionType.COMBINED, "[the] (location|position) %directions% [%location%]");
 	}
 	
 	@SuppressWarnings({"unchecked", "null"})

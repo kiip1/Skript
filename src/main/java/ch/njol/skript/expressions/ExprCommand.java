@@ -52,7 +52,7 @@ import ch.njol.util.Kleenean;
 public class ExprCommand extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprCommand.class, String.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprCommand.class, ExprCommand::new, String.class, ExpressionType.SIMPLE,
 				"[the] (full|complete|whole) command",
 				"[the] command [(label|alias)]"
 		);

@@ -45,7 +45,7 @@ public class ExprEnchantmentOfferCost extends SimplePropertyExpression<Enchantme
 
 	static {
 		if (Skript.classExists("org.bukkit.enchantments.EnchantmentOffer"))
-			register(ExprEnchantmentOfferCost.class, Long.class, "[enchant[ment]] cost", "enchantmentoffers");
+			register(ExprEnchantmentOfferCost.class, ExprEnchantmentOfferCost::new, Long.class, "[enchant[ment]] cost", "enchantmentoffers");
 	}
 
 	@Override

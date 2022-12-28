@@ -44,7 +44,7 @@ import java.lang.reflect.Array;
 public class ExprDefaultValue<T> extends SimpleExpression<T> {
 
 	static {
-		Skript.registerExpression(ExprDefaultValue.class, Object.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprDefaultValue.class, ExprDefaultValue::new, Object.class, ExpressionType.COMBINED,
 				"%objects% (otherwise|?) %objects%");
 	}
 

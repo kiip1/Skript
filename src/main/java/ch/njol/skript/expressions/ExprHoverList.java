@@ -61,7 +61,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprHoverList extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprHoverList.class, String.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprHoverList.class, ExprHoverList::new, String.class, ExpressionType.SIMPLE,
 				"[the] [custom] [(player|server)] (hover|sample) ([message] list|message)",
 				"[the] [custom] player [(hover|sample)] list");
 	}

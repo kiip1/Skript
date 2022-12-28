@@ -37,7 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprWorldEnvironment extends SimplePropertyExpression<World, Environment> {
 
 	static {
-		register(ExprWorldEnvironment.class, Environment.class, "[world] environment", "worlds");
+		register(ExprWorldEnvironment.class, ExprWorldEnvironment::new, Environment.class, "[world] environment", "worlds");
 	}
 
 	@Override

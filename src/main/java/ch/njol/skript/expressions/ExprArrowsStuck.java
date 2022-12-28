@@ -40,7 +40,7 @@ public class ExprArrowsStuck extends SimplePropertyExpression<LivingEntity, Long
 
     static {
     	if (Skript.methodExists(LivingEntity.class, "getArrowsStuck")) {
-    		Skript.registerExpression(ExprArrowsStuck.class, Long.class, ExpressionType.PROPERTY,
+    		Skript.registerExpression(ExprArrowsStuck.class, ExprArrowsStuck::new, Long.class, ExpressionType.PROPERTY,
     				"[number of] arrow[s] stuck in %livingentities%");
     	}
     }

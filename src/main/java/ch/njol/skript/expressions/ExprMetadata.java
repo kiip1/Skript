@@ -54,7 +54,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprMetadata<T> extends SimpleExpression<T> {
 
 	static {
-		Skript.registerExpression(ExprMetadata.class, Object.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprMetadata.class, ExprMetadata::new, Object.class, ExpressionType.PROPERTY,
 				"metadata [(value|tag)[s]] %strings% of %metadataholders%",
 				"%metadataholders%'[s] metadata [(value|tag)[s]] %string%"
 		);

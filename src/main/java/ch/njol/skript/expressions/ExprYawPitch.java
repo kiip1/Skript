@@ -43,7 +43,7 @@ import org.bukkit.util.Vector;
 public class ExprYawPitch extends SimplePropertyExpression<Object, Number> {
 
 	static {
-		register(ExprYawPitch.class, Number.class, "(0¦yaw|1¦pitch)", "locations/vectors");
+		register(ExprYawPitch.class, ExprYawPitch::new, Number.class, "(0¦yaw|1¦pitch)", "locations/vectors");
 	}
 
 	private boolean usesYaw;

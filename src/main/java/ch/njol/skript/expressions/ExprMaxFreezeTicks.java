@@ -42,7 +42,7 @@ public class ExprMaxFreezeTicks extends SimplePropertyExpression<Entity, Timespa
 
 	static {
 		if (Skript.methodExists(Entity.class, "getMaxFreezeTicks"))
-			register(ExprMaxFreezeTicks.class, Timespan.class, "max[imum] freeze time", "entities");
+			register(ExprMaxFreezeTicks.class, ExprMaxFreezeTicks::new, Timespan.class, "max[imum] freeze time", "entities");
 	}
 
 	@Override

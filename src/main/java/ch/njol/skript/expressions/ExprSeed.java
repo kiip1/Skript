@@ -42,7 +42,7 @@ import ch.njol.util.Kleenean;
 public class ExprSeed extends PropertyExpression<World, Long> {
 
 	static {
-		Skript.registerExpression(ExprSeed.class, Long.class, ExpressionType.PROPERTY, "[the] seed[s] (from|of) %worlds%", "%worlds%'[s] seed[s]");
+		Skript.registerExpression(ExprSeed.class, ExprSeed::new, Long.class, ExpressionType.PROPERTY, "[the] seed[s] (from|of) %worlds%", "%worlds%'[s] seed[s]");
 	}
 
 	@SuppressWarnings({"null", "unchecked"})

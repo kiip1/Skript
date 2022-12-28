@@ -47,7 +47,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprSpawn extends PropertyExpression<World, Location> {
 
 	static {
-		Skript.registerExpression(ExprSpawn.class, Location.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprSpawn.class, ExprSpawn::new, Location.class, ExpressionType.PROPERTY,
 				"[the] spawn[s] [(point|location)[s]] [of %worlds%]",
 				"%worlds%'[s] spawn[s] [(point|location)[s]]"
 		);

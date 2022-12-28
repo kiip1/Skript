@@ -53,7 +53,7 @@ import ch.njol.util.Kleenean;
 @Events({"experience spawn", "break / mine"})
 public class ExprExperience extends SimpleExpression<Experience> {
 	static {
-		Skript.registerExpression(ExprExperience.class, Experience.class, ExpressionType.SIMPLE, "[the] (spawned|dropped|) [e]xp[erience] [orb[s]]");
+		Skript.registerExpression(ExprExperience.class, ExprExperience::new, Experience.class, ExpressionType.SIMPLE, "[the] (spawned|dropped|) [e]xp[erience] [orb[s]]");
 	}
 	
 	@Override

@@ -42,7 +42,7 @@ import ch.njol.skript.lang.ExpressionType;
 @Since("2.1")
 public class ExprRegion extends EventValueExpression<Region> {
 	static {
-		Skript.registerExpression(ExprRegion.class, Region.class, ExpressionType.SIMPLE, "[the] [event-]region");
+		Skript.registerExpression(ExprRegion.class, ExprRegion::new, Region.class, ExpressionType.SIMPLE, "[the] [event-]region");
 	}
 	
 	public ExprRegion() {

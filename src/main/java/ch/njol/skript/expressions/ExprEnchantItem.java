@@ -51,7 +51,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprEnchantItem extends SimpleExpression<ItemType> {
 
 	static {
-		Skript.registerExpression(ExprEnchantItem.class, ItemType.class, ExpressionType.SIMPLE, "[the] enchant[ed] item");
+		Skript.registerExpression(ExprEnchantItem.class, ExprEnchantItem::new, ItemType.class, ExpressionType.SIMPLE, "[the] enchant[ed] item");
 	}
 
 	@Override

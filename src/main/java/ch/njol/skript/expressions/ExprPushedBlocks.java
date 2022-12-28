@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class ExprPushedBlocks extends SimpleExpression<Block> {
 	
 	static {
-		Skript.registerExpression(ExprPushedBlocks.class, Block.class, ExpressionType.SIMPLE, "[the] moved blocks");
+		Skript.registerExpression(ExprPushedBlocks.class, ExprPushedBlocks::new, Block.class, ExpressionType.SIMPLE, "[the] moved blocks");
 	}
 	
 	@Override

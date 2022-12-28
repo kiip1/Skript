@@ -35,7 +35,7 @@ public class ExprPlayerProtocolVersion extends SimplePropertyExpression<Player, 
 
 	static {
 		if (Skript.classExists("com.destroystokyo.paper.network.NetworkClient")) {
-			register(ExprPlayerProtocolVersion.class, Integer.class, "protocol version", "players");
+			register(ExprPlayerProtocolVersion.class, ExprPlayerProtocolVersion::new, Integer.class, "protocol version", "players");
 		}
 	}
 

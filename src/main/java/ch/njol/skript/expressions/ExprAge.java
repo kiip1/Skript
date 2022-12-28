@@ -56,7 +56,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprAge extends SimplePropertyExpression<Object, Integer> {
 
 	static {
-		register(ExprAge.class, Integer.class, "[:max[imum]] age", "blocks/entities");
+		register(ExprAge.class, ExprAge::new, Integer.class, "[:max[imum]] age", "blocks/entities");
 	}
 
 	private boolean isMax;

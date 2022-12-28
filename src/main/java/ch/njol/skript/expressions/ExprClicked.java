@@ -107,7 +107,7 @@ public class ExprClicked extends SimpleExpression<Object> {
 	}
 	
 	static {
-		Skript.registerExpression(ExprClicked.class, Object.class, ExpressionType.SIMPLE, "[the] ("
+		Skript.registerExpression(ExprClicked.class, ExprClicked::new, Object.class, ExpressionType.SIMPLE, "[the] ("
 					// 'clicked enchantment button' must be before 'clicked block' otherwise 'button' will be considered as an itemtype
 					+ ClickableType.ENCHANT_BUTTON.getSyntax(false)
 					+ ClickableType.BLOCK_AND_ITEMS.getSyntax(false)

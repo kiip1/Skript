@@ -44,7 +44,7 @@ import java.util.List;
 public class ExprPotionEffectTier extends SimpleExpression<Integer> {
 
 	static {
-		Skript.registerExpression(ExprPotionEffectTier.class, Integer.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprPotionEffectTier.class, ExprPotionEffectTier::new, Integer.class, ExpressionType.COMBINED,
 				"[the] [potion] (tier|amplifier|level) of %potioneffecttypes% (of|for|on) %livingentities%"
 		);
 	}

@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class ExprHotbarButton extends SimpleExpression<Long> {
 	
 	static {
-		Skript.registerExpression(ExprHotbarButton.class, Long.class, ExpressionType.SIMPLE, "[the] hotbar button");
+		Skript.registerExpression(ExprHotbarButton.class, ExprHotbarButton::new, Long.class, ExpressionType.SIMPLE, "[the] hotbar button");
 	}
 	
 	@Override

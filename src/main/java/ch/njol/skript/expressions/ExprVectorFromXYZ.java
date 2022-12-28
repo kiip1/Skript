@@ -44,7 +44,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprVectorFromXYZ extends SimpleExpression<Vector> {
 
 	static {
-		Skript.registerExpression(ExprVectorFromXYZ.class, Vector.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprVectorFromXYZ.class, ExprVectorFromXYZ::new, Vector.class, ExpressionType.SIMPLE,
 				"[a] [new] vector [(from|at|to)] %number%,[ ]%number%(,[ ]| and )%number%");
 	}
 

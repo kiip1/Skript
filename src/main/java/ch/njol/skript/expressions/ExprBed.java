@@ -56,7 +56,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprBed extends SimplePropertyExpression<OfflinePlayer, Location> {
 
 	static {
-		register(ExprBed.class, Location.class, "[(safe:(safe|valid)|(unsafe|invalid))] bed[s] [location[s]]", "offlineplayers");
+		register(ExprBed.class, ExprBed::new, Location.class, "[(safe:(safe|valid)|(unsafe|invalid))] bed[s] [location[s]]", "offlineplayers");
 	}
 
 	private boolean isSafe;

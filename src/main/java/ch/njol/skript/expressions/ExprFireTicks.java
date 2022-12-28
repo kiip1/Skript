@@ -37,7 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprFireTicks extends SimplePropertyExpression<Entity, Timespan> {
 
 	static {
-		register(ExprFireTicks.class, Timespan.class, "(burn[ing]|fire) (time|duration)", "entities");
+		register(ExprFireTicks.class, ExprFireTicks::new, Timespan.class, "(burn[ing]|fire) (time|duration)", "entities");
 	}
 
 	@Override

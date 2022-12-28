@@ -40,7 +40,7 @@ import ch.njol.skript.util.slot.Slot;
 public class ExprHotbarSlot extends SimplePropertyExpression<Player, Slot> {
 
 	static {
-		register(ExprHotbarSlot.class, Slot.class, "[([currently] selected|current)] hotbar slot", "players");
+		register(ExprHotbarSlot.class, ExprHotbarSlot::new, Slot.class, "[([currently] selected|current)] hotbar slot", "players");
 	}
 	
 	@Override

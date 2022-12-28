@@ -34,7 +34,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprSeaLevel extends SimplePropertyExpression<World, Long> {
 	
 	static {
-		register(ExprSeaLevel.class, Long.class, "sea level", "worlds");
+		register(ExprSeaLevel.class, ExprSeaLevel::new, Long.class, "sea level", "worlds");
 	}
 	
 	@Override

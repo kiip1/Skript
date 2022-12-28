@@ -48,7 +48,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprExplosionBlockYield extends SimpleExpression<Number> {
 
 	static {
-		Skript.registerExpression(ExprExplosionBlockYield.class, Number.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprExplosionBlockYield.class, ExprExplosionBlockYield::new, Number.class, ExpressionType.PROPERTY,
 				"[the] [explosion['s]] block (yield|amount)",
 				"[the] percentage of blocks dropped"
 		);

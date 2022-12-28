@@ -37,7 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprSaturation extends SimplePropertyExpression<Player, Number> {
 
 	static {
-		register(ExprSaturation.class, Number.class, "saturation", "players");
+		register(ExprSaturation.class, ExprSaturation::new, Number.class, "saturation", "players");
 	}
 
 	@Override

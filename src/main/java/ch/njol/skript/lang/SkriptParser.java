@@ -219,55 +219,52 @@ public class SkriptParser {
 				SyntaxElementInfo<? extends T> info = source.next();
 				patternsLoop: for (int i = 0; i < info.patterns.length; i++) {
 					log.clear();
+					String pattern = info.patterns[i];
+					assert pattern != null;
+					ParseResult res;
 					try {
-						String pattern = info.patterns[i];
-						assert pattern != null;
-						ParseResult res;
+						res = parse_i(pattern, 0, 0);
+					} catch (MalformedPatternException e) {
+						String message = "pattern compiling exception, element class: " + info.c.getName();
 						try {
-							res = parse_i(pattern, 0, 0);
-						} catch (MalformedPatternException e) {
-							String message = "pattern compiling exception, element class: " + info.c.getName();
-							try {
-								JavaPlugin providingPlugin = JavaPlugin.getProvidingPlugin(info.c);
-								message += " (provided by " + providingPlugin.getName() + ")";
-							} catch (IllegalArgumentException | IllegalStateException ignored) {}
-							throw new RuntimeException(message, e);
+							JavaPlugin providingPlugin = JavaPlugin.getProvidingPlugin(info.c);
+							message += " (provided by " + providingPlugin.getName() + ")";
+						} catch (IllegalArgumentException | IllegalStateException ignored) {}
+						throw new RuntimeException(message, e);
 
-						}
-						if (res != null) {
-							int x = -1;
-							for (int j = 0; (x = nextUnescaped(pattern, '%', x + 1)) != -1; j++) {
-								int x2 = nextUnescaped(pattern, '%', x + 1);
-								if (res.exprs[j] == null) {
-									String name = pattern.substring(x + 1, x2);
-									if (!name.startsWith("-")) {
-										ExprInfo vi = getExprInfo(name);
-										DefaultExpression<?> expr = vi.classes[0].getDefaultExpression();
-										if (expr == null)
-											throw new SkriptAPIException("The class '" + vi.classes[0].getCodeName() + "' does not provide a default expression. Either allow null (with %-" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
-										if (!(expr instanceof Literal) && (vi.flagMask & PARSE_EXPRESSIONS) == 0)
-											throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is not a literal. Either allow null (with %-*" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
-										if (expr instanceof Literal && (vi.flagMask & PARSE_LITERALS) == 0)
-											throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is a literal. Either allow null (with %-~" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
-										if (!vi.isPlural[0] && !expr.isSingle())
-											throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is not a single-element expression. Change your pattern to allow multiple elements or make the expression mandatory [pattern: " + info.patterns[i] + "]");
-										if (vi.time != 0 && !expr.setTime(vi.time))
-											throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' does not have distinct time states. [pattern: " + info.patterns[i] + "]");
-										if (!expr.init())
-											continue patternsLoop;
-										res.exprs[j] = expr;
-									}
+					}
+					if (res != null) {
+						int x = -1;
+						for (int j = 0; (x = nextUnescaped(pattern, '%', x + 1)) != -1; j++) {
+							int x2 = nextUnescaped(pattern, '%', x + 1);
+							if (res.exprs[j] == null) {
+								String name = pattern.substring(x + 1, x2);
+								if (!name.startsWith("-")) {
+									ExprInfo vi = getExprInfo(name);
+									DefaultExpression<?> expr = vi.classes[0].getDefaultExpression();
+									if (expr == null)
+										throw new SkriptAPIException("The class '" + vi.classes[0].getCodeName() + "' does not provide a default expression. Either allow null (with %-" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
+									if (!(expr instanceof Literal) && (vi.flagMask & PARSE_EXPRESSIONS) == 0)
+										throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is not a literal. Either allow null (with %-*" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
+									if (expr instanceof Literal && (vi.flagMask & PARSE_LITERALS) == 0)
+										throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is a literal. Either allow null (with %-~" + vi.classes[0].getCodeName() + "%) or make it mandatory [pattern: " + info.patterns[i] + "]");
+									if (!vi.isPlural[0] && !expr.isSingle())
+										throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' is not a single-element expression. Change your pattern to allow multiple elements or make the expression mandatory [pattern: " + info.patterns[i] + "]");
+									if (vi.time != 0 && !expr.setTime(vi.time))
+										throw new SkriptAPIException("The default expression of '" + vi.classes[0].getCodeName() + "' does not have distinct time states. [pattern: " + info.patterns[i] + "]");
+									if (!expr.init())
+										continue patternsLoop;
+									res.exprs[j] = expr;
 								}
-								x = x2;
 							}
-							T t = info.c.newInstance();
-							if (t.init(res.exprs, i, getParser().getHasDelayBefore(), res)) {
-								log.printLog();
-								return t;
-							}
+							x = x2;
 						}
-					} catch (final InstantiationException | IllegalAccessException e) {
-						assert false;
+						
+						T instance = info.instance();
+						if (instance.init(res.exprs, i, getParser().getHasDelayBefore(), res)) {
+							log.printLog();
+							return instance;
+						}
 					}
 				}
 			}

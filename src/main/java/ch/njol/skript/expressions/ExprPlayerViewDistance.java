@@ -46,7 +46,7 @@ public class ExprPlayerViewDistance extends PropertyExpression<Player, Long> {
 	static {
 		// Not supported on 1.14 yet
 		if (Skript.methodExists(Player.class, "getViewDistance") && !Skript.isRunningMinecraft(1, 14))
-			register(ExprPlayerViewDistance.class, Long.class, "view distance[s]", "players");
+			register(ExprPlayerViewDistance.class, ExprPlayerViewDistance::new, Long.class, "view distance[s]", "players");
 	}
 	
 	@Override

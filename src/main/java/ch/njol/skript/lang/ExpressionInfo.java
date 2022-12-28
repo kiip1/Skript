@@ -18,7 +18,10 @@
  */
 package ch.njol.skript.lang;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class ExpressionInfo<E extends Expression<T>, T> extends SyntaxElementInfo<E> {
 	
@@ -26,12 +29,16 @@ public class ExpressionInfo<E extends Expression<T>, T> extends SyntaxElementInf
 	@Nullable
 	public ExpressionType expressionType;
 	
-	public ExpressionInfo(final String[] patterns, final Class<T> returnType, final Class<E> c, final String originClassPath) throws IllegalArgumentException {
-		this(patterns, returnType, c, originClassPath, null);
+	public ExpressionInfo(String[] patterns, Class<T> returnType, Class<E> clazz,
+	                      String originClassPath, @Nullable ExpressionType expressionType) throws IllegalArgumentException {
+		
+		this(patterns, returnType, clazz, null, originClassPath, expressionType);
 	}
 	
-	public ExpressionInfo(final String[] patterns, final Class<T> returnType, final Class<E> c, final String originClassPath, @Nullable ExpressionType expressionType) throws IllegalArgumentException {
-		super(patterns, c, originClassPath);
+	public ExpressionInfo(String[] patterns, Class<T> returnType, Class<E> clazz, @Nullable Supplier<E> supplier,
+	                      String originClassPath, @Nullable ExpressionType expressionType) throws IllegalArgumentException {
+		
+		super(patterns, clazz, supplier, originClassPath);
 		this.returnType = returnType;
 		this.expressionType = expressionType;
 	}

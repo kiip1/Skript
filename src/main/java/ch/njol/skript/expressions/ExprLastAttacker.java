@@ -38,7 +38,7 @@ import ch.njol.util.Kleenean;
 public class ExprLastAttacker extends SimplePropertyExpression<Entity, Object> {
 	
 	static {
-		register(ExprLastAttacker.class, Object.class, "last attacker", "entity");
+		register(ExprLastAttacker.class, ExprLastAttacker::new, Object.class, "last attacker", "entity");
 	}
 	
 	@Nullable

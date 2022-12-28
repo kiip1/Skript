@@ -42,7 +42,7 @@ import ch.njol.util.Kleenean;
 @Since("2.2-dev31")
 public class ExprChatFormat extends SimpleExpression<String>{
 	static {
-		Skript.registerExpression(ExprChatFormat.class, String.class, ExpressionType.SIMPLE, "[the] (message|chat) format[ting]");
+		Skript.registerExpression(ExprChatFormat.class, ExprChatFormat::new, String.class, ExpressionType.SIMPLE, "[the] (message|chat) format[ting]");
 	}
 	
 	@Override

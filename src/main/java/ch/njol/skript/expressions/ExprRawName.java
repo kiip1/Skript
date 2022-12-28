@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class ExprRawName extends SimpleExpression<String> {
 	
 	static {
-		Skript.registerExpression(ExprRawName.class, String.class, ExpressionType.SIMPLE, "(raw|minecraft|vanilla) name[s] of %itemtypes%");
+		Skript.registerExpression(ExprRawName.class, ExprRawName::new, String.class, ExpressionType.SIMPLE, "(raw|minecraft|vanilla) name[s] of %itemtypes%");
 	}
 	
 	@SuppressWarnings("null")

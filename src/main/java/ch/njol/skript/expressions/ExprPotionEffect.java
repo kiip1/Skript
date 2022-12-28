@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 @Since("2.5.2")
 public class ExprPotionEffect extends SimpleExpression<PotionEffect> {
 	static {
-		Skript.registerExpression(ExprPotionEffect.class, PotionEffect.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprPotionEffect.class, ExprPotionEffect::new, PotionEffect.class, ExpressionType.COMBINED,
 			"[new] potion effect of %potioneffecttype% [potion] [[[of] tier] %-number%] [(1¦without particles)] [for %-timespan%]",
 			"[new] ambient potion effect of %potioneffecttype% [potion] [[[of] tier] %-number%] [(1¦without particles)] [for %-timespan%]");
 	}

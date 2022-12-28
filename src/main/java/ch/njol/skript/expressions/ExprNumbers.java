@@ -53,7 +53,7 @@ import ch.njol.util.Kleenean;
 @Since("1.4.6 (integers & numbers), 2.5.1 (decimals)")
 public class ExprNumbers extends SimpleExpression<Number> {
 	static {
-		Skript.registerExpression(ExprNumbers.class, Number.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprNumbers.class, ExprNumbers::new, Number.class, ExpressionType.COMBINED,
 				"[(all [[of] the]|the)] (numbers|1¦integers|2¦decimals) (between|from) %number% (and|to) %number%");
 	}
 	

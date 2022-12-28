@@ -49,7 +49,7 @@ import ch.njol.util.Kleenean;
 @Since("2.1, 2.5.2 (character at, multiple strings support)")
 public class ExprSubstring extends SimpleExpression<String> {
 	static {
-		Skript.registerExpression(ExprSubstring.class, String.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprSubstring.class, ExprSubstring::new, String.class, ExpressionType.COMBINED,
 				"[the] (part|sub[ ](text|string)) of %strings% (between|from) (ind(ex|ices)|character[s]|) %number% (and|to) (index|character|) %number%",
 				"[the] (1¦first|2¦last) [%-number%] character[s] of %strings%", "[the] %number% (1¦first|2¦last) characters of %strings%",
 				"[the] character[s] at [(index|position|indexes|indices|positions)] %numbers% (in|of) %strings%");

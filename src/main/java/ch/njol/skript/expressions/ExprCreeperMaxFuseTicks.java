@@ -40,7 +40,7 @@ public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEnti
 	
 	static {
 		if(Skript.methodExists(LivingEntity.class, "getMaxFuseTicks"))
-			register(ExprCreeperMaxFuseTicks.class, Long.class, "[creeper] max[imum] fuse tick[s]", "livingentities");
+			register(ExprCreeperMaxFuseTicks.class, ExprCreeperMaxFuseTicks::new, Long.class, "[creeper] max[imum] fuse tick[s]", "livingentities");
 	}
 
 	@Override

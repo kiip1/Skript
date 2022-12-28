@@ -44,7 +44,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprLastLoadedServerIcon extends SimpleExpression<CachedServerIcon> {
 
 	static {
-		Skript.registerExpression(ExprLastLoadedServerIcon.class, CachedServerIcon.class, ExpressionType.SIMPLE, "[the] [last[ly]] loaded server icon");
+		Skript.registerExpression(ExprLastLoadedServerIcon.class, ExprLastLoadedServerIcon::new, CachedServerIcon.class, ExpressionType.SIMPLE, "[the] [last[ly]] loaded server icon");
 	}
 
 	private static final boolean PAPER_EVENT_EXISTS = Skript.classExists("com.destroystokyo.paper.event.server.PaperServerListPingEvent");

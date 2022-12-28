@@ -33,7 +33,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprSpectatorTarget extends SimplePropertyExpression<Player, Entity> {
 
 	static {
-		register(ExprSpectatorTarget.class, Entity.class, "spectator target", "players");
+		register(ExprSpectatorTarget.class, ExprSpectatorTarget::new, Entity.class, "spectator target", "players");
 	}
 
 	@Override

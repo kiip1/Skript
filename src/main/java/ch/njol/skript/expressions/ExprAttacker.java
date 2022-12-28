@@ -56,7 +56,7 @@ import ch.njol.util.Kleenean;
 public class ExprAttacker extends SimpleExpression<Entity> {
 
 	static {
-		Skript.registerExpression(ExprAttacker.class, Entity.class, ExpressionType.SIMPLE, "[the] (attacker|damager)");
+		Skript.registerExpression(ExprAttacker.class, ExprAttacker::new, Entity.class, ExpressionType.SIMPLE, "[the] (attacker|damager)");
 	}
 	
 	@Override

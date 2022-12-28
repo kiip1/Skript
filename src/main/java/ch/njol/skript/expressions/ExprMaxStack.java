@@ -35,7 +35,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprMaxStack extends SimplePropertyExpression<ItemType, Long> {
 
 	static {
-		register(ExprMaxStack.class, Long.class, "max[imum] stack[[ ]size]", "itemtype");
+		register(ExprMaxStack.class, ExprMaxStack::new, Long.class, "max[imum] stack[[ ]size]", "itemtype");
 	}
 	
 	@SuppressWarnings("null")

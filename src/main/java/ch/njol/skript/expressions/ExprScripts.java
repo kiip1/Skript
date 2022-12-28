@@ -53,7 +53,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprScripts extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprScripts.class, String.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprScripts.class, ExprScripts::new, String.class, ExpressionType.SIMPLE,
 				"[all [of the]] scripts [(1:without ([subdirectory] paths|parents))]",
 				"[all [of the]] (enabled|loaded) scripts [(1:without ([subdirectory] paths|parents))]",
 				"[all [of the]] (disabled|unloaded) scripts [(1:without ([subdirectory] paths|parents))]");

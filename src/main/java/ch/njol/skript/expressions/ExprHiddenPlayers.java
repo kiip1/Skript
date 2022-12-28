@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprHiddenPlayers extends SimpleExpression<Player> {
 
 	static {
-		Skript.registerExpression(ExprHiddenPlayers.class, Player.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprHiddenPlayers.class, ExprHiddenPlayers::new, Player.class, ExpressionType.PROPERTY,
 				"[(all [[of] the]|the)] hidden players (of|for) %players%",
 				"[(all [[of] the]|the)] players hidden (from|for|by) %players%");
 	}

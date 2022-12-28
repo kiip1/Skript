@@ -45,7 +45,7 @@ public class ExprLanguage extends SimplePropertyExpression<Player, String> {
 	private static final MethodHandle getLocaleMethod;
 
 	static {
-		register(ExprLanguage.class, String.class, "[([currently] selected|current)] [game] (language|locale) [setting]", "players");
+		register(ExprLanguage.class, ExprLanguage::new, String.class, "[([currently] selected|current)] [game] (language|locale) [setting]", "players");
 		
 		MethodHandle handle;
 		try {

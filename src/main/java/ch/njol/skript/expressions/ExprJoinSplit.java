@@ -49,7 +49,7 @@ import ch.njol.util.StringUtils;
 public class ExprJoinSplit extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprJoinSplit.class, String.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprJoinSplit.class, ExprJoinSplit::new, String.class, ExpressionType.COMBINED,
 			"(concat[enate]|join) %strings% [(with|using|by) [[the] delimiter] %-string%]",
 			"split %string% (at|using|by) [[the] delimiter] %string% [case:with case sensitivity]",
 			"%string% split (at|using|by) [[the] delimiter] %string% [case:with case sensitivity]",

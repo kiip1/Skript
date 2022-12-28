@@ -38,7 +38,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprBookTitle extends SimplePropertyExpression<ItemType, String> {
 	
 	static {
-		register(ExprBookTitle.class, String.class, "book (name|title)", "itemtypes");
+		register(ExprBookTitle.class, ExprBookTitle::new, String.class, "book (name|title)", "itemtypes");
 	}
 	
 	@Nullable

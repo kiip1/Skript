@@ -53,7 +53,7 @@ import java.util.Arrays;
 public class ExprNearestEntity extends SimpleExpression<Entity> {
 
 	static {
-		Skript.registerExpression(ExprNearestEntity.class, Entity.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprNearestEntity.class, ExprNearestEntity::new, Entity.class, ExpressionType.COMBINED,
 				"[the] nearest %*entitydatas% [[relative] to %entity/location%]",
 				"[the] %*entitydatas% nearest [to %entity/location%]");
 	}

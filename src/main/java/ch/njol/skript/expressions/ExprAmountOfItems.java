@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprAmountOfItems extends SimpleExpression<Long> {
   
 	static {
-		Skript.registerExpression(ExprAmountOfItems.class, Long.class, ExpressionType.PROPERTY, "[the] (amount|number) of %itemtypes% (in|of) %inventories%");
+		Skript.registerExpression(ExprAmountOfItems.class, ExprAmountOfItems::new, Long.class, ExpressionType.PROPERTY, "[the] (amount|number) of %itemtypes% (in|of) %inventories%");
 	}
 	
 	@SuppressWarnings("NotNullFieldNotInitialized")

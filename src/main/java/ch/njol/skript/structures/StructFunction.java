@@ -57,7 +57,7 @@ public class StructFunction extends Structure {
 	private static final AtomicBoolean validateFunctions = new AtomicBoolean();
 
 	static {
-		Skript.registerStructure(StructFunction.class,
+		Skript.registerStructure(StructFunction.class, StructFunction::new,
 			"[:local] function <(" + Functions.functionNamePattern + ")\\((.*)\\)(?:\\s*::\\s*(.+))?>"
 		);
 	}

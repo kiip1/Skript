@@ -56,7 +56,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprIP extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprIP.class, String.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprIP.class, ExprIP::new, String.class, ExpressionType.PROPERTY,
 				"IP[s][( |-)address[es]] of %players%",
 				"%players%'[s] IP[s][( |-)address[es]]",
 				"IP[( |-)address]");

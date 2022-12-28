@@ -49,7 +49,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprHatchingNumber extends SimpleExpression<Byte> {
 
 	static {
-		Skript.registerExpression(ExprHatchingNumber.class, Byte.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprHatchingNumber.class, ExprHatchingNumber::new, Byte.class, ExpressionType.SIMPLE,
 				"[the] hatching number"
 		);
 	}

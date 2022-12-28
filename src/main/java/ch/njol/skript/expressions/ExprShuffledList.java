@@ -45,7 +45,7 @@ import java.util.List;
 public class ExprShuffledList extends SimpleExpression<Object> {
 
 	static{
-		Skript.registerExpression(ExprShuffledList.class, Object.class, ExpressionType.COMBINED, "shuffled %objects%");
+		Skript.registerExpression(ExprShuffledList.class, ExprShuffledList::new, Object.class, ExpressionType.COMBINED, "shuffled %objects%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

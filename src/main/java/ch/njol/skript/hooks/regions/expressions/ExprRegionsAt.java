@@ -54,7 +54,7 @@ import ch.njol.util.Kleenean;
 @Since("2.1")
 public class ExprRegionsAt extends SimpleExpression<Region> {
 	static {
-		Skript.registerExpression(ExprRegionsAt.class, Region.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprRegionsAt.class, ExprRegionsAt::new, Region.class, ExpressionType.PROPERTY,
 				"[the] region(1¦s|) %direction% %locations%");
 	}
 	

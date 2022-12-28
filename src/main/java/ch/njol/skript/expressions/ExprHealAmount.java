@@ -47,7 +47,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprHealAmount extends SimpleExpression<Number> {
 	
 	static {
-		Skript.registerExpression(ExprHealAmount.class, Number.class, ExpressionType.SIMPLE, "[the] heal amount");
+		Skript.registerExpression(ExprHealAmount.class, ExprHealAmount::new, Number.class, ExpressionType.SIMPLE, "[the] heal amount");
 	}
 	
 	@SuppressWarnings("null")

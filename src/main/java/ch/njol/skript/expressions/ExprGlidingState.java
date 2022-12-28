@@ -37,7 +37,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprGlidingState extends SimplePropertyExpression<LivingEntity, Boolean> {
 
 	static {
-		register(ExprGlidingState.class, Boolean.class, "(gliding|glider) [state]", "livingentities");
+		register(ExprGlidingState.class, ExprGlidingState::new, Boolean.class, "(gliding|glider) [state]", "livingentities");
 	}
 
 	@Override

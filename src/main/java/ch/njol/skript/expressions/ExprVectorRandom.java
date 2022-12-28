@@ -48,7 +48,7 @@ public class ExprVectorRandom extends SimpleExpression<Vector> {
 	private static final Random random = new Random();
 	
 	static {
-		Skript.registerExpression(ExprVectorRandom.class, Vector.class, ExpressionType.SIMPLE, "[a] random vector");
+		Skript.registerExpression(ExprVectorRandom.class, ExprVectorRandom::new, Vector.class, ExpressionType.SIMPLE, "[a] random vector");
 	}
 
 	@Override

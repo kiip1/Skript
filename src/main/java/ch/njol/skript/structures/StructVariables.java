@@ -63,7 +63,7 @@ public class StructVariables extends Structure {
 	public static final Priority PRIORITY = new Priority(300);
 
 	static {
-		Skript.registerStructure(StructVariables.class, "variables");
+		Skript.registerStructure(StructVariables.class, StructVariables::new, "variables");
 	}
 
 	private final List<NonNullPair<String, Object>> variables = new ArrayList<>();

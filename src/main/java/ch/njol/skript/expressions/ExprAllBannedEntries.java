@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprAllBannedEntries extends SimpleExpression<Object> {
 
 	static {
-		Skript.registerExpression(ExprAllBannedEntries.class, Object.class, ExpressionType.SIMPLE, "[all [[of] the]|the] banned (players|ips:(ips|ip addresses))");
+		Skript.registerExpression(ExprAllBannedEntries.class, ExprAllBannedEntries::new, Object.class, ExpressionType.SIMPLE, "[all [[of] the]|the] banned (players|ips:(ips|ip addresses))");
 	}
 
 	private boolean ip;

@@ -49,7 +49,7 @@ public class ExprUnbreakable extends PropertyExpression<ItemType, ItemType> {
 	private static final MethodHandle setUnbreakableMethod;
 	
 	static {
-		Skript.registerExpression(ExprUnbreakable.class, ItemType.class, ExpressionType.PROPERTY, "unbreakable %itemtypes%");
+		Skript.registerExpression(ExprUnbreakable.class, ExprUnbreakable::new, ItemType.class, ExpressionType.PROPERTY, "unbreakable %itemtypes%");
 		
 		MethodHandle handle;
 		try {

@@ -59,7 +59,7 @@ public class ExprAttacked extends SimpleExpression<Entity> {
 	private static final boolean SUPPORT_PROJECTILE_HIT = Skript.methodExists(ProjectileHitEvent.class, "getHitEntity");
 
 	static {
-		Skript.registerExpression(ExprAttacked.class, Entity.class, ExpressionType.SIMPLE, "[the] (attacked|damaged|victim) [<(.+)>]");
+		Skript.registerExpression(ExprAttacked.class, ExprAttacked::new, Entity.class, ExpressionType.SIMPLE, "[the] (attacked|damaged|victim) [<(.+)>]");
 	}
 
 	@SuppressWarnings({"null", "NotNullFieldNotInitialized"})

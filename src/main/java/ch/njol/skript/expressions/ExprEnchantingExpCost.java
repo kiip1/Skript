@@ -48,7 +48,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprEnchantingExpCost extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprEnchantingExpCost.class, Long.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprEnchantingExpCost.class, ExprEnchantingExpCost::new, Long.class, ExpressionType.SIMPLE,
 				"[the] [displayed] ([e]xp[erience]|enchanting) cost");
 	}
 

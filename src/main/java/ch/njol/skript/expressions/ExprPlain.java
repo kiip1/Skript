@@ -45,7 +45,7 @@ public class ExprPlain extends SimpleExpression<ItemType> {
 	private Expression<ItemType> item;
 	
 	static {
-		Skript.registerExpression(ExprPlain.class, ItemType.class, ExpressionType.COMBINED, "[a[n]] (plain|unmodified) %itemtype%");
+		Skript.registerExpression(ExprPlain.class, ExprPlain::new, ItemType.class, ExpressionType.COMBINED, "[a[n]] (plain|unmodified) %itemtype%");
 	}
 	
 	@SuppressWarnings("unchecked")

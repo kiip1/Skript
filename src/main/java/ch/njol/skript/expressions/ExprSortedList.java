@@ -45,7 +45,7 @@ import java.util.Arrays;
 public class ExprSortedList extends SimpleExpression<Object> {
 
 	static{
-		Skript.registerExpression(ExprSortedList.class, Object.class, ExpressionType.COMBINED, "sorted %objects%");
+		Skript.registerExpression(ExprSortedList.class, ExprSortedList::new, Object.class, ExpressionType.COMBINED, "sorted %objects%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

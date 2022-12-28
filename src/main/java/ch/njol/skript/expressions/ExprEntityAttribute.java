@@ -52,7 +52,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprEntityAttribute extends PropertyExpression<Entity, Number> {
 	
 	static {
-		Skript.registerExpression(ExprEntityAttribute.class, Number.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprEntityAttribute.class, ExprEntityAttribute::new, Number.class, ExpressionType.COMBINED,
 				"[the] %attributetype% [(1¦(total|final|modified))] attribute [value] of %entities%",
 				"%entities%'[s] %attributetype% [(1¦(total|final|modified))] attribute [value]");
 	}

@@ -36,7 +36,7 @@ import ch.njol.util.Kleenean;
 @NoDoc
 public class LitAt extends SimpleLiteral<Direction> {
 	static {
-		Skript.registerExpression(LitAt.class, Direction.class, ExpressionType.SIMPLE, "at");
+		Skript.registerExpression(LitAt.class, LitAt::new, Direction.class, ExpressionType.SIMPLE, "at");
 	}
 	
 	public LitAt() {

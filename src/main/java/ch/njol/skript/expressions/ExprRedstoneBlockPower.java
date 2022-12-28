@@ -33,7 +33,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprRedstoneBlockPower extends SimplePropertyExpression<Block, Long> {
 	
 	static {
-		register(ExprRedstoneBlockPower.class, Long.class, "redstone power", "blocks");
+		register(ExprRedstoneBlockPower.class, ExprRedstoneBlockPower::new, Long.class, "redstone power", "blocks");
 	}
 	
 	@Override

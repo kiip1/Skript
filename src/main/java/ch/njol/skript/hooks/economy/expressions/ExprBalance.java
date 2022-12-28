@@ -44,7 +44,7 @@ import ch.njol.skript.hooks.economy.classes.Money;
 public class ExprBalance extends SimplePropertyExpression<OfflinePlayer, Money> {
 
 	static {
-		register(ExprBalance.class, Money.class, "(money|balance|[bank] account)", "offlineplayers");
+		register(ExprBalance.class, ExprBalance::new, Money.class, "(money|balance|[bank] account)", "offlineplayers");
 	}
 	
 	@Override

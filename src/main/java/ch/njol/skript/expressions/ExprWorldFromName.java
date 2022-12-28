@@ -41,7 +41,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprWorldFromName extends SimpleExpression<World> {
 
 	static {
-		Skript.registerExpression(ExprWorldFromName.class, World.class, ExpressionType.SIMPLE, "[the] world [(named|with name)] %string%");
+		Skript.registerExpression(ExprWorldFromName.class, ExprWorldFromName::new, World.class, ExpressionType.SIMPLE, "[the] world [(named|with name)] %string%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

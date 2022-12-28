@@ -41,7 +41,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprLastDamage extends SimplePropertyExpression<LivingEntity, Number> {
 	
 	static {
-		register(ExprLastDamage.class, Number.class, "last damage", "livingentities");
+		register(ExprLastDamage.class, ExprLastDamage::new, Number.class, "last damage", "livingentities");
 	}
 	
 	@Nullable

@@ -48,7 +48,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprExplosionYield extends SimpleExpression<Number> {
 
 	static {
-		Skript.registerExpression(ExprExplosionYield.class, Number.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprExplosionYield.class, ExprExplosionYield::new, Number.class, ExpressionType.SIMPLE,
 			"[the] explosion (yield|radius|size)",
 			"[the] (yield|radius|size) of [the] explosion"
 		);

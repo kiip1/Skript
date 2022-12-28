@@ -48,7 +48,7 @@ import ch.njol.util.Kleenean;
 public class ExprAbsorbedBlocks extends SimpleExpression<BlockStateBlock> {
 	
 	static {
-		Skript.registerExpression(ExprAbsorbedBlocks.class, BlockStateBlock.class, ExpressionType.SIMPLE, "[the] absorbed blocks");
+		Skript.registerExpression(ExprAbsorbedBlocks.class, ExprAbsorbedBlocks::new, BlockStateBlock.class, ExpressionType.SIMPLE, "[the] absorbed blocks");
 	}
 	
 	@Override

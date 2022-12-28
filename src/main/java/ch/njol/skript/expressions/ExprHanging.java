@@ -47,7 +47,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprHanging extends SimpleExpression<Entity> {
 	
 	static {
-		Skript.registerExpression(ExprHanging.class, Entity.class, ExpressionType.SIMPLE, "[the] hanging (entity|:remover)");
+		Skript.registerExpression(ExprHanging.class, ExprHanging::new, Entity.class, ExpressionType.SIMPLE, "[the] hanging (entity|:remover)");
 	}
 
 	private boolean isRemover;

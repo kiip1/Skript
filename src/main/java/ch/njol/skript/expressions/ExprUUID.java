@@ -51,7 +51,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprUUID extends SimplePropertyExpression<Object, String> {
 
 	static {
-		register(ExprUUID.class, String.class, "UUID", "offlineplayers/worlds/entities");
+		register(ExprUUID.class, ExprUUID::new, String.class, "UUID", "offlineplayers/worlds/entities");
 	}
 
 	@Override

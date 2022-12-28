@@ -57,7 +57,7 @@ import ch.njol.util.coll.iterator.SingleItemIterator;
 public class ExprIdOf extends PropertyExpression<ItemType, Long> {
 	
 	static {
-		Skript.registerExpression(ExprIdOf.class, Long.class, ExpressionType.PROPERTY, "[the] id(1¦s|) of %itemtype%", "%itemtype%'[s] id(1¦s|)");
+		Skript.registerExpression(ExprIdOf.class, ExprIdOf::new, Long.class, ExpressionType.PROPERTY, "[the] id(1¦s|) of %itemtype%", "%itemtype%'[s] id(1¦s|)");
 	}
 	
 	@Nullable

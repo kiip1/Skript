@@ -53,7 +53,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprVectorXYZ extends SimplePropertyExpression<Vector, Number> {
 	
 	static {
-		register(ExprVectorXYZ.class, Number.class, "[vector] (0¦x|1¦y|2¦z) [component[s]]", "vectors");
+		register(ExprVectorXYZ.class, ExprVectorXYZ::new, Number.class, "[vector] (0¦x|1¦y|2¦z) [component[s]]", "vectors");
 	}
 	
 	private final static Character[] axes = new Character[] {'x', 'y', 'z'};

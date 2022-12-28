@@ -39,7 +39,7 @@ public class ExprLastResourcePackResponse extends SimplePropertyExpression<Playe
 
 	static {
 		if (Skript.methodExists(Player.class, "getResourcePackStatus"))
-			register(ExprLastResourcePackResponse.class, Status.class, "[last] resource pack response[s]", "players");
+			register(ExprLastResourcePackResponse.class, ExprLastResourcePackResponse::new, Status.class, "[last] resource pack response[s]", "players");
 	}
 
 	@Override

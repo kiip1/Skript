@@ -55,7 +55,7 @@ public class ExprFormatDate extends PropertyExpression<Date, String> {
 	private static final SimpleDateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 	
 	static {
-		Skript.registerExpression(ExprFormatDate.class, String.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprFormatDate.class, ExprFormatDate::new, String.class, ExpressionType.PROPERTY,
 			"%dates% formatted [human-readable] [(with|as) %-string%]",
 			"[human-readable] formatted %dates% [(with|as) %-string%]");
 	}

@@ -44,7 +44,7 @@ import ch.njol.skript.lang.ExpressionType;
 @Events("command")
 public class ExprCommandSender extends EventValueExpression<CommandSender> {
 	static {
-		Skript.registerExpression(ExprCommandSender.class, CommandSender.class, ExpressionType.SIMPLE, "[the] [command['s]] (sender|executor)");
+		Skript.registerExpression(ExprCommandSender.class, ExprCommandSender::new, CommandSender.class, ExpressionType.SIMPLE, "[the] [command['s]] (sender|executor)");
 	}
 	
 	public ExprCommandSender() {

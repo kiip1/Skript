@@ -64,7 +64,7 @@ import ch.njol.util.StringUtils;
 public class ExprArgument extends SimpleExpression<Object> {
 
 	static {
-		Skript.registerExpression(ExprArgument.class, Object.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprArgument.class, ExprArgument::new, Object.class, ExpressionType.SIMPLE,
 				"[the] last arg[ument]", // LAST
 				"[the] arg[ument](-| )<(\\d+)>", // ORDINAL
 				"[the] <(\\d*1)st|(\\d*2)nd|(\\d*3)rd|(\\d*[4-90])th> arg[ument][s]", // ORDINAL

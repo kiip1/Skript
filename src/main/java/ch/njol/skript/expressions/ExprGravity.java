@@ -37,7 +37,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprGravity extends SimplePropertyExpression<Entity, Boolean> {
 	
 	static {
-		register(ExprGravity.class, Boolean.class, "gravity", "entities");
+		register(ExprGravity.class, ExprGravity::new, Boolean.class, "gravity", "entities");
 	}
 	
 	@Override

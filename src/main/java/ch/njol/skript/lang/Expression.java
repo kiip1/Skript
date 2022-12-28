@@ -37,6 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Spliterators;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -44,7 +45,7 @@ import java.util.stream.StreamSupport;
  * Represents an expression. Expressions are used within conditions, effects and other expressions.
  * 
  * @author Peter Güttinger
- * @see Skript#registerExpression(Class, Class, ExpressionType, String...)
+ * @see Skript#registerExpression(Class, Supplier, Class, ExpressionType, String...)
  * @see SimpleExpression
  * @see SyntaxElement
  */

@@ -46,7 +46,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprMaxHealth extends SimplePropertyExpression<LivingEntity, Number> {
 	
 	static {
-		register(ExprMaxHealth.class, Number.class, "max[imum] health", "livingentities");
+		register(ExprMaxHealth.class, ExprMaxHealth::new, Number.class, "max[imum] health", "livingentities");
 	}
 	
 	@Override

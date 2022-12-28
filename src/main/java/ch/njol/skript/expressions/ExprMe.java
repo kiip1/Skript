@@ -42,7 +42,7 @@ import ch.njol.util.Kleenean;
 public class ExprMe extends SimpleExpression<Player> {
 
 	static {
-		Skript.registerExpression(ExprMe.class, Player.class, ExpressionType.SIMPLE, "me", "my[self]");
+		Skript.registerExpression(ExprMe.class, ExprMe::new, Player.class, ExpressionType.SIMPLE, "me", "my[self]");
 	}
 
 	@Override

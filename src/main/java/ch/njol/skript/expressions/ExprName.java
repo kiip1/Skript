@@ -107,9 +107,9 @@ public class ExprName extends SimplePropertyExpression<Object, String> {
 
 	static {
 		HAS_GAMERULES = Skript.classExists("org.bukkit.GameRule");
-		register(ExprName.class, String.class, "(1¦name[s]|2¦(display|nick|chat|custom)[ ]name[s])", "offlineplayers/entities/blocks/itemtypes/inventories/slots"
+		register(ExprName.class, ExprName::new, String.class, "(1¦name[s]|2¦(display|nick|chat|custom)[ ]name[s])", "offlineplayers/entities/blocks/itemtypes/inventories/slots"
                 + (HAS_GAMERULES ? "/gamerules" : ""));
-		register(ExprName.class, String.class, "(3¦(player|tab)[ ]list name[s])", "players");
+		register(ExprName.class, ExprName::new, String.class, "(3¦(player|tab)[ ]list name[s])", "players");
 
 		// Get the old method for getting the name of an inventory.
 		MethodHandle _METHOD = null;

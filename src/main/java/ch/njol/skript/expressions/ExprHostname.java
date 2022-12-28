@@ -43,7 +43,7 @@ import ch.njol.util.Kleenean;
 public class ExprHostname extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprHostname.class, String.class, ExpressionType.SIMPLE, "[the] (host|domain)[ ][name]");
+		Skript.registerExpression(ExprHostname.class, ExprHostname::new, String.class, ExpressionType.SIMPLE, "[the] (host|domain)[ ][name]");
 	}
 
 	@Override

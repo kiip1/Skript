@@ -20,6 +20,7 @@ package ch.njol.skript.lang.util;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -42,7 +43,7 @@ import ch.njol.util.coll.iterator.ArrayIterator;
 /**
  * An implementation of the {@link Expression} interface. You should usually extend this class to make a new expression.
  * 
- * @see Skript#registerExpression(Class, Class, ExpressionType, String...)
+ * @see Skript#registerExpression(Class, Supplier, Class, ExpressionType, String...)
  * @author Peter Güttinger
  */
 public abstract class SimpleExpression<T> implements Expression<T> {

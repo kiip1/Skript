@@ -49,7 +49,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprFacing extends SimplePropertyExpression<Object, Direction> {
 
 	static {
-		register(ExprFacing.class, Direction.class, "(1¦horizontal|) facing", "livingentities/blocks");
+		register(ExprFacing.class, ExprFacing::new, Direction.class, "(1¦horizontal|) facing", "livingentities/blocks");
 	}
 	
 	private boolean horizontal;

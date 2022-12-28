@@ -52,7 +52,7 @@ public class ExprDropsOfBlock extends SimpleExpression<ItemType> {
 	private final static boolean DROPS_OF_ENTITY_EXISTS = Skript.methodExists(Block.class, "getDrops", ItemStack.class, Entity.class);
 
 	static {
-		Skript.registerExpression(ExprDropsOfBlock.class, ItemType.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprDropsOfBlock.class, ExprDropsOfBlock::new, ItemType.class, ExpressionType.COMBINED,
 			"[(all|the|all [of] the)] drops of %blocks% [(using|with) %-itemtype% [(1¦as %-entity%)]]",
 			"%blocks%'s drops [(using|with) %-itemtype% [(1¦as %-entity%)]]");
 	}

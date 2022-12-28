@@ -51,7 +51,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprOnlinePlayersCount extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprOnlinePlayersCount.class, Long.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprOnlinePlayersCount.class, ExprOnlinePlayersCount::new, Long.class, ExpressionType.PROPERTY,
 				"[the] [(1¦(real|default)|2¦(fake|shown|displayed))] [online] player (count|amount|number)",
 				"[the] [(1¦(real|default)|2¦(fake|shown|displayed))] (count|amount|number|size) of online players");
 	}

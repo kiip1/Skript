@@ -38,7 +38,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprAltitude extends SimplePropertyExpression<Location, Number> {
 	
 	static {
-		register(ExprAltitude.class, Number.class, "altitude[s]", "locations");
+		register(ExprAltitude.class, ExprAltitude::new, Number.class, "altitude[s]", "locations");
 	}
 
 	@Override

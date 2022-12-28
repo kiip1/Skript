@@ -53,7 +53,7 @@ import ch.njol.util.coll.CollectionUtils;
 @Events("weather change")
 public class ExprWeather extends PropertyExpression<World, WeatherType> {
 	static {
-		Skript.registerExpression(ExprWeather.class, WeatherType.class, ExpressionType.PROPERTY, "[the] weather [(in|of) %worlds%]", "%worlds%'[s] weather");
+		Skript.registerExpression(ExprWeather.class, ExprWeather::new, WeatherType.class, ExpressionType.PROPERTY, "[the] weather [(in|of) %worlds%]", "%worlds%'[s] weather");
 	}
 
 	@SuppressWarnings({"unchecked", "null"})

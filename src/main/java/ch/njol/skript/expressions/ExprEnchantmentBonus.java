@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class ExprEnchantmentBonus extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprEnchantmentBonus.class, Long.class, ExpressionType.SIMPLE, "[the] enchantment bonus");
+		Skript.registerExpression(ExprEnchantmentBonus.class, ExprEnchantmentBonus::new, Long.class, ExpressionType.SIMPLE, "[the] enchantment bonus");
 	}
 
 	@Override

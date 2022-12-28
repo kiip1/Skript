@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class ExprAlphabetList extends SimpleExpression<String>{
 	
 	static{
-		Skript.registerExpression(ExprAlphabetList.class, String.class, ExpressionType.COMBINED, "alphabetically sorted %strings%");
+		Skript.registerExpression(ExprAlphabetList.class, ExprAlphabetList::new, String.class, ExpressionType.COMBINED, "alphabetically sorted %strings%");
 	}
 	
 	@SuppressWarnings("null")

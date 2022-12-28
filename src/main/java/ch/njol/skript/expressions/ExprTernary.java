@@ -46,7 +46,7 @@ import java.lang.reflect.Array;
 public class ExprTernary<T> extends SimpleExpression<T> {
 
 	static {
-		Skript.registerExpression(ExprTernary.class, Object.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprTernary.class, ExprTernary::new, Object.class, ExpressionType.COMBINED,
 				"%objects% if <.+>[,] (otherwise|else) %objects%");
 	}
 

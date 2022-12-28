@@ -44,7 +44,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprExplosiveYield extends SimplePropertyExpression<Entity, Number> {
 
 	static {
-		register(ExprExplosiveYield.class, Number.class, "explosive (yield|radius|size)", "entities");
+		register(ExprExplosiveYield.class, ExprExplosiveYield::new, Number.class, "explosive (yield|radius|size)", "entities");
 	}
 
 	private final static boolean CREEPER_USABLE = Skript.methodExists(Creeper.class, "getExplosionRadius");

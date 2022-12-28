@@ -49,7 +49,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprWhitelist extends SimpleExpression<OfflinePlayer> {
 	
 	static {
-		Skript.registerExpression(ExprWhitelist.class, OfflinePlayer.class, ExpressionType.SIMPLE, "[the] white[ ]list");
+		Skript.registerExpression(ExprWhitelist.class, ExprWhitelist::new, OfflinePlayer.class, ExpressionType.SIMPLE, "[the] white[ ]list");
 	}
 	
 	@Override

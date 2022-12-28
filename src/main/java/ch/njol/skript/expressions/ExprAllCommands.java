@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class ExprAllCommands extends SimpleExpression<String> {
 	
 	static {
-		Skript.registerExpression(ExprAllCommands.class, String.class, ExpressionType.SIMPLE, "[(all|the|all [of] the)] [registered] [(1¦script)] commands");
+		Skript.registerExpression(ExprAllCommands.class, ExprAllCommands::new, String.class, ExpressionType.SIMPLE, "[(all|the|all [of] the)] [registered] [(1¦script)] commands");
 	}
 	
 	private boolean scriptCommandsOnly;

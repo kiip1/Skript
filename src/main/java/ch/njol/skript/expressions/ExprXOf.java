@@ -43,7 +43,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprXOf extends PropertyExpression<Object, Object> {
 
 	static {
-		Skript.registerExpression(ExprXOf.class, Object.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, "%number% of %itemstacks/itemtypes/entitytype%");
+		Skript.registerExpression(ExprXOf.class, ExprXOf::new, Object.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, "%number% of %itemstacks/itemtypes/entitytype%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

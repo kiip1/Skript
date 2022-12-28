@@ -96,7 +96,7 @@ public class ExprArithmetic extends SimpleExpression<Number> {
 	});
 	
 	static {
-		Skript.registerExpression(ExprArithmetic.class, Number.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, patterns.getPatterns());
+		Skript.registerExpression(ExprArithmetic.class, ExprArithmetic::new, Number.class, ExpressionType.PATTERN_MATCHES_EVERYTHING, patterns.getPatterns());
 	}
 	
 	@SuppressWarnings("null")

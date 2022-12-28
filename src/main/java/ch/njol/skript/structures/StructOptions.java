@@ -66,7 +66,7 @@ public class StructOptions extends Structure {
 	public static final Priority PRIORITY = new Priority(100);
 
 	static {
-		Skript.registerStructure(StructOptions.class, "options");
+		Skript.registerStructure(StructOptions.class, StructOptions::new, "options");
 	}
 
 	@Override

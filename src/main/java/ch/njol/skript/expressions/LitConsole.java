@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class LitConsole extends SimpleLiteral<ConsoleCommandSender> {
 
 	static {
-		Skript.registerExpression(LitConsole.class, ConsoleCommandSender.class, ExpressionType.SIMPLE, "[the] (console|server)");
+		Skript.registerExpression(LitConsole.class, LitConsole::new, ConsoleCommandSender.class, ExpressionType.SIMPLE, "[the] (console|server)");
 	}
 
 	private static final ConsoleCommandSender console = Bukkit.getConsoleSender();

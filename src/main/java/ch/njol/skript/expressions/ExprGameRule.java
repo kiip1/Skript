@@ -47,7 +47,7 @@ public class ExprGameRule extends SimpleExpression<GameruleValue> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.GameRule")) {
-			Skript.registerExpression(ExprGameRule.class, GameruleValue.class, ExpressionType.COMBINED,
+			Skript.registerExpression(ExprGameRule.class, ExprGameRule::new, GameruleValue.class, ExpressionType.COMBINED,
 				"[the] gamerule %gamerule% of %worlds%");
 		}
 	}

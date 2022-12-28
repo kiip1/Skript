@@ -57,7 +57,7 @@ import ch.njol.util.coll.iterator.IteratorIterable;
 public class ExprDrops extends SimpleExpression<ItemType> {
 
 	static {
-		Skript.registerExpression(ExprDrops.class, ItemType.class, ExpressionType.SIMPLE, "[the] drops");
+		Skript.registerExpression(ExprDrops.class, ExprDrops::new, ItemType.class, ExpressionType.SIMPLE, "[the] drops");
 	}
 
 	@Override

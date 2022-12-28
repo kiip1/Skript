@@ -38,7 +38,7 @@ import ch.njol.skript.util.Timespan;
 public class ExprTimeSince extends SimplePropertyExpression<Date, Timespan> {
 
 	static {
-		Skript.registerExpression(ExprTimeSince.class, Timespan.class, ExpressionType.PROPERTY, "[the] time since %dates%");
+		Skript.registerExpression(ExprTimeSince.class, ExprTimeSince::new, Timespan.class, ExpressionType.PROPERTY, "[the] time since %dates%");
 	}
 
 	@Override

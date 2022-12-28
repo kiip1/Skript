@@ -39,7 +39,7 @@ public class ExprBlockHardness extends SimplePropertyExpression<ItemType, Number
 
 	static {
 		if (Skript.methodExists(Material.class, "getHardness"))
-			register(ExprBlockHardness.class, Number.class, "[block] hardness", "itemtypes");
+			register(ExprBlockHardness.class, ExprBlockHardness::new, Number.class, "[block] hardness", "itemtypes");
 	}
 
 	@Nullable

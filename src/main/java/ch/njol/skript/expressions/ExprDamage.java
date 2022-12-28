@@ -50,7 +50,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprDamage extends SimpleExpression<Number> {
 	
 	static {
-		Skript.registerExpression(ExprDamage.class, Number.class, ExpressionType.SIMPLE, "[the] damage");
+		Skript.registerExpression(ExprDamage.class, ExprDamage::new, Number.class, ExpressionType.SIMPLE, "[the] damage");
 	}
 	
 	@SuppressWarnings("null")

@@ -36,7 +36,7 @@ import ch.njol.skript.util.slot.Slot;
 public class ExprMaxDurability extends SimplePropertyExpression<Object, Long> {
 
 	static {
-		register(ExprMaxDurability.class, Long.class, "max[imum] durabilit(y|ies)", "itemstacks/slots");
+		register(ExprMaxDurability.class, ExprMaxDurability::new, Long.class, "max[imum] durabilit(y|ies)", "itemstacks/slots");
 	}
 	
 	@Override

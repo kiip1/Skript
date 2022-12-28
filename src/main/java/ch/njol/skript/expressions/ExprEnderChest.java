@@ -37,7 +37,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 @Since("2.0")
 public class ExprEnderChest extends SimplePropertyExpression<Player, Inventory> {
 	static {
-		register(ExprEnderChest.class, Inventory.class, "ender[ ]chest[s]", "players");
+		register(ExprEnderChest.class, ExprEnderChest::new, Inventory.class, "ender[ ]chest[s]", "players");
 	}
 	
 	@Override

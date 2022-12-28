@@ -58,7 +58,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprScoreboardTags extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprScoreboardTags.class, String.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprScoreboardTags.class, ExprScoreboardTags::new, String.class, ExpressionType.PROPERTY,
 			"[(all [[of] the]|the)] scoreboard tags of %entities%",
 			"%entities%'[s] scoreboard tags");
 	}

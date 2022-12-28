@@ -29,6 +29,9 @@ import ch.njol.skript.lang.SyntaxElement;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.registrations.Converters;
 import ch.njol.util.Kleenean;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.function.Supplier;
 
 /**
  * Represents an expression which represents a property of another one. Remember to set the expression with {@link #setExpr(Expression)} in
@@ -42,14 +45,29 @@ public abstract class PropertyExpression<F, T> extends SimpleExpression<T> {
 	
 	/**
 	 * Registers an expression as {@link ExpressionType#PROPERTY} with the two default property patterns "property of %types%" and "%types%'[s] property"
-	 * 
-	 * @param c
-	 * @param type
+	 *
+	 * @param property The name of the property
+	 * @param fromType Should be plural but doesn't have to be
+	 * @deprecated Use {@link #register(Class, Supplier, Class, String, String)}
+	 */
+	@Deprecated
+	public static <T> void register(Class<? extends Expression<T>> clazz, Class<T> type, String property, String fromType) {
+		Skript.registerExpression(clazz, type, ExpressionType.PROPERTY,
+			"[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
+	}
+	
+	/**
+	 * Registers an expression as {@link ExpressionType#PROPERTY} with the two default property patterns "property of %types%" and "%types%'[s] property"
+	 *
+	 * @param supplier The supplier for the property
 	 * @param property The name of the property
 	 * @param fromType Should be plural but doesn't have to be
 	 */
-	public static <T> void register(final Class<? extends Expression<T>> c, final Class<T> type, final String property, final String fromType) {
-		Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
+	public static <E extends Expression<T>, T> void register(Class<E> clazz, @Nullable Supplier<E> supplier,
+	                                Class<T> type, String property, String fromType) {
+		
+		Skript.registerExpression(clazz, supplier, type, ExpressionType.PROPERTY,
+			"[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
 	}
 	
 	@SuppressWarnings("null")

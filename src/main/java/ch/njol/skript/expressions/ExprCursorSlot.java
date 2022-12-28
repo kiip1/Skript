@@ -41,7 +41,7 @@ import ch.njol.skript.util.slot.Slot;
 public class ExprCursorSlot extends SimplePropertyExpression<Player, Slot> {
 	
 	static {
-		register(ExprCursorSlot.class, Slot.class, "cursor slot", "players");
+		register(ExprCursorSlot.class, ExprCursorSlot::new, Slot.class, "cursor slot", "players");
 	}
 
 	@Override

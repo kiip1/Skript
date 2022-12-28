@@ -35,7 +35,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 public class ExprLeashHolder extends SimplePropertyExpression<LivingEntity, Entity> {
 
 	static {
-		register(ExprLeashHolder.class, Entity.class, "leash holder[s]", "livingentities");
+		register(ExprLeashHolder.class, ExprLeashHolder::new, Entity.class, "leash holder[s]", "livingentities");
 	}
 
 	@Override

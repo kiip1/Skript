@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class ExprHealReason extends SimpleExpression<RegainReason> {
 	
 	static {
-		Skript.registerExpression(ExprHealReason.class, RegainReason.class, ExpressionType.SIMPLE, "(regen|health regain|heal) (reason|cause)");
+		Skript.registerExpression(ExprHealReason.class, ExprHealReason::new, RegainReason.class, ExpressionType.SIMPLE, "(regen|health regain|heal) (reason|cause)");
 	}
 	
 	@Override

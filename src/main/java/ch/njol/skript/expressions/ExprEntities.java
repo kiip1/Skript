@@ -61,7 +61,7 @@ import java.util.List;
 public class ExprEntities extends SimpleExpression<Entity> {
 
 	static {
-		Skript.registerExpression(ExprEntities.class, Entity.class, ExpressionType.PATTERN_MATCHES_EVERYTHING,
+		Skript.registerExpression(ExprEntities.class, ExprEntities::new, Entity.class, ExpressionType.PATTERN_MATCHES_EVERYTHING,
 				"[(all [[of] the]|the)] %*entitydatas% [(in|of) ([world[s]] %-worlds%|1¦%-chunks%)]",
 				"[(all [[of] the]|the)] entities of type[s] %entitydatas% [(in|of) ([world[s]] %-worlds%|1¦%-chunks%)]",
 				"[(all [[of] the]|the)] %*entitydatas% (within|[with]in radius) %number% [(block[s]|met(er|re)[s])] (of|around) %location%",

@@ -56,7 +56,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprPotionEffects extends SimpleExpression<PotionEffect> {
 	
 	static {
-		PropertyExpression.register(ExprPotionEffects.class, PotionEffect.class,
+		PropertyExpression.register(ExprPotionEffects.class, ExprPotionEffects::new, PotionEffect.class,
 			"[(all [[of] the]|the)] [active] potion effects", "livingentities/itemtypes");
 	}
 	

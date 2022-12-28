@@ -42,7 +42,7 @@ public class ExprFreezeTicks extends SimplePropertyExpression<Entity, Timespan> 
 
 	static {
 		if (Skript.methodExists(Entity.class, "getFreezeTicks"))
-			register(ExprFreezeTicks.class, Timespan.class, "freeze time", "entities");
+			register(ExprFreezeTicks.class, ExprFreezeTicks::new, Timespan.class, "freeze time", "entities");
 	}
 
 	@Override

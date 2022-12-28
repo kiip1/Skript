@@ -66,7 +66,7 @@ public class ExprCommandInfo extends SimpleExpression<String> {
 	}
 
 	static {
-		Skript.registerExpression(ExprCommandInfo.class, String.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprCommandInfo.class, ExprCommandInfo::new, String.class, ExpressionType.SIMPLE,
 			"[the] main command [label] of command %strings%", "command %strings%'[s] main command [name]",
 			"[the] description of command %strings%", "command %strings%'[s] description",
 			"[the] label of command %strings%", "command %strings%'[s] label",

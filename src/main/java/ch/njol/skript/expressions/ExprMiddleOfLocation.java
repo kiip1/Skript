@@ -38,7 +38,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprMiddleOfLocation extends SimplePropertyExpression<Location, Location> {
 	
 	static {
-		register(ExprMiddleOfLocation.class, Location.class, "(middle|center) [point]", "location");
+		register(ExprMiddleOfLocation.class, ExprMiddleOfLocation::new, Location.class, "(middle|center) [point]", "location");
 	}
 	
 	@Override

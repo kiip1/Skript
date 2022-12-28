@@ -44,7 +44,7 @@ public class ExprBlockData extends SimplePropertyExpression<Block, BlockData> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.block.data.BlockData"))
-			register(ExprBlockData.class, BlockData.class, "block[ ]data", "blocks");
+			register(ExprBlockData.class, ExprBlockData::new, BlockData.class, "block[ ]data", "blocks");
 	}
 	
 	@Nullable

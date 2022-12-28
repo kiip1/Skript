@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 @Since("2.0")
 public class ExprPrefixSuffix extends SimplePropertyExpression<Player, String> {
 	static {
-		register(ExprPrefixSuffix.class, String.class, "[chat] (1¦prefix|2¦suffix)", "players");
+		register(ExprPrefixSuffix.class, ExprPrefixSuffix::new, String.class, "[chat] (1¦prefix|2¦suffix)", "players");
 	}
 	
 	private boolean prefix;

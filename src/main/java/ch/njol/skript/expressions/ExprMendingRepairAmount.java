@@ -46,7 +46,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprMendingRepairAmount extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprMendingRepairAmount.class, Long.class, ExpressionType.SIMPLE, "[the] [mending] repair amount");
+		Skript.registerExpression(ExprMendingRepairAmount.class, ExprMendingRepairAmount::new, Long.class, ExpressionType.SIMPLE, "[the] [mending] repair amount");
 	}
 
 	@Override

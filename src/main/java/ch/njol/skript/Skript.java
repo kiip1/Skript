@@ -137,6 +137,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Filter;
@@ -166,10 +167,10 @@ import java.util.zip.ZipFile;
  * 
  * @author Peter Güttinger
  * @see #registerAddon(JavaPlugin)
- * @see #registerCondition(Class, String...)
- * @see #registerEffect(Class, String...)
- * @see #registerExpression(Class, Class, ExpressionType, String...)
- * @see #registerEvent(String, Class, Class, String...)
+ * @see #registerCondition(Class, Supplier, String...)
+ * @see #registerEffect(Class, Supplier, String...)
+ * @see #registerExpression(Class, Supplier, Class, ExpressionType, String...)
+ * @see #registerEvent(String, Class, Supplier, Class, String...)
  * @see EventValues#registerEventValue(Class, Class, Getter, int)
  * @see Classes#registerClass(ClassInfo)
  * @see Comparators#registerComparator(Class, Class, Comparator)
@@ -1284,11 +1285,28 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param condition The condition's class
 	 * @param patterns Skript patterns to match this condition
+	 * @deprecated Use {@link #registerCondition(Class, Supplier, String...)}
 	 */
-	public static <E extends Condition> void registerCondition(final Class<E> condition, final String... patterns) throws IllegalArgumentException {
+	@Deprecated
+	public static <E extends Condition> void registerCondition(Class<E> condition, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-		final SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, condition, originClassPath);
+		SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, condition, originClassPath);
+		conditions.add(info);
+		statements.add(info);
+	}
+	
+	/**
+	 * registers a {@link Condition}.
+	 *
+	 * @param condition The condition's class
+	 * @param supplier Supplier for the condition
+	 * @param patterns Skript patterns to match this condition
+	 */
+	public static <E extends Condition> void registerCondition(Class<E> condition, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+		checkAcceptRegistrations();
+		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
+		SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, condition, supplier, originClassPath);
 		conditions.add(info);
 		statements.add(info);
 	}
@@ -1298,11 +1316,28 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param effect The effect's class
 	 * @param patterns Skript patterns to match this effect
+	 * @deprecated Use {@link #registerEffect(Class, Supplier, String...)}
 	 */
-	public static <E extends Effect> void registerEffect(final Class<E> effect, final String... patterns) throws IllegalArgumentException {
+	@Deprecated
+	public static <E extends Effect> void registerEffect(Class<E> effect, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
 		final SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, effect, originClassPath);
+		effects.add(info);
+		statements.add(info);
+	}
+	
+	/**
+	 * Registers an {@link Effect}.
+	 *
+	 * @param effect The effect's class
+	 * @param supplier Supplier for the effect
+	 * @param patterns Skript patterns to match this effect
+	 */
+	public static <E extends Effect> void registerEffect(Class<E> effect, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+		checkAcceptRegistrations();
+		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
+		final SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, effect, supplier, originClassPath);
 		effects.add(info);
 		statements.add(info);
 	}
@@ -1312,13 +1347,28 @@ public final class Skript extends JavaPlugin implements Listener {
 	 *
 	 * @param section The section's class
 	 * @param patterns Skript patterns to match this section
+	 * @deprecated Use {@link #registerSection(Class, Supplier, String...)}
 	 * @see Section
 	 */
+	@Deprecated
 	public static <E extends Section> void registerSection(Class<E> section, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-		SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, section, originClassPath);
-		sections.add(info);
+		sections.add(new SyntaxElementInfo<>(patterns, section, originClassPath));
+	}
+	
+	/**
+	 * Registers a {@link Section}.
+	 *
+	 * @param section The section's class
+	 * @param supplier Supplier for the section
+	 * @param patterns Skript patterns to match this section
+	 * @see Section
+	 */
+	public static <E extends Section> void registerSection(Class<E> section, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+		checkAcceptRegistrations();
+		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
+		sections.add(new SyntaxElementInfo<>(patterns, section, supplier, originClassPath));
 	}
 
 	public static Collection<SyntaxElementInfo<? extends Statement>> getStatements() {
@@ -1346,18 +1396,48 @@ public final class Skript extends JavaPlugin implements Listener {
 	/**
 	 * Registers an expression.
 	 * 
-	 * @param c The expression's class
+	 * @param clazz The expression's class
+	 * @param returnType The superclass of all values returned by the expression
+	 * @param type The expression's {@link ExpressionType type}. This is used to determine in which order to try to parse expressions.
+	 * @param patterns Skript patterns that match this expression
+	 * @throws IllegalArgumentException if returnType is not a normal class
+	 * @deprecated Use {@link #registerExpression(Class, Supplier, Class, ExpressionType, String...)}
+	 */
+	@Deprecated
+	public static <E extends Expression<T>, T> void registerExpression(Class<E> clazz, Class<T> returnType,
+	                                                                   ExpressionType type, String... patterns) throws IllegalArgumentException {
+		
+		checkAcceptRegistrations();
+		if (returnType.isAnnotation() || returnType.isArray() || returnType.isPrimitive())
+			throw new IllegalArgumentException("returnType must be a normal type");
+		
+		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
+		ExpressionInfo<E, T> info = new ExpressionInfo<>(patterns, returnType, clazz, originClassPath, type);
+		expressions.add(expressionTypesStartIndices[type.ordinal()], info);
+		for (int i = type.ordinal(); i < ExpressionType.values().length; i++) {
+			expressionTypesStartIndices[i]++;
+		}
+	}
+	
+	/**
+	 * Registers an expression.
+	 *
+	 * @param clazz The expression's class
+	 * @param supplier Supplier for the expression
 	 * @param returnType The superclass of all values returned by the expression
 	 * @param type The expression's {@link ExpressionType type}. This is used to determine in which order to try to parse expressions.
 	 * @param patterns Skript patterns that match this expression
 	 * @throws IllegalArgumentException if returnType is not a normal class
 	 */
-	public static <E extends Expression<T>, T> void registerExpression(final Class<E> c, final Class<T> returnType, final ExpressionType type, final String... patterns) throws IllegalArgumentException {
+	public static <E extends Expression<T>, T> void registerExpression(Class<E> clazz, @Nullable Supplier<E> supplier, Class<T> returnType,
+	                                                                   ExpressionType type, String... patterns) throws IllegalArgumentException {
+		
 		checkAcceptRegistrations();
 		if (returnType.isAnnotation() || returnType.isArray() || returnType.isPrimitive())
 			throw new IllegalArgumentException("returnType must be a normal type");
+		
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-		final ExpressionInfo<E, T> info = new ExpressionInfo<>(patterns, returnType, c, originClassPath, type);
+		ExpressionInfo<E, T> info = new ExpressionInfo<>(patterns, returnType, clazz, supplier, originClassPath, type);
 		expressions.add(expressionTypesStartIndices[type.ordinal()], info);
 		for (int i = type.ordinal(); i < ExpressionType.values().length; i++) {
 			expressionTypesStartIndices[i]++;
@@ -1394,50 +1474,96 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param name Capitalised name of the event without leading "On" which is added automatically (Start the name with an asterisk to prevent this). Used for error messages and
 	 *            the documentation.
-	 * @param c The event's class
+	 * @param clazz The event's class
+	 * @param event The Bukkit event this event applies to
+	 * @param patterns Skript patterns to match this event
+	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
+	 * @deprecated Use {@link #registerEvent(String, Class, Supplier, Class, String...)}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Class<? extends Event> event, String... patterns) {
+		return registerEvent(name, clazz, new Class[] { event }, patterns);
+	}
+	
+	/**
+	 * Registers an event.
+	 *
+	 * @param name Capitalised name of the event without leading "On" which is added automatically (Start the name with an asterisk to prevent this). Used for error messages and
+	 *            the documentation.
+	 * @param clazz The event's class
+	 * @param supplier Supplier for the event
 	 * @param event The Bukkit event this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> c, Class<? extends Event> event, String... patterns) {
-		return registerEvent(name, c, new Class[] {event}, patterns);
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier, Class<? extends Event> event, String... patterns) {
+		return registerEvent(name, clazz, supplier, new Class[] { event }, patterns);
+	}
+	
+	/**
+	 * Registers an event.
+	 *
+	 * @param name The name of the event, used for error messages
+	 * @param clazz The event's class
+	 * @param events The Bukkit events this event applies to
+	 * @param patterns Skript patterns to match this event
+	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
+	 */
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
+	                                                                       Class<? extends Event>[] events, String... patterns) {
+		
+		checkAcceptRegistrations();
+		
+		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
+		String[] transformedPatterns = new String[patterns.length];
+		for (int i = 0; i < patterns.length; i++)
+			transformedPatterns[i] = "[on] " + SkriptEvent.fixPattern(patterns[i]) + " [with priority (lowest|low|normal|high|highest|monitor)]";
+		
+		SkriptEventInfo<E> info = new SkriptEventInfo<>(name, transformedPatterns, clazz, originClassPath, events);
+		structures.add(info);
+		return info;
 	}
 	
 	/**
 	 * Registers an event.
 	 * 
 	 * @param name The name of the event, used for error messages
-	 * @param c The event's class
+	 * @param clazz The event's class
+	 * @param supplier The event supplier
 	 * @param events The Bukkit events this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> c, Class<? extends Event>[] events, String... patterns) {
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, @Nullable Supplier<E> supplier,
+	                                                                       Class<? extends Event>[] events, String... patterns) {
+		
 		checkAcceptRegistrations();
+		
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-
 		String[] transformedPatterns = new String[patterns.length];
 		for (int i = 0; i < patterns.length; i++)
 			transformedPatterns[i] = "[on] " + SkriptEvent.fixPattern(patterns[i]) + " [with priority (lowest|low|normal|high|highest|monitor)]";
 
-		SkriptEventInfo<E> r = new SkriptEventInfo<>(name, transformedPatterns, c, originClassPath, events);
-		structures.add(r);
-		return r;
+		SkriptEventInfo<E> info = new SkriptEventInfo<>(name, transformedPatterns, clazz, supplier, originClassPath, events);
+		structures.add(info);
+		return info;
 	}
 
-	public static <E extends Structure> void registerStructure(Class<E> c, String... patterns) {
+	public static <E extends Structure> void registerStructure(Class<E> clazz, @Nullable Supplier<E> supplier,
+	                                                           String... patterns) {
+		
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-		StructureInfo<E> structureInfo = new StructureInfo<>(patterns, c, originClassPath);
-		structures.add(structureInfo);
+		structures.add(new StructureInfo<>(patterns, clazz, supplier, originClassPath));
 	}
 
-	public static <E extends Structure> void registerStructure(Class<E> c, EntryValidator entryValidator, String... patterns) {
+	public static <E extends Structure> void registerStructure(Class<E> clazz, @Nullable Supplier<E> supplier,
+	                                                           EntryValidator entryValidator, String... patterns) {
+		
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
-		StructureInfo<E> structureInfo = new StructureInfo<>(patterns, c, originClassPath, entryValidator);
-		structures.add(structureInfo);
+		structures.add(new StructureInfo<>(patterns, clazz, supplier, entryValidator, originClassPath));
 	}
 
 	/**

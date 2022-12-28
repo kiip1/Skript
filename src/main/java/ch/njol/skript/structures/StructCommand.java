@@ -91,7 +91,7 @@ public class StructCommand extends Structure {
 
 	static {
 		Skript.registerStructure(
-			StructCommand.class,
+			StructCommand.class, StructCommand::new,
 			EntryValidator.builder()
 				.addEntry("usage", null, true)
 				.addEntry("description", "", true)

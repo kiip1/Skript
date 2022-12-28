@@ -41,7 +41,7 @@ import ch.njol.util.Kleenean;
 public class ExprOfflinePlayers extends SimpleExpression<OfflinePlayer> {
 	
 	static {
-		Skript.registerExpression(ExprOfflinePlayers.class, OfflinePlayer.class, ExpressionType.SIMPLE, "[(all [[of] the]|the)] offline[ ]players");
+		Skript.registerExpression(ExprOfflinePlayers.class, ExprOfflinePlayers::new, OfflinePlayer.class, ExpressionType.SIMPLE, "[(all [[of] the]|the)] offline[ ]players");
 	}
 	
 	@Override

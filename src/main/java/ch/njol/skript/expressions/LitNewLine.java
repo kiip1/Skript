@@ -39,7 +39,7 @@ import ch.njol.util.Kleenean;
 public class LitNewLine extends SimpleLiteral<String> {
 
 	static {
-		Skript.registerExpression(LitNewLine.class, String.class, ExpressionType.SIMPLE, "n[ew]l[ine]", "line[ ]break");
+		Skript.registerExpression(LitNewLine.class, LitNewLine::new, String.class, ExpressionType.SIMPLE, "n[ew]l[ine]", "line[ ]break");
 	}
 
 	public LitNewLine() {

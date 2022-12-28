@@ -59,7 +59,7 @@ import ch.njol.util.coll.iterator.IteratorIterable;
 public class ExprSets extends SimpleExpression<Object> {
 
 	static {
-		Skript.registerExpression(ExprSets.class, Object.class, ExpressionType.COMBINED,
+		Skript.registerExpression(ExprSets.class, ExprSets::new, Object.class, ExpressionType.COMBINED,
 				"[(all [[of] the]|the|every)] item(s|[ ]types)", "[(all [[of] the]|the)] items of type[s] %itemtypes%",
 				"[(all [[of] the]|the|every)] block(s|[ ]types)", "[(all [[of] the]|the)] blocks of type[s] %itemtypes%",
 				"([all [[of] the]] colo[u]rs|(the|every) colo[u]r)");

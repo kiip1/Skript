@@ -42,7 +42,7 @@ import java.lang.reflect.Array;
 public class ExprReversedList extends SimpleExpression<Object> {
 
 	static {
-		Skript.registerExpression(ExprReversedList.class, Object.class, ExpressionType.COMBINED, "reversed %objects%");
+		Skript.registerExpression(ExprReversedList.class, ExprReversedList::new, Object.class, ExpressionType.COMBINED, "reversed %objects%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

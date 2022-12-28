@@ -49,7 +49,7 @@ public class ExprFertilizedBlocks extends SimpleExpression<BlockStateBlock> {
 	
 	static {
 		if (Skript.classExists("org.bukkit.event.block.BlockFertilizeEvent"))
-			Skript.registerExpression(ExprFertilizedBlocks.class, BlockStateBlock.class, ExpressionType.SIMPLE, "[all] [the] fertilized blocks");
+			Skript.registerExpression(ExprFertilizedBlocks.class, ExprFertilizedBlocks::new, BlockStateBlock.class, ExpressionType.SIMPLE, "[all] [the] fertilized blocks");
 	}
 	
 	@Override

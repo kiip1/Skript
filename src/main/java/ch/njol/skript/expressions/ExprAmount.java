@@ -63,7 +63,7 @@ import java.util.Map;
 public class ExprAmount extends SimpleExpression<Long> {
 
 	static {
-		Skript.registerExpression(ExprAmount.class, Long.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprAmount.class, ExprAmount::new, Long.class, ExpressionType.PROPERTY,
 				"[the] (amount|number|size) of %objects%",
 				"[the] recursive (amount|number|size) of %objects%");
 	}

@@ -43,7 +43,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprVectorLength extends SimplePropertyExpression<Vector, Number> {
 
 	static {
-		register(ExprVectorLength.class, Number.class, "(vector|standard|normal) length[s]", "vectors");
+		register(ExprVectorLength.class, ExprVectorLength::new, Number.class, "(vector|standard|normal) length[s]", "vectors");
 	}
 
 	@Override

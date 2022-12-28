@@ -19,8 +19,10 @@
 package org.skriptlang.skript.lang.structure;
 
 import ch.njol.skript.lang.SyntaxElementInfo;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.lang.entry.EntryValidator;
+
+import java.util.function.Supplier;
 
 /**
  * Special {@link SyntaxElementInfo} for {@link Structure}s that may contain information such as the {@link EntryValidator}.
@@ -29,14 +31,21 @@ public class StructureInfo<E extends Structure> extends SyntaxElementInfo<E> {
 
 	@Nullable
 	public final EntryValidator entryValidator;
-
-	public StructureInfo(String[] patterns, Class<E> c, String originClassPath) throws IllegalArgumentException {
-		super(patterns, c, originClassPath);
-		entryValidator = null;
+	
+	public StructureInfo(String[] patterns, Class<E> clazz, String originClassPath) throws IllegalArgumentException {
+		this(patterns, clazz, null, null, originClassPath);
 	}
 
-	public StructureInfo(String[] patterns, Class<E> c, String originClassPath, EntryValidator entryValidator) throws IllegalArgumentException {
-		super(patterns, c, originClassPath);
+	public StructureInfo(String[] patterns, Class<E> clazz, @Nullable Supplier<E> supplier,
+	                     String originClassPath) throws IllegalArgumentException {
+		
+		this(patterns, clazz, supplier, null, originClassPath);
+	}
+
+	public StructureInfo(String[] patterns, Class<E> clazz, @Nullable Supplier<E> supplier,
+	                     @Nullable EntryValidator entryValidator, String originClassPath) throws IllegalArgumentException {
+		
+		super(patterns, clazz, supplier, originClassPath);
 		this.entryValidator = entryValidator;
 	}
 

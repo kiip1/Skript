@@ -46,7 +46,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprChatRecipients extends SimpleExpression<Player> {
 
 	static {
-		Skript.registerExpression(ExprChatRecipients.class, Player.class, ExpressionType.SIMPLE, "[chat][( |-)]recipients");
+		Skript.registerExpression(ExprChatRecipients.class, ExprChatRecipients::new, Player.class, ExpressionType.SIMPLE, "[chat][( |-)]recipients");
 	}
 
 	@Override

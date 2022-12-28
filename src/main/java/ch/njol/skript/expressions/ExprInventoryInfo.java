@@ -51,7 +51,7 @@ public class ExprInventoryInfo extends SimpleExpression<Object> {
 	private final static int HOLDER = 1, VIEWERS = 2, ROWS = 3, SLOTS = 4;
 	
 	static {
-		Skript.registerExpression(ExprInventoryInfo.class, Object.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprInventoryInfo.class, ExprInventoryInfo::new, Object.class, ExpressionType.PROPERTY,
 				"(" + HOLDER + "¦holder[s]|" + VIEWERS + "¦viewers|" + ROWS + "¦[amount of] rows|" + SLOTS + "¦[amount of] slots)" + " of %inventories%",
 				"%inventories%'[s] (" + HOLDER + "¦holder[s]|" + VIEWERS + "¦viewers|" + ROWS + "¦[amount of] rows|" + SLOTS + "¦[amount of] slots)");
 	}

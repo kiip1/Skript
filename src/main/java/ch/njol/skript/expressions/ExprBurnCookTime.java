@@ -56,7 +56,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprBurnCookTime extends PropertyExpression<Block, Timespan> {
 
 	static {
-		Skript.registerExpression(ExprBurnCookTime.class, Timespan.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprBurnCookTime.class, ExprBurnCookTime::new, Timespan.class, ExpressionType.PROPERTY,
 				"[the] burn[ing] time",
 				"[the] (burn|1¦cook)[ing] time of %blocks%",
 				"%blocks%'[s] (burn|1¦cook)[ing] time");

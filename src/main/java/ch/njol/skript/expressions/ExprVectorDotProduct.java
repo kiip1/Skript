@@ -51,7 +51,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprVectorDotProduct extends SimpleExpression<Number> {
 
 	static {
-		Skript.registerExpression(ExprVectorDotProduct.class, Number.class, ExpressionType.SIMPLE, "%vector% dot %vector%");
+		Skript.registerExpression(ExprVectorDotProduct.class, ExprVectorDotProduct::new, Number.class, ExpressionType.SIMPLE, "%vector% dot %vector%");
 	}
 
 	@SuppressWarnings("null")

@@ -47,7 +47,7 @@ import ch.njol.util.Kleenean;
 public class ExprItemWithLore extends PropertyExpression<ItemType, ItemType> {
 
 	static {
-		Skript.registerExpression(ExprItemWithLore.class, ItemType.class, ExpressionType.PROPERTY,
+		Skript.registerExpression(ExprItemWithLore.class, ExprItemWithLore::new, ItemType.class, ExpressionType.PROPERTY,
 				"%itemtype% with [(a|the)] lore %strings%");
 	}
 

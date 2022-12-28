@@ -54,7 +54,7 @@ import ch.njol.util.Kleenean;
 public class ExprDifference extends SimpleExpression<Object> {
 	
 	static {
-		Skript.registerExpression(ExprDifference.class, Object.class, ExpressionType.COMBINED, "difference (between|of) %object% and %object%");
+		Skript.registerExpression(ExprDifference.class, ExprDifference::new, Object.class, ExpressionType.COMBINED, "difference (between|of) %object% and %object%");
 	}
 	
 	@SuppressWarnings("null")

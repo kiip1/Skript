@@ -49,7 +49,7 @@ import ch.njol.util.coll.CollectionUtils;
 public class ExprAppliedEnchantments extends SimpleExpression<EnchantmentType> {
 
 	static {
-		Skript.registerExpression(ExprAppliedEnchantments.class, EnchantmentType.class, ExpressionType.SIMPLE, "[the] applied enchant[ment]s");
+		Skript.registerExpression(ExprAppliedEnchantments.class, ExprAppliedEnchantments::new, EnchantmentType.class, ExpressionType.SIMPLE, "[the] applied enchant[ment]s");
 	}
 
 	@Override

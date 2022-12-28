@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprTypeOf extends SimplePropertyExpression<Object, Object> {
 
 	static {
-		register(ExprTypeOf.class, Object.class, "type", "entitydatas/itemtypes/inventories/potioneffects");
+		register(ExprTypeOf.class, ExprTypeOf::new, Object.class, "type", "entitydatas/itemtypes/inventories/potioneffects");
 	}
 
 	@Override

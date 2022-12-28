@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class ExprCoordinate extends SimplePropertyExpression<Location, Number> {
 	
 	static {
-		register(ExprCoordinate.class, Number.class, "(0¦x|1¦y|2¦z)(-| )(coord[inate]|pos[ition]|loc[ation])[s]", "locations");
+		register(ExprCoordinate.class, ExprCoordinate::new, Number.class, "(0¦x|1¦y|2¦z)(-| )(coord[inate]|pos[ition]|loc[ation])[s]", "locations");
 	}
 	
 	private final static char[] axes = {'x', 'y', 'z'};
