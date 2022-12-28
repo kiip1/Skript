@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -177,7 +178,16 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		final Class<? extends Entity> entityClass;
 		final Noun[] names;
 		
-		public EntityDataInfo(final Class<T> dataClass, final String codeName, final String[] codeNames, final int defaultName, final Class<? extends Entity> entityClass) throws IllegalArgumentException {
+		@Deprecated
+		public EntityDataInfo(Class<T> dataClass, String codeName, String[] codeNames,
+		                      int defaultName, Class<? extends Entity> entityClass) throws IllegalArgumentException {
+			
+			this(dataClass, null, codeName, codeNames, defaultName, entityClass);
+		}
+		
+		public EntityDataInfo(Class<T> dataClass, @Nullable Supplier<T> supplier, String codeName, String[] codeNames,
+		                      int defaultName, Class<? extends Entity> entityClass) throws IllegalArgumentException {
+			
 			super(new String[codeNames.length], dataClass, dataClass.getName());
 			assert codeName != null && entityClass != null && codeNames.length > 0;
 			this.codeName = codeName;
@@ -226,13 +236,31 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		
 	}
 	
-	public static <E extends Entity, T extends EntityData<E>> void register(final Class<T> dataClass, final String name, final Class<E> entityClass, final String codeName) throws IllegalArgumentException {
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name, Class<E> entityClass,
+	                                                                        String codeName) throws IllegalArgumentException {
+		
 		register(dataClass, name, entityClass, 0, codeName);
 	}
 	
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, @Nullable Supplier<T> supplier,
+	                                                                        String name, Class<E> entityClass, String codeName) throws IllegalArgumentException {
+		
+		register(dataClass, supplier, name, entityClass, 0, codeName);
+	}
+	
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name,
+	                                                                        Class<E> entityClass, int defaultName,
+	                                                                        String... codeNames) throws IllegalArgumentException {
+		
+		register(dataClass, null, name, entityClass, defaultName, codeNames);
+	}
+	
 	@SuppressWarnings("unchecked")
-	public static <E extends Entity, T extends EntityData<E>> void register(final Class<T> dataClass, final String name, final Class<E> entityClass, final int defaultName, final String... codeNames) throws IllegalArgumentException {
-		final EntityDataInfo<T> info = new EntityDataInfo<>(dataClass, name, codeNames, defaultName, entityClass);
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, @Nullable Supplier<T> supplier,
+	                                                                        String name, Class<E> entityClass, int defaultName,
+	                                                                        String... codeNames) throws IllegalArgumentException {
+		
+		final EntityDataInfo<T> info = new EntityDataInfo<>(dataClass, supplier, name, codeNames, defaultName, entityClass);
 		for (int i = 0; i < infos.size(); i++) {
 			if (infos.get(i).entityClass.isAssignableFrom(entityClass)) {
 				infos.add(i, (EntityDataInfo<EntityData<?>>) info);
