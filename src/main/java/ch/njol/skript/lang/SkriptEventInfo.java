@@ -52,7 +52,6 @@ public final class SkriptEventInfo<E extends SkriptEvent> extends StructureInfo<
 	 * @param originClassPath The class path for the origin of this event.
 	 * @param events The Bukkit-Events this SkriptEvent listens to
 	 */
-	@Deprecated
 	public SkriptEventInfo(String name, String[] patterns, Class<E> clazz,
 	                       String originClassPath, Class<? extends Event>[] events) {
 		

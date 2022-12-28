@@ -178,7 +178,6 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		final Class<? extends Entity> entityClass;
 		final Noun[] names;
 		
-		@Deprecated
 		public EntityDataInfo(Class<T> dataClass, String codeName, String[] codeNames,
 		                      int defaultName, Class<? extends Entity> entityClass) throws IllegalArgumentException {
 			
