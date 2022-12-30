@@ -19,6 +19,7 @@
 package ch.njol.skript.lang;
 
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -30,7 +31,7 @@ import ch.njol.util.Checker;
 /**
  * A condition which must be fulfilled for the trigger to continue. If the condition is in a section the behaviour depends on the section.
  *
- * @see Skript#registerCondition(Class, String...)
+ * @see Skript#registerCondition(Class, Supplier, String...)
  */
 public abstract class Condition extends Statement {
 	
