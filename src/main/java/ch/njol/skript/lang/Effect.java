@@ -19,6 +19,7 @@
 package ch.njol.skript.lang;
 
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -32,7 +33,7 @@ import ch.njol.skript.log.SkriptLogger;
  * An effect which is unconditionally executed when reached, and execution will usually continue with the next item of the trigger after this effect is executed (the stop effect
  * for example stops the trigger, i.e. nothing else will be executed after it)
  *
- * @see Skript#registerEffect(Class, String...)
+ * @see Skript#registerEffect(Class, Supplier, String...)
  */
 public abstract class Effect extends Statement {
 	

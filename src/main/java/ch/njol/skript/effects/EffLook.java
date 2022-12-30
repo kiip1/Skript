@@ -59,14 +59,14 @@ public class EffLook extends Effect {
 	static {
 		if (Skript.methodExists(Mob.class, "lookAt", Entity.class)) {
 			if (LOOK_ANCHORS) {
-				Skript.registerEffect(EffLook.class, "(force|make) %livingentities% [to] (face [towards]|look [(at|towards)]) " +
+				Skript.registerEffect(EffLook.class, EffLook::new, "(force|make) %livingentities% [to] (face [towards]|look [(at|towards)]) " +
 					"(%entity%['s (feet:feet|eyes)]|of:(feet:feet|eyes) of %entity%) " +
 					"[at [head] [rotation] speed %-number%] [[and] max[imum] [head] pitch %-number%]",
 
 					"(force|make) %livingentities% [to] (face [towards]|look [(at|towards)]) %vector/location% " +
 					"[at [head] [rotation] speed %-number%] [[and] max[imum] [head] pitch %-number%]");
 			} else {
-				Skript.registerEffect(EffLook.class, "(force|make) %livingentities% [to] (face [towards]|look [(at|towards)]) %vector/location/entity% " +
+				Skript.registerEffect(EffLook.class, EffLook::new, "(force|make) %livingentities% [to] (face [towards]|look [(at|towards)]) %vector/location/entity% " +
 					"[at [head] [rotation] speed %-number%] [[and] max[imum] [head] pitch %-number%]");
 			}
 		}

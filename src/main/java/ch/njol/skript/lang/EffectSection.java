@@ -27,6 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * A {@link Section} that may also be used as an effect,
@@ -37,7 +38,7 @@ import java.util.List;
  * safe to assert that the section node and list of trigger items are not null.
  * <br><br>
  * @see Section
- * @see Skript#registerSection(Class, String...)
+ * @see Skript#registerSection(Class, Supplier, String...)
  */
 public abstract class EffectSection extends Section {
 

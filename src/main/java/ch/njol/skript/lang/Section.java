@@ -56,7 +56,7 @@ import java.util.function.Supplier;
  * Also note, that if you aren't returning the result of {@link TriggerSection#walk(Event, boolean)},
  * you should probably call {@link TriggerSection#debug(Event, boolean)}. The boolean parameter should be false in most cases.
  *
- * @see Skript#registerSection(Class, String...)
+ * @see Skript#registerSection(Class, Supplier, String...)
  */
 public abstract class Section extends TriggerSection implements SyntaxElement {
 

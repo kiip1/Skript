@@ -1354,6 +1354,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @see Section
 	 */
 	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Section> void registerSection(Class<E> section, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
