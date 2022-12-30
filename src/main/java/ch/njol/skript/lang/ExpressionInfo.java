@@ -32,10 +32,13 @@ public class ExpressionInfo<E extends Expression<T>, T> extends SyntaxElementInf
 	public ExpressionInfo(String[] patterns, Class<T> returnType, Class<E> clazz,
 	                      String originClassPath, @Nullable ExpressionType expressionType) throws IllegalArgumentException {
 		
+		// Null can be passed for now, but whenever these methods get removed
+		// null won't be supported anymore
+		//noinspection DataFlowIssue
 		this(patterns, returnType, clazz, null, originClassPath, expressionType);
 	}
 	
-	public ExpressionInfo(String[] patterns, Class<T> returnType, Class<E> clazz, @Nullable Supplier<E> supplier,
+	public ExpressionInfo(String[] patterns, Class<T> returnType, Class<E> clazz, Supplier<E> supplier,
 	                      String originClassPath, @Nullable ExpressionType expressionType) throws IllegalArgumentException {
 		
 		super(patterns, clazz, supplier, originClassPath);

@@ -39,6 +39,7 @@ import ch.njol.skript.localization.LanguageChangeListener;
 import ch.njol.skript.localization.Message;
 import ch.njol.skript.localization.Noun;
 import ch.njol.skript.registrations.Classes;
+import ch.njol.skript.util.MarkedForRemoval;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import ch.njol.yggdrasil.Fields;
@@ -181,13 +182,16 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		public EntityDataInfo(Class<T> dataClass, String codeName, String[] codeNames,
 		                      int defaultName, Class<? extends Entity> entityClass) throws IllegalArgumentException {
 			
+			// Null can be passed for now, but whenever these methods get removed
+			// null won't be supported anymore
+			//noinspection DataFlowIssue
 			this(dataClass, null, codeName, codeNames, defaultName, entityClass);
 		}
 		
-		public EntityDataInfo(Class<T> dataClass, @Nullable Supplier<T> supplier, String codeName, String[] codeNames,
+		public EntityDataInfo(Class<T> dataClass, Supplier<T> supplier, String codeName, String[] codeNames,
 		                      int defaultName, Class<? extends Entity> entityClass) throws IllegalArgumentException {
 			
-			super(new String[codeNames.length], dataClass, dataClass.getName());
+			super(new String[codeNames.length], dataClass, supplier, dataClass.getName());
 			assert codeName != null && entityClass != null && codeNames.length > 0;
 			this.codeName = codeName;
 			this.codeNames = codeNames;
@@ -236,28 +240,33 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	}
 	
 	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name, Class<E> entityClass,
 	                                                                        String codeName) throws IllegalArgumentException {
 		
 		register(dataClass, name, entityClass, 0, codeName);
 	}
 	
-	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, @Nullable Supplier<T> supplier,
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, Supplier<T> supplier,
 	                                                                        String name, Class<E> entityClass, String codeName) throws IllegalArgumentException {
 		
 		register(dataClass, supplier, name, entityClass, 0, codeName);
 	}
 	
 	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, String name,
 	                                                                        Class<E> entityClass, int defaultName,
 	                                                                        String... codeNames) throws IllegalArgumentException {
 		
+		// Null can be passed for now, but whenever these methods get removed
+		// null won't be supported anymore
+		//noinspection DataFlowIssue
 		register(dataClass, null, name, entityClass, defaultName, codeNames);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, @Nullable Supplier<T> supplier,
+	public static <E extends Entity, T extends EntityData<E>> void register(Class<T> dataClass, Supplier<T> supplier,
 	                                                                        String name, Class<E> entityClass, int defaultName,
 	                                                                        String... codeNames) throws IllegalArgumentException {
 		

@@ -51,8 +51,8 @@ import java.util.function.Supplier;
  * </ul>
  *
  * <b>Note:</b> if you choose to register this class in any other way than by calling
- * {@link PropertyCondition#register(Class, Supplier, PropertyType, String, String)} or
- * {@link PropertyCondition#register(Class, Supplier, String, String)}, be aware that there can only be two patterns -
+ * {@link #register(Class, Supplier, PropertyType, String, String)} or
+ * {@link #register(Class, Supplier, String, String)}, be aware that there can only be two patterns -
  * the first one needs to be a non-negated one and a negated one.
  */
 public abstract class PropertyCondition<T> extends Condition implements Checker<T> {

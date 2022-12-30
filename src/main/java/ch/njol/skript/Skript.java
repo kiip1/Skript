@@ -74,6 +74,7 @@ import ch.njol.skript.util.EmptyStacktraceException;
 import ch.njol.skript.util.ExceptionUtils;
 import ch.njol.skript.util.FileUtils;
 import ch.njol.skript.util.Getter;
+import ch.njol.skript.util.MarkedForRemoval;
 import ch.njol.skript.util.Task;
 import ch.njol.skript.util.Utils;
 import ch.njol.skript.util.Version;
@@ -1285,8 +1286,10 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param condition The condition's class
 	 * @param patterns Skript patterns to match this condition
-	 * @see #registerCondition(Class, Supplier, String...)
+	 * @deprecated Use {@link #registerCondition(Class, Supplier, String...)}
 	 */
+	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Condition> void registerCondition(Class<E> condition, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -1302,7 +1305,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param supplier Supplier which will instantiate the condition
 	 * @param patterns Skript patterns to match this condition
 	 */
-	public static <E extends Condition> void registerCondition(Class<E> condition, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+	public static <E extends Condition> void registerCondition(Class<E> condition, Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
 		SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, condition, supplier, originClassPath);
@@ -1315,8 +1318,10 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * 
 	 * @param effect The effect's class
 	 * @param patterns Skript patterns to match this effect
-	 * @see #registerEffect(Class, Supplier, String...)
+	 * @deprecated {@link #registerEffect(Class, Supplier, String...)}
 	 */
+	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Effect> void registerEffect(Class<E> effect, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -1332,7 +1337,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param supplier Supplier which will instantiate the effect
 	 * @param patterns Skript patterns to match this effect
 	 */
-	public static <E extends Effect> void registerEffect(Class<E> effect, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+	public static <E extends Effect> void registerEffect(Class<E> effect, Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
 		final SyntaxElementInfo<E> info = new SyntaxElementInfo<>(patterns, effect, supplier, originClassPath);
@@ -1363,7 +1368,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param patterns Skript patterns to match this section
 	 * @see Section
 	 */
-	public static <E extends Section> void registerSection(Class<E> section, @Nullable Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
+	public static <E extends Section> void registerSection(Class<E> section, Supplier<E> supplier, String... patterns) throws IllegalArgumentException {
 		checkAcceptRegistrations();
 		String originClassPath = Thread.currentThread().getStackTrace()[2].getClassName();
 		sections.add(new SyntaxElementInfo<>(patterns, section, supplier, originClassPath));
@@ -1399,8 +1404,10 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param type The expression's {@link ExpressionType type}. This is used to determine in which order to try to parse expressions.
 	 * @param patterns Skript patterns that match this expression
 	 * @throws IllegalArgumentException if returnType is not a normal class
-	 * @see #registerExpression(Class, Supplier, Class, ExpressionType, String...)
+	 * @deprecated {@link #registerExpression(Class, Supplier, Class, ExpressionType, String...)}
 	 */
+	@Deprecated
+	@MarkedForRemoval
 	public static <E extends Expression<T>, T> void registerExpression(Class<E> clazz, Class<T> returnType,
 	                                                                   ExpressionType type, String... patterns) throws IllegalArgumentException {
 		
@@ -1426,7 +1433,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param patterns Skript patterns that match this expression
 	 * @throws IllegalArgumentException if returnType is not a normal class
 	 */
-	public static <E extends Expression<T>, T> void registerExpression(Class<E> clazz, @Nullable Supplier<E> supplier, Class<T> returnType,
+	public static <E extends Expression<T>, T> void registerExpression(Class<E> clazz, Supplier<E> supplier, Class<T> returnType,
 	                                                                   ExpressionType type, String... patterns) throws IllegalArgumentException {
 		
 		checkAcceptRegistrations();
@@ -1475,9 +1482,11 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param event The Bukkit event this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
-	 * @see #registerEvent(String, Class, Supplier, Class, String...)
+	 * @deprecated Use {@link #registerEvent(String, Class, Supplier, Class, String...)}
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
+	@MarkedForRemoval
 	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
 	                                                                       Class<? extends Event> event, String... patterns) {
 		
@@ -1496,7 +1505,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, @Nullable Supplier<E> supplier,
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier,
 	                                                                       Class<? extends Event> event, String... patterns) {
 		
 		return registerEvent(name, clazz, supplier, new Class[] { event }, patterns);
@@ -1510,8 +1519,10 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param events The Bukkit events this event applies to
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
-	 * @see #registerEvent(String, Class, Supplier, Class[], String...)
+	 * @deprecated Use {@link #registerEvent(String, Class, Supplier, Class[], String...)}
 	 */
+	@Deprecated
+	@MarkedForRemoval
 	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz,
 	                                                                       Class<? extends Event>[] events, String... patterns) {
 		
@@ -1537,7 +1548,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @param patterns Skript patterns to match this event
 	 * @return A SkriptEventInfo representing the registered event. Used to generate Skript's documentation.
 	 */
-	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, @Nullable Supplier<E> supplier,
+	public static <E extends SkriptEvent> SkriptEventInfo<E> registerEvent(String name, Class<E> clazz, Supplier<E> supplier,
 	                                                                       Class<? extends Event>[] events, String... patterns) {
 		
 		checkAcceptRegistrations();
@@ -1552,7 +1563,7 @@ public final class Skript extends JavaPlugin implements Listener {
 		return info;
 	}
 
-	public static <E extends Structure> void registerStructure(Class<E> clazz, @Nullable Supplier<E> supplier,
+	public static <E extends Structure> void registerStructure(Class<E> clazz, Supplier<E> supplier,
 	                                                           String... patterns) {
 		
 		checkAcceptRegistrations();
@@ -1560,7 +1571,7 @@ public final class Skript extends JavaPlugin implements Listener {
 		structures.add(new StructureInfo<>(patterns, clazz, supplier, originClassPath));
 	}
 
-	public static <E extends Structure> void registerStructure(Class<E> clazz, @Nullable Supplier<E> supplier,
+	public static <E extends Structure> void registerStructure(Class<E> clazz, Supplier<E> supplier,
 	                                                           EntryValidator entryValidator, String... patterns) {
 		
 		checkAcceptRegistrations();

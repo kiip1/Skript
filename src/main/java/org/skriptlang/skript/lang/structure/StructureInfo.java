@@ -31,18 +31,14 @@ public class StructureInfo<E extends Structure> extends SyntaxElementInfo<E> {
 
 	@Nullable
 	public final EntryValidator entryValidator;
-	
-	public StructureInfo(String[] patterns, Class<E> clazz, String originClassPath) throws IllegalArgumentException {
-		this(patterns, clazz, null, null, originClassPath);
-	}
 
-	public StructureInfo(String[] patterns, Class<E> clazz, @Nullable Supplier<E> supplier,
+	public StructureInfo(String[] patterns, Class<E> clazz, Supplier<E> supplier,
 	                     String originClassPath) throws IllegalArgumentException {
 		
 		this(patterns, clazz, supplier, null, originClassPath);
 	}
 
-	public StructureInfo(String[] patterns, Class<E> clazz, @Nullable Supplier<E> supplier,
+	public StructureInfo(String[] patterns, Class<E> clazz, Supplier<E> supplier,
 	                     @Nullable EntryValidator entryValidator, String originClassPath) throws IllegalArgumentException {
 		
 		super(patterns, clazz, supplier, originClassPath);

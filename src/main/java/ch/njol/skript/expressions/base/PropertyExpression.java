@@ -18,6 +18,7 @@
  */
 package ch.njol.skript.expressions.base;
 
+import ch.njol.skript.util.MarkedForRemoval;
 import org.bukkit.event.Event;
 
 import ch.njol.skript.Skript;
@@ -39,7 +40,7 @@ import java.util.function.Supplier;
  * 
  * @author Peter Güttinger
  * @see SimplePropertyExpression
- * @see #register(Class, Class, String, String)
+ * @see #register(Class, Supplier, Class, String, String)
  */
 public abstract class PropertyExpression<F, T> extends SimpleExpression<T> {
 	
@@ -51,7 +52,10 @@ public abstract class PropertyExpression<F, T> extends SimpleExpression<T> {
 	 * @deprecated Use {@link #register(Class, Supplier, Class, String, String)}
 	 */
 	@Deprecated
-	public static <T> void register(Class<? extends Expression<T>> clazz, Class<T> type, String property, String fromType) {
+	@MarkedForRemoval
+	public static <E extends Expression<T>, T> void register(Class<E> clazz, Class<T> type,
+	                                                         String property, String fromType) {
+		
 		Skript.registerExpression(clazz, type, ExpressionType.PROPERTY,
 			"[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
 	}
@@ -63,7 +67,7 @@ public abstract class PropertyExpression<F, T> extends SimpleExpression<T> {
 	 * @param property The name of the property
 	 * @param fromType Should be plural but doesn't have to be
 	 */
-	public static <E extends Expression<T>, T> void register(Class<E> clazz, @Nullable Supplier<E> supplier,
+	public static <E extends Expression<T>, T> void register(Class<E> clazz, Supplier<E> supplier,
 	                                Class<T> type, String property, String fromType) {
 		
 		Skript.registerExpression(clazz, supplier, type, ExpressionType.PROPERTY,

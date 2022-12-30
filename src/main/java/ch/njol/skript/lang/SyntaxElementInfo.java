@@ -18,6 +18,7 @@
  */
 package ch.njol.skript.lang;
 
+import ch.njol.skript.util.MarkedForRemoval;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -29,19 +30,38 @@ import java.util.function.Supplier;
  */
 public class SyntaxElementInfo<E extends SyntaxElement> {
 	
+	/**
+	 * @deprecated Use {@link #getElementClass()}
+	 */
+	@Deprecated
+	@MarkedForRemoval
 	public final Class<E> c;
-	@Nullable
-	public final Supplier<E> supplier;
+	private final Supplier<E> supplier;
+	/**
+	 * @deprecated Use {@link #getPatterns()}
+	 */
+	@Deprecated
+	@MarkedForRemoval
 	public final String[] patterns;
+	/**
+	 * @deprecated Use {@link #getOriginClassPath()}
+	 */
+	@Deprecated
+	@MarkedForRemoval
 	public final String originClassPath;
 	
+	@Deprecated
+	@MarkedForRemoval
 	public SyntaxElementInfo(String[] patterns, Class<E> elementClass,
 	                         String originClassPath) throws IllegalArgumentException {
 		
+		// Null can be passed for now, but whenever these methods get removed
+		// null won't be supported anymore
+		//noinspection DataFlowIssue
 		this(patterns, elementClass, null, originClassPath);
 	}
 	
-	public SyntaxElementInfo(String[] patterns, Class<E> elementClass, @Nullable Supplier<E> supplier,
+	public SyntaxElementInfo(String[] patterns, Class<E> elementClass, Supplier<E> supplier,
 	                         String originClassPath) throws IllegalArgumentException {
 		
 		this.c = elementClass;
@@ -49,6 +69,9 @@ public class SyntaxElementInfo<E extends SyntaxElement> {
 		this.patterns = patterns;
 		this.originClassPath = originClassPath;
 		
+		// This can be null while the deprecated methods are still in use.
+		// It isn't marked as Nullable to prevent developers from just passing null.
+		//noinspection ConstantValue
 		if (supplier == null) {
 			try {
 				elementClass.getConstructor();
@@ -70,6 +93,9 @@ public class SyntaxElementInfo<E extends SyntaxElement> {
 	}
 	
 	public E instance() {
+		// This can be null while the deprecated methods are still in use.
+		// It isn't marked as Nullable to prevent developers from just passing null.
+		//noinspection ConstantValue
 		if (supplier == null) {
 			try {
 				return getElementClass().newInstance();
