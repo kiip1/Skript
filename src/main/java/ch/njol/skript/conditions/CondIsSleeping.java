@@ -40,7 +40,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsSleeping extends PropertyCondition<Player> {
 	
 	static {
-		register(CondIsSleeping.class, "sleeping", "players");
+		register(CondIsSleeping.class, CondIsSleeping::new, "sleeping", "players");
 	}
 	
 	@Override

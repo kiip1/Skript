@@ -35,7 +35,7 @@ public class CondIsRiptiding extends PropertyCondition<LivingEntity> {
 	
 	static {
 		if (Skript.methodExists(LivingEntity.class, "isRiptiding")) {
-			register(CondIsRiptiding.class, PropertyType.BE, "riptiding", "livingentities");
+			register(CondIsRiptiding.class, CondIsRiptiding::new, PropertyType.BE, "riptiding", "livingentities");
 		}
 	}
 	

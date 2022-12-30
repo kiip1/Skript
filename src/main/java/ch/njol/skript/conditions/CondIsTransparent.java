@@ -32,7 +32,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsTransparent extends PropertyCondition<ItemType> {
 	
 	static {
-		register(CondIsTransparent.class, "transparent", "itemtypes");
+		register(CondIsTransparent.class, CondIsTransparent::new, "transparent", "itemtypes");
 	}
 	
 	@Override

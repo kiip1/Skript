@@ -44,7 +44,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondWithinRadius extends Condition {
 
 	static {
-		PropertyCondition.register(CondWithinRadius.class, "within %number% (block|metre|meter)[s] (around|of) %locations%", "locations");
+		PropertyCondition.register(CondWithinRadius.class, CondWithinRadius::new, "within %number% (block|metre|meter)[s] (around|of) %locations%", "locations");
 	}
 
 	private Expression<Location> locations;

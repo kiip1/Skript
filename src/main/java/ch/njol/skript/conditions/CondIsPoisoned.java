@@ -39,7 +39,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsPoisoned extends PropertyCondition<LivingEntity> {
 	
 	static {
-		register(CondIsPoisoned.class, "poisoned", "livingentities");
+		register(CondIsPoisoned.class, CondIsPoisoned::new, "poisoned", "livingentities");
 	}
 	
 	@Override

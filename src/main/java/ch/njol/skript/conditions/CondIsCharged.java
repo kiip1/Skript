@@ -35,7 +35,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsCharged extends PropertyCondition<LivingEntity> {
 	
 	static {
-		register(CondIsCharged.class, "(charged|powered)", "livingentities");
+		register(CondIsCharged.class, CondIsCharged::new, "(charged|powered)", "livingentities");
 	}
 	
 	@Override

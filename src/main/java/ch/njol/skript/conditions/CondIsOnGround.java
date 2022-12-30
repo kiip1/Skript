@@ -33,7 +33,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsOnGround extends PropertyCondition<Entity> {
 	
 	static {
-		PropertyCondition.register(CondIsOnGround.class, "on [the] ground", "entities");
+		PropertyCondition.register(CondIsOnGround.class, CondIsOnGround::new, "on [the] ground", "entities");
 	}
 	
 	@Override

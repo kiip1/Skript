@@ -50,7 +50,7 @@ import ch.njol.util.Kleenean;
 public class CondIsOfType extends Condition {
 	
 	static {
-		PropertyCondition.register(CondIsOfType.class, "of type[s] %entitytypes/entitydatas%", "itemstacks/entities");
+		PropertyCondition.register(CondIsOfType.class, CondIsOfType::new, "of type[s] %entitytypes/entitydatas%", "itemstacks/entities");
 	}
 	
 	@SuppressWarnings("null")

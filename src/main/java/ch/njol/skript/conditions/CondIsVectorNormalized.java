@@ -37,7 +37,7 @@ public class CondIsVectorNormalized extends PropertyCondition<Vector> {
 	
 	static {
 		if (Skript.methodExists(Vector.class, "isNormalized")) {
-			register(CondIsVectorNormalized.class, "normalized", "vectors");
+			register(CondIsVectorNormalized.class, CondIsVectorNormalized::new, "normalized", "vectors");
 		}
 	}
 	

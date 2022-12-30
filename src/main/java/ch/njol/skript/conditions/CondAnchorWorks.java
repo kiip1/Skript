@@ -41,7 +41,7 @@ public class CondAnchorWorks extends Condition {
 
 	static {
 		if (Skript.classExists("org.bukkit.block.data.type.RespawnAnchor"))
-			Skript.registerCondition(CondAnchorWorks.class, "respawn anchors [do[1:(n't| not)]] work in %worlds%");
+			Skript.registerCondition(CondAnchorWorks.class, CondAnchorWorks::new, "respawn anchors [do[1:(n't| not)]] work in %worlds%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

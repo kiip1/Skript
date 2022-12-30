@@ -44,7 +44,7 @@ import ch.njol.util.Kleenean;
 public class CondIsRiding extends Condition {
 	
 	static {
-		PropertyCondition.register(CondIsRiding.class, "riding [%entitydatas%]", "entities");
+		PropertyCondition.register(CondIsRiding.class, CondIsRiding::new, "riding [%entitydatas%]", "entities");
 	}
 	
 	@SuppressWarnings("null")

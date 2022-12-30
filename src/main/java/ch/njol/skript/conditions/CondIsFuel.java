@@ -43,7 +43,7 @@ public class CondIsFuel extends PropertyCondition<ItemType> {
 	
 	static {
 		if (Skript.methodExists(Material.class, "isFuel")) {
-			register(CondIsFuel.class, "[furnace] fuel", "itemtypes");
+			register(CondIsFuel.class, CondIsFuel::new, "[furnace] fuel", "itemtypes");
 		}
 	}
 	

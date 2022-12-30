@@ -38,7 +38,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsBlocking extends PropertyCondition<Player> {
 	
 	static {
-		register(CondIsBlocking.class, "(blocking|defending) [with [a] shield]", "players");
+		register(CondIsBlocking.class, CondIsBlocking::new, "(blocking|defending) [with [a] shield]", "players");
 	}
 	
 	@Override

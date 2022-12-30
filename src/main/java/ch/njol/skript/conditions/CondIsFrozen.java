@@ -37,7 +37,7 @@ public class CondIsFrozen extends PropertyCondition<Entity> {
 
 	static {
 		if (Skript.methodExists(Entity.class, "isFrozen"))
-			register(CondIsFrozen.class, "frozen", "entities");
+			register(CondIsFrozen.class, CondIsFrozen::new, "frozen", "entities");
 	}
 
 	@Override

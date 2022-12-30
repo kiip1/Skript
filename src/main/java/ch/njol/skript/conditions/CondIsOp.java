@@ -32,7 +32,7 @@ import org.bukkit.OfflinePlayer;
 public class CondIsOp extends PropertyCondition<OfflinePlayer> {
 
 	static {
-		register(CondIsOp.class, PropertyType.BE, "[[a] server|an] op[erator][s]", "offlineplayers");
+		register(CondIsOp.class, CondIsOp::new, PropertyType.BE, "[[a] server|an] op[erator][s]", "offlineplayers");
 	}
 
 	@Override

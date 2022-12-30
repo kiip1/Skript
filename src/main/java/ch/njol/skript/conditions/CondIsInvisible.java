@@ -37,7 +37,7 @@ public class CondIsInvisible extends PropertyCondition<LivingEntity> {
 
 	static {
 		if (Skript.methodExists(LivingEntity.class, "isInvisible"))
-			register(CondIsInvisible.class, PropertyType.BE, "(invisible|:visible)", "livingentities");
+			register(CondIsInvisible.class, CondIsInvisible::new, PropertyType.BE, "(invisible|:visible)", "livingentities");
 	}
 
 	@Override

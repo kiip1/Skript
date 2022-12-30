@@ -35,7 +35,7 @@ import ch.njol.skript.doc.Since;
 public class CondHasClientWeather extends PropertyCondition<Player> {
 	
 	static {
-		register(CondHasClientWeather.class, PropertyType.HAVE, "[a] (client|custom) weather [set]", "players");
+		register(CondHasClientWeather.class, CondHasClientWeather::new, PropertyType.HAVE, "[a] (client|custom) weather [set]", "players");
 	}
 	
 	@Override

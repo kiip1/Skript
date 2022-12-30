@@ -36,7 +36,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsFlying extends PropertyCondition<Player> {
 	
 	static {
-		register(CondIsFlying.class, "flying", "players");
+		register(CondIsFlying.class, CondIsFlying::new, "flying", "players");
 	}
 	
 	@Override

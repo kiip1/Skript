@@ -47,7 +47,7 @@ import ch.njol.util.Kleenean;
 public class CondIsWearing extends Condition {
 	
 	static {
-		PropertyCondition.register(CondIsWearing.class, "wearing %itemtypes%", "livingentities");
+		PropertyCondition.register(CondIsWearing.class, CondIsWearing::new, "wearing %itemtypes%", "livingentities");
 	}
 	
 	@SuppressWarnings("null")

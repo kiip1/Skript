@@ -40,7 +40,7 @@ import ch.njol.util.Kleenean;
 public class CondIsOnline extends PropertyCondition<OfflinePlayer> {
 	
 	static {
-		register(CondIsOnline.class, "(online|1¦offline)", "offlineplayers");
+		register(CondIsOnline.class, CondIsOnline::new, "(online|1¦offline)", "offlineplayers");
 	}
 	
 	@SuppressWarnings({"unchecked", "null"})

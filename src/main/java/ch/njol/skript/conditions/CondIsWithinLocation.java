@@ -46,7 +46,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class CondIsWithinLocation extends Condition {
 
 	static {
-		PropertyCondition.register(CondIsWithinLocation.class, "within %location% and %location%", "locations");
+		PropertyCondition.register(CondIsWithinLocation.class, CondIsWithinLocation::new, "within %location% and %location%", "locations");
 	}
 
 	private Expression<Location> locsToCheck, loc1, loc2;

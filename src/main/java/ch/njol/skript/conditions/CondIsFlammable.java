@@ -32,7 +32,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsFlammable extends PropertyCondition<ItemType> {
 	
 	static {
-		register(CondIsFlammable.class, "flammable", "itemtypes");
+		register(CondIsFlammable.class, CondIsFlammable::new, "flammable", "itemtypes");
 	}
 	
 	@Override

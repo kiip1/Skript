@@ -38,7 +38,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsBurning extends PropertyCondition<Entity> {
 	
 	static {
-		register(CondIsBurning.class, "(burning|ignited|on fire)", "entities");
+		register(CondIsBurning.class, CondIsBurning::new, "(burning|ignited|on fire)", "entities");
 	}
 	
 	@Override

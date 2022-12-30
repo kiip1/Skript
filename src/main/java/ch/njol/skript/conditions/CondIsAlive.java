@@ -39,7 +39,7 @@ import ch.njol.util.Kleenean;
 public class CondIsAlive extends PropertyCondition<Entity> {
 
 	static {
-		register(CondIsAlive.class, "(alive|1¦dead)", "entities");
+		register(CondIsAlive.class, CondIsAlive::new, "(alive|1¦dead)", "entities");
 	}
 
 	private boolean isNegated;

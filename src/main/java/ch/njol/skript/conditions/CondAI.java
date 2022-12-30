@@ -33,7 +33,7 @@ import ch.njol.skript.doc.Since;
 public class CondAI extends PropertyCondition<LivingEntity> {
 	
 	static {
-		register(CondAI.class, PropertyType.HAVE, "(ai|artificial intelligence)", "livingentities");
+		register(CondAI.class, CondAI::new, PropertyType.HAVE, "(ai|artificial intelligence)", "livingentities");
 	}
 	
 	@Override

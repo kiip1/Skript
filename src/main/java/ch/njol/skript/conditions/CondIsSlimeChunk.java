@@ -48,7 +48,7 @@ public class CondIsSlimeChunk extends PropertyCondition<Chunk> {
 	private static final boolean CHUNK_METHOD_EXISTS = Skript.methodExists(Chunk.class, "isSlimeChunk");
 	
 	static {
-		register(CondIsSlimeChunk.class, "([a] slime chunk|slime chunks|slimey)", "chunk");
+		register(CondIsSlimeChunk.class, CondIsSlimeChunk::new, "([a] slime chunk|slime chunks|slimey)", "chunk");
 	}
 	
 	@Override

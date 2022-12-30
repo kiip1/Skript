@@ -36,7 +36,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsTameable extends PropertyCondition<LivingEntity> {
 	
 	static {
-		register(CondIsTameable.class, "tameable", "livingentities");
+		register(CondIsTameable.class, CondIsTameable::new, "tameable", "livingentities");
 	}
 	
 	@Override

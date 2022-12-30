@@ -38,7 +38,7 @@ public class CondHasResourcePack extends PropertyCondition<Player> {
 
 	static {
 		if (Skript.methodExists(Player.class, "hasResourcePack"))
-			register(CondHasResourcePack.class, PropertyType.HAVE, "[a] resource pack [(loaded|installed)]", "players");
+			register(CondHasResourcePack.class, CondHasResourcePack::new, PropertyType.HAVE, "[a] resource pack [(loaded|installed)]", "players");
 	}
 
 	@Override

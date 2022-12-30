@@ -41,7 +41,7 @@ public class CondIsPassable extends PropertyCondition<Block> {
 	
 	static {
 		if (Skript.methodExists(Block.class, "isPassable")) {
-			register(CondIsPassable.class, "passable", "blocks");
+			register(CondIsPassable.class, CondIsPassable::new, "passable", "blocks");
 		}
 	}
 	

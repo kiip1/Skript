@@ -46,7 +46,7 @@ import ch.njol.util.Kleenean;
 public class CondIsInWorld extends Condition {
 	
 	static {
-		PropertyCondition.register(CondIsInWorld.class, "in [[the] world[s]] %worlds%", "entities");
+		PropertyCondition.register(CondIsInWorld.class, CondIsInWorld::new, "in [[the] world[s]] %worlds%", "entities");
 	}
 	
 	@SuppressWarnings("null")

@@ -39,7 +39,7 @@ import ch.njol.skript.util.slot.Slot;
 public class CondIsEmpty extends PropertyCondition<Object> {
 	
 	static {
-		register(CondIsEmpty.class, "empty", "inventories/slots/strings");
+		register(CondIsEmpty.class, CondIsEmpty::new, "empty", "inventories/slots/strings");
 	}
 	
 	@Override

@@ -40,7 +40,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsSneaking extends PropertyCondition<Player> {
 	
 	static {
-		register(CondIsSneaking.class, "sneaking", "players");
+		register(CondIsSneaking.class, CondIsSneaking::new, "sneaking", "players");
 	}
 	
 	@Override

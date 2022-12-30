@@ -32,7 +32,7 @@ import org.bukkit.entity.LivingEntity;
 public class CondLeashed extends PropertyCondition<LivingEntity> {
 
 	static {
-		register(CondLeashed.class, PropertyType.BE, "leashed", "livingentities");
+		register(CondLeashed.class, CondLeashed::new, PropertyType.BE, "leashed", "livingentities");
 	}
 
 	@Override

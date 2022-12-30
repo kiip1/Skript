@@ -39,7 +39,7 @@ public class CondIsUnbreakable extends PropertyCondition<ItemType> {
 	
 	static {
 		if (Skript.methodExists(ItemMeta.class, "isUnbreakable")) {
-			register(CondIsUnbreakable.class, "unbreakable", "itemtypes");
+			register(CondIsUnbreakable.class, CondIsUnbreakable::new, "unbreakable", "itemtypes");
 		}
 	}
 	

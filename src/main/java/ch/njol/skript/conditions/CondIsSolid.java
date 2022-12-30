@@ -32,7 +32,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsSolid extends PropertyCondition<ItemType> {
 	
 	static {
-		register(CondIsSolid.class, "solid", "itemtypes");
+		register(CondIsSolid.class, CondIsSolid::new, "solid", "itemtypes");
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsOccluding extends PropertyCondition<ItemType> {
 	
 	static {
-		register(CondIsOccluding.class, "occluding", "itemtypes");
+		register(CondIsOccluding.class, CondIsOccluding::new, "occluding", "itemtypes");
 	}
 	
 	@Override

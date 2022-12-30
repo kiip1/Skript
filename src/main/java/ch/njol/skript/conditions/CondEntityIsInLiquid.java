@@ -42,7 +42,7 @@ public class CondEntityIsInLiquid extends PropertyCondition<Entity> {
 			patterns.append("1¦water");
 			if (Skript.methodExists(Entity.class, "isInLava")) // Paper - All added at the same time + isInWater
 				patterns.append("|2¦lava|3¦[a] bubble[ ]column|4¦rain");
-			register(CondEntityIsInLiquid.class, PropertyType.BE, "in (" + patterns + ")", "entities");
+			register(CondEntityIsInLiquid.class, CondEntityIsInLiquid::new, PropertyType.BE, "in (" + patterns + ")", "entities");
 		}
 	}
 

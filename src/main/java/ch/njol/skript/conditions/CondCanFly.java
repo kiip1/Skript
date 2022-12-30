@@ -34,7 +34,7 @@ import ch.njol.skript.doc.Since;
 public class CondCanFly extends PropertyCondition<Player> {
 	
 	static {
-		register(CondCanFly.class, PropertyType.CAN, "fly", "players");
+		register(CondCanFly.class, CondCanFly::new, PropertyType.CAN, "fly", "players");
 	}
 	
 	@Override

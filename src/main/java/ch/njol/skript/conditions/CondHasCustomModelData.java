@@ -38,7 +38,7 @@ public class CondHasCustomModelData extends PropertyCondition<ItemType> {
 	
 	static {
 		if (Skript.methodExists(ItemMeta.class, "hasCustomModelData")) {
-			register(CondHasCustomModelData.class, PropertyType.HAVE, "[custom] model data", "itemtypes");
+			register(CondHasCustomModelData.class, CondHasCustomModelData::new, PropertyType.HAVE, "[custom] model data", "itemtypes");
 		}
 	}
 	

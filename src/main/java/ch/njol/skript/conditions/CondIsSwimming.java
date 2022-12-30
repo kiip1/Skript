@@ -37,7 +37,7 @@ public class CondIsSwimming extends PropertyCondition<LivingEntity> {
 	
 	static {
 		if (Skript.methodExists(LivingEntity.class, "isSwimming"))
-			register(CondIsSwimming.class, "swimming", "livingentities");
+			register(CondIsSwimming.class, CondIsSwimming::new, "swimming", "livingentities");
 	}
 	
 	@Override

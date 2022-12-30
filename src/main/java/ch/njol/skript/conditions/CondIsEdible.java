@@ -32,7 +32,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsEdible extends PropertyCondition<ItemType> {
 
 	static {
-		PropertyCondition.register(CondIsEdible.class, "edible", "itemtypes");
+		PropertyCondition.register(CondIsEdible.class, CondIsEdible::new, "edible", "itemtypes");
 	}
 
 	@Override

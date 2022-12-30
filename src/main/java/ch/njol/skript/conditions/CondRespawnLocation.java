@@ -47,7 +47,7 @@ public class CondRespawnLocation extends Condition {
 
 	static {
 		if (Skript.classExists("org.bukkit.block.data.type.RespawnAnchor"))
-			Skript.registerCondition(CondRespawnLocation.class, "[the] respawn location (was|is)[1:(n'| no)t] [a] (:bed|respawn anchor)");
+			Skript.registerCondition(CondRespawnLocation.class, CondRespawnLocation::new, "[the] respawn location (was|is)[1:(n'| no)t] [a] (:bed|respawn anchor)");
 	}
 
 	private boolean bedSpawn;

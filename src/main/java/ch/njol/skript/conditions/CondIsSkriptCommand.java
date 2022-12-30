@@ -39,7 +39,7 @@ import ch.njol.skript.doc.Since;
 public class CondIsSkriptCommand extends PropertyCondition<String> {
 	
 	static {
-		register(CondIsSkriptCommand.class, PropertyType.BE, "[a] s(k|c)ript (command|cmd)", "string");
+		register(CondIsSkriptCommand.class, CondIsSkriptCommand::new, PropertyType.BE, "[a] s(k|c)ript (command|cmd)", "string");
 	}
 	
 	@Override

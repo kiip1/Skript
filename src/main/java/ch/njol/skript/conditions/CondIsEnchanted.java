@@ -45,7 +45,7 @@ import ch.njol.util.Kleenean;
 public class CondIsEnchanted extends Condition {
 	
 	static {
-		PropertyCondition.register(CondIsEnchanted.class, "enchanted [with %-enchantmenttype%]", "itemtypes");
+		PropertyCondition.register(CondIsEnchanted.class, CondIsEnchanted::new, "enchanted [with %-enchantmenttype%]", "itemtypes");
 	}
 	
 	@SuppressWarnings("NotNullFieldNotInitialized")

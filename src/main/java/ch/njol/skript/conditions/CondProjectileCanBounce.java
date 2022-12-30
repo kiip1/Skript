@@ -35,7 +35,7 @@ import ch.njol.skript.doc.Since;
 public class CondProjectileCanBounce extends PropertyCondition<Projectile> {
 	
 	static {
-		register(CondProjectileCanBounce.class, PropertyType.CAN, "bounce", "projectiles");
+		register(CondProjectileCanBounce.class, CondProjectileCanBounce::new, PropertyType.CAN, "bounce", "projectiles");
 	}
 	
 	@Override
