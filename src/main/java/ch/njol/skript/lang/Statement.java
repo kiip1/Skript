@@ -18,14 +18,13 @@
  */
 package ch.njol.skript.lang;
 
-import java.util.Iterator;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.function.EffFunctionCall;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.ArrayDeque;
 
 /**
  * Supertype of conditions and effects
@@ -35,7 +34,7 @@ import ch.njol.skript.log.SkriptLogger;
  */
 public abstract class Statement extends TriggerItem implements SyntaxElement {
 
-	@SuppressWarnings({"rawtypes", "unchecked", "null"})
+	@SuppressWarnings({"null"})
 	@Nullable
 	public static Statement parse(String s, String defaultError) {
 		ParseLogHandler log = SkriptLogger.startParseLogHandler();
@@ -57,7 +56,7 @@ public abstract class Statement extends TriggerItem implements SyntaxElement {
 			}
 			log.clear();
 
-			Statement statement = (Statement) SkriptParser.parse(s, (Iterator) Skript.getStatements().iterator(), defaultError);
+			Statement statement = SkriptParser.parse(s, new ArrayDeque<>(Skript.getStatements()), defaultError);
 			if (statement != null) {
 				log.printLog();
 				return statement;

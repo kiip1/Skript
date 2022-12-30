@@ -253,7 +253,7 @@ public interface Expression<T> extends SyntaxElement, Debuggable {
 	 * <p>
 	 * This method is not yet used but will be used to improve efficiency in the future.
 	 * 
-	 * @return A reference to a simpler version of this expression. Can change this expression directly and return itself if applicable, i.e. no references to the expression before
+	 * @return A reference to a simpler version of this expression. Can change this expression directly and return itself if check, i.e. no references to the expression before
 	 *         this method call should be kept!
 	 */
 	public Expression<? extends T> simplify();

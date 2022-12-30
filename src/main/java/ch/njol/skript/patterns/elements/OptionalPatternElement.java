@@ -16,40 +16,43 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-package ch.njol.skript.patterns;
+package ch.njol.skript.patterns.elements;
 
-import org.jetbrains.annotations.Nullable;
+import com.google.common.base.MoreObjects;
 
 /**
- * A {@link PatternElement} that represents a group, for example {@code (test)}.
+ * A {@link PatternElement} that contains an optional part, for example {@code [hello world]}.
  */
-public class GroupPatternElement extends PatternElement {
+public final class OptionalPatternElement implements PatternElement {
 
-	private final PatternElement patternElement;
+	private final PatternElement element;
 
-	public GroupPatternElement(PatternElement patternElement) {
-		this.patternElement = patternElement;
+	public OptionalPatternElement(PatternElement element) {
+		this.element = element;
 	}
-
-	public PatternElement getPatternElement() {
-		return patternElement;
-	}
-
+	
 	@Override
-	void setNext(@Nullable PatternElement next) {
-		super.setNext(next);
-		patternElement.setLastNext(next);
+	public boolean check(CheckContext context) {
+		int start = context.position;
+		if (element.check(context)) {
+			context.pushMatch(this, start);
+			return true;
+		}
+		
+		context.position = start;
+		return false;
 	}
-
+	
 	@Override
-	@Nullable
-	public MatchResult match(String expr, MatchResult matchResult) {
-		return patternElement.match(expr, matchResult);
+	public String pattern() {
+		return "[" + element.pattern() + "]";
 	}
 
 	@Override
 	public String toString() {
-		return "(" + patternElement + ")";
+		return MoreObjects.toStringHelper(this)
+			.add("element", element)
+			.toString();
 	}
 
 }

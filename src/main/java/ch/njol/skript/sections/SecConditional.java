@@ -25,12 +25,14 @@ import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.events.bukkit.SkriptParseEvent;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.Section;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.patterns.PatternCompiler;
 import ch.njol.skript.patterns.SkriptPattern;
+import ch.njol.skript.patterns.elements.PatternElement;
 import ch.njol.skript.util.Patterns;
 import ch.njol.util.Kleenean;
 import com.google.common.collect.Iterables;
@@ -111,7 +113,8 @@ public class SecConditional extends Section {
 				String error = (ifAny ? "'if any'" : "'if all'") + " has to be placed just before a 'then' section";
 				if (nextNode instanceof SectionNode && nextNode.getKey() != null) {
 					String nextNodeKey = ScriptLoader.replaceOptions(nextNode.getKey());
-					if (THEN_PATTERN.match(nextNodeKey) == null) {
+					PatternElement.CheckContext context = THEN_PATTERN.check(nextNodeKey);
+					if (THEN_PATTERN.visit(nextNodeKey, 0, context, ParseContext.SCRIPT) == null) {
 						Skript.error(error);
 						return false;
 					}

@@ -22,8 +22,10 @@
  * 
  * @author Peter Güttinger
  */
+@ApiStatus.Internal
 @NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
-package ch.njol.skript.patterns;
+package ch.njol.skript.patterns.elements;
 
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jetbrains.annotations.ApiStatus;

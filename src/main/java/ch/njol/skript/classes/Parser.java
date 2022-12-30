@@ -18,12 +18,10 @@
  */
 package ch.njol.skript.classes;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.lang.ParseContext;
-import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.StringMode;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A parser used to parse data from a string or turn data into a string.
@@ -45,7 +43,7 @@ public abstract class Parser<T> {
 	 * so try to avoid computationally expensive operations in this method when possible.
 	 * 
 	 * @param s The String to parse. This string is already trim()med.
-	 * @param context Context of parsing, may not be null
+	 * @param context CheckContext of parsing, may not be null
 	 * @return The parsed input or null if the input is invalid for this parser.
 	 */
 	@Nullable

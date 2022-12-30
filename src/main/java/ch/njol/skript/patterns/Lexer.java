@@ -16,14 +16,50 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-
-/**
- * The package for the bukkit plugin Skript.
- * 
- * @author Peter Güttinger
- */
-@NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
 package ch.njol.skript.patterns;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+
+public interface Lexer {
+	
+	static Lexer of(String pattern) {
+		return new LexerImpl(pattern);
+	}
+	
+	@Contract("-> new")
+	Lexer.Instance instance();
+	
+	String pattern();
+	
+	interface Instance extends Iterable<Token> {
+		
+		Token next();
+		
+		Token peek();
+		
+		boolean hasNext();
+		
+		int position();
+		
+		@NotNull
+		@Override
+		default Iterator<Token> iterator() {
+			return new Iterator<Token>() {
+				@Override
+				public boolean hasNext() {
+					return Instance.this.hasNext();
+				}
+				
+				@Override
+				public Token next() {
+					return Instance.this.next();
+				}
+			};
+		}
+		
+	}
+	
+}

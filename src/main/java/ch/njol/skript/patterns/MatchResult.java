@@ -21,61 +21,105 @@ package ch.njol.skript.patterns;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.patterns.elements.PatternElement.CheckContext;
+import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * A result from pattern matching.
  */
-public class MatchResult {
+@ApiStatus.Internal
+public final class MatchResult {
 
-	int exprOffset;
-
-	Expression<?>[] expressions = new Expression[0];
-	String expr;
-	int mark;
-	List<String> tags = new ArrayList<>();
-	List<java.util.regex.MatchResult> regexResults = new ArrayList<>();
-
-	// SkriptParser stuff
-	ParseContext parseContext = ParseContext.DEFAULT;
-	int flags;
+	private final String input;
+	private final CheckContext checkContext;
+	private final ParseContext parseContext;
+	private final List<Expression<?>> expressions = new ArrayList<>();
+	private final List<String> tags = new ArrayList<>();
+	private final List<java.util.regex.MatchResult> regexResults = new ArrayList<>();
+	
+	private int mark;
+	private int flags;
+	
+	public MatchResult(String input, int mark, int flags, CheckContext checkContext, ParseContext parseContext) {
+		this.input = input;
+		this.mark = mark;
+		this.flags = flags;
+		this.checkContext = checkContext;
+		this.parseContext = parseContext;
+	}
 
 	public MatchResult copy() {
-		MatchResult matchResult = new MatchResult();
-		matchResult.exprOffset = this.exprOffset;
-		matchResult.expressions = this.expressions.clone();
-		matchResult.expr = this.expr;
-		matchResult.mark = this.mark;
-		matchResult.tags = new ArrayList<>(this.tags);
-		matchResult.regexResults = new ArrayList<>(this.regexResults);
-		matchResult.parseContext = this.parseContext;
-		matchResult.flags = this.flags;
-		return matchResult;
+		MatchResult result = new MatchResult(input, mark, flags, checkContext, parseContext);
+		result.expressions().addAll(expressions);
+		result.tags().addAll(tags);
+		result.regexResults().addAll(regexResults);
+		return result;
 	}
 
 	public ParseResult toParseResult() {
-		ParseResult parseResult = new ParseResult(expr, expressions);
+		ParseResult parseResult = new ParseResult(input, expressions.toArray(new Expression<?>[0]));
 		parseResult.regexes.addAll(regexResults);
 		parseResult.mark = mark;
 		parseResult.tags.addAll(tags);
 		return parseResult;
 	}
-
+	
+	public List<Expression<?>> expressions() {
+		return expressions;
+	}
+	
+	public String input() {
+		return input;
+	}
+	
+	public int mark() {
+		return mark;
+	}
+	
+	public void setMark(int mark) {
+		this.mark = mark;
+	}
+	
+	public List<String> tags() {
+		return tags;
+	}
+	
+	public List<java.util.regex.MatchResult> regexResults() {
+		return regexResults;
+	}
+	
+	public CheckContext checkContext() {
+		return checkContext;
+	}
+	
+	public ParseContext parseContext() {
+		return parseContext;
+	}
+	
+	public int flags() {
+		return flags;
+	}
+	
+	public void setFlags(int flags) {
+		this.flags = flags;
+	}
+	
 	@Override
 	public String toString() {
-		return "MatchResult{" +
-			"exprOffset=" + exprOffset +
-			", expressions=" + Arrays.toString(expressions) +
-			", expr='" + expr + '\'' +
-			", mark=" + mark +
-			", tags=" + tags +
-			", regexResults=" + regexResults +
-			", parseContext=" + parseContext +
-			", flags=" + flags +
-			'}';
+		return MoreObjects.toStringHelper(this)
+			.add("expressions", expressions)
+			.add("tags", tags)
+			.add("regexResults", regexResults)
+			.add("input", input)
+			.add("mark", mark)
+			.add("flags", flags)
+			.add("checkContext", checkContext)
+			.add("parseContext", parseContext)
+			.toString();
 	}
-
+	
 }

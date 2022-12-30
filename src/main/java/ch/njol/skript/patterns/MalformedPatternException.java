@@ -18,16 +18,30 @@
  */
 package ch.njol.skript.patterns;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
-public class MalformedPatternException extends IllegalArgumentException {
-
-	public MalformedPatternException(String pattern, String message) {
-		this(pattern, message, null);
+@ApiStatus.Internal
+public final class MalformedPatternException extends IllegalArgumentException {
+	
+	public MalformedPatternException(Lexer.Instance lexer, String pattern, TokenType received) {
+		this(lexer.position(), pattern, "Unexpected " + received);
 	}
-
-	public MalformedPatternException(String pattern, String message, @Nullable Throwable cause) {
-		super(message + " [pattern: " + pattern + "]", cause);
+	
+	public MalformedPatternException(Lexer.Instance lexer, String pattern, TokenType expected, TokenType received) {
+		this(lexer.position(), pattern, "Expected " + expected + " but got " + received);
+	}
+	
+	public MalformedPatternException(Lexer.Instance lexer, String pattern, @Nullable String message) {
+		this(lexer.position(), pattern, message);
+	}
+	
+	public MalformedPatternException(int position, String pattern, @Nullable String message) {
+		this(pattern.substring(0, position - 1) + ">>>" + pattern.charAt(position - 1) + "<<<" + pattern.substring(position) + (message == null ? "" : " [" + message + "]"));
+	}
+	
+	public MalformedPatternException(String message) {
+		super(message, null);
 	}
 
 }

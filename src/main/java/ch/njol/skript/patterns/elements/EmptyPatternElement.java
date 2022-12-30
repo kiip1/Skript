@@ -16,14 +16,29 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
+package ch.njol.skript.patterns.elements;
+
+import com.google.common.base.MoreObjects;
 
 /**
- * The package for the bukkit plugin Skript.
- * 
- * @author Peter Güttinger
+ * A {@link PatternElement} that represents nothing; or better said a lack of something that should be there.
  */
-@NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
-package ch.njol.skript.patterns;
-
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+public final class EmptyPatternElement implements PatternElement {
+	
+	@Override
+	public boolean check(CheckContext context) {
+		throw new UnsupportedOperationException("Empty pattern element after tree completed");
+	}
+	
+	@Override
+	public String pattern() {
+		return "";
+	}
+	
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+			.toString();
+	}
+	
+}

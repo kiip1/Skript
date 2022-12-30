@@ -18,72 +18,44 @@
  */
 package ch.njol.skript.patterns;
 
-import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.patterns.elements.PatternElement;
+import ch.njol.skript.patterns.elements.PatternElement.CheckContext;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-public class SkriptPattern {
-
-	private final PatternElement first;
-	private final int expressionAmount;
-
-	private final String[] keywords;
-
-	public SkriptPattern(PatternElement first, int expressionAmount) {
-		this.first = first;
-		this.expressionAmount = expressionAmount;
-		keywords = getKeywords(first);
+public final class SkriptPattern {
+	
+	private final PatternElement element;
+	
+	public SkriptPattern(PatternElement element) {
+		this.element = element;
 	}
-
+	
+	/**
+	 * @return Null if not a match, the context if a match
+	 */
 	@Nullable
-	public MatchResult match(String expr, int flags, ParseContext parseContext) {
-		// Matching shortcut
-		String lowerExpr = expr.toLowerCase(Locale.ENGLISH);
-		for (String keyword : keywords)
-			if (!lowerExpr.contains(keyword))
-				return null;
-
-		expr = expr.trim();
-
-		MatchResult matchResult = new MatchResult();
-		matchResult.expr = expr;
-		matchResult.expressions = new Expression[expressionAmount];
-		matchResult.parseContext = parseContext;
-		matchResult.flags = flags;
-		return first.match(expr, matchResult);
+	public CheckContext check(String input) {
+		CheckContext context = new CheckContext(input);
+		return element.check(context) ? context : null;
 	}
-
+	
+	/**
+	 * @return Null if not a match, the context if a match
+	 */
 	@Nullable
-	public MatchResult match(String expr) {
-		return match(expr, SkriptParser.ALL_FLAGS, ParseContext.DEFAULT);
+	@Contract("_, _, null, _ -> null")
+	public MatchResult visit(String input, int flags, @Nullable CheckContext checkContext, ParseContext parseContext) {
+		if (checkContext == null)
+			return null;
+		MatchResult result = new MatchResult(input, 0, flags, checkContext, parseContext);
+		return element.visit(result) ? result : null;
 	}
-
+	
 	@Override
 	public String toString() {
-		return first.toFullString();
+		return element.toString();
 	}
-
-	public static String[] getKeywords(PatternElement first) {
-		List<String> keywords = new ArrayList<>();
-		PatternElement next = first;
-		while (next != null) {
-			if (next instanceof LiteralPatternElement) {
-				String literal = next.toString().trim();
-				while (literal.contains("  "))
-					literal = literal.replace("  ", " ");
-				keywords.add(literal);
-			} else if (next instanceof GroupPatternElement) {
-				next = ((GroupPatternElement) next).getPatternElement();
-				continue;
-			}
-			next = next.next;
-		}
-		return keywords.toArray(new String[0]);
-	}
-
+	
 }

@@ -16,9 +16,9 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-package ch.njol.skript.patterns;
+package ch.njol.skript.patterns.elements;
 
-import org.jetbrains.annotations.Nullable;
+import com.google.common.base.MoreObjects;
 
 import java.util.Locale;
 
@@ -26,42 +26,39 @@ import java.util.Locale;
  * A {@link PatternElement} that contains a literal string to be matched, for example {@code hello world}.
  * This element does not handle spaces as would be expected.
  */
-public class LiteralPatternElement extends PatternElement {
-
-	private final char[] literal;
-
+public final class LiteralPatternElement implements PatternElement {
+	
+	private final String literal;
+	
 	public LiteralPatternElement(String literal) {
-		this.literal = literal.toLowerCase(Locale.ENGLISH).toCharArray();
+		this.literal = literal.toLowerCase(Locale.ENGLISH);
 	}
-
-	public boolean isEmpty() {
-		return literal.length == 0;
-	}
-
+	
 	@Override
-	@Nullable
-	public MatchResult match(String expr, MatchResult matchResult) {
-		char[] exprChars = expr.toCharArray();
-
-		int exprIndex = matchResult.exprOffset;
-		for (char c : literal) {
-			if (c == ' ') {
-				if (exprIndex == 0 || exprIndex == exprChars.length || (exprIndex > 0 && exprChars[exprIndex - 1] == ' '))
-					continue;
-				else if (exprChars[exprIndex] != ' ')
-					return null;
-			} else if (exprIndex == exprChars.length || Character.toLowerCase(c) != Character.toLowerCase(exprChars[exprIndex]))
-				return null;
-			exprIndex++;
+	public boolean check(CheckContext context) {
+		int start = context.position;
+		int end = start + literal.length();
+		if (end > context.input.length())
+			return false;
+		
+		if (context.input.substring(start, end).equals(literal)) {
+			context.position = end;
+			return true;
 		}
-
-		matchResult.exprOffset = exprIndex;
-		return matchNext(expr, matchResult);
+		
+		return false;
 	}
-
+	
+	@Override
+	public String pattern() {
+		return literal;
+	}
+	
 	@Override
 	public String toString() {
-		return new String(literal);
+		return MoreObjects.toStringHelper(this)
+			.add("literal", literal)
+			.toString();
 	}
-
+	
 }

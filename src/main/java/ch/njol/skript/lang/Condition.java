@@ -18,14 +18,13 @@
  */
 package ch.njol.skript.lang;
 
-import java.util.Iterator;
-
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Checker;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.ArrayDeque;
 
 /**
  * A condition which must be fulfilled for the trigger to continue. If the condition is in a section the behaviour depends on the section.
@@ -68,13 +67,14 @@ public abstract class Condition extends Statement {
 		return negated;
 	}
 	
-	@SuppressWarnings({"rawtypes", "unchecked", "null"})
+	@SuppressWarnings({"null"})
 	@Nullable
-	public static Condition parse(String s, @Nullable String defaultError) {
-		s = s.trim();
-		while (s.startsWith("(") && SkriptParser.next(s, 0, ParseContext.DEFAULT) == s.length())
-			s = s.substring(1, s.length() - 1);
-		return (Condition) SkriptParser.parse(s, (Iterator) Skript.getConditions().iterator(), defaultError);
+	public static Condition parse(String input, @Nullable String defaultError) {
+		input = input.trim();
+		while (input.startsWith("(") && SkriptParser.next(input, 0, ParseContext.DEFAULT) == input.length())
+			input = input.substring(1, input.length() - 1);
+		
+		return SkriptParser.parse(input, new ArrayDeque<>(Skript.getConditions()), defaultError);
 	}
 	
 }

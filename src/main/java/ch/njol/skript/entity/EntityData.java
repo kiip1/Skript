@@ -55,9 +55,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.io.NotSerializableException;
 import java.io.StreamCorruptedException;
 import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -392,8 +392,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	public static EntityData<?> parse(String s) {
 		if (!REGEX_PATTERN.matcher(s).matches())
 			return null;
-		Iterator<EntityDataInfo<EntityData<?>>> it = infos.iterator();
-		return SkriptParser.parseStatic(Noun.stripIndefiniteArticle(s), it, null);
+		return SkriptParser.parse(Noun.stripIndefiniteArticle(s), new ArrayDeque<>(infos), null);
 	}
 	
 	/**
@@ -407,8 +406,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	public static EntityData<?> parseWithoutIndefiniteArticle(String s) {
 		if (!REGEX_PATTERN.matcher(s).matches())
 			return null;
-		Iterator<EntityDataInfo<EntityData<?>>> it = infos.iterator();
-		return SkriptParser.parseStatic(s, it, null);
+		return SkriptParser.parse(s, new ArrayDeque<>(infos), null);
 	}
 	
 	@Nullable

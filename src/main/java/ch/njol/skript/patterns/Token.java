@@ -16,14 +16,33 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-
-/**
- * The package for the bukkit plugin Skript.
- * 
- * @author Peter Güttinger
- */
-@NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
 package ch.njol.skript.patterns;
 
-import org.eclipse.jdt.annotation.DefaultLocation;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+import com.google.common.base.MoreObjects;
+
+final class Token {
+	private final TokenType type;
+	private final String value;
+	
+	public Token(TokenType type, String value) {
+		this.type = type;
+		this.value = value;
+	}
+	
+	public TokenType type() {
+		return type;
+	}
+	
+	public String value() {
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+			.add("type", type)
+			.add("value", value)
+			.toString();
+	}
+	
+}

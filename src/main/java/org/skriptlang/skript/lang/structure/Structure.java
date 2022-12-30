@@ -34,15 +34,15 @@ import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import ch.njol.util.coll.iterator.ConsumingIterator;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.skriptlang.skript.lang.entry.EntryContainer;
 import org.skriptlang.skript.lang.entry.EntryData;
 import org.skriptlang.skript.lang.entry.EntryValidator;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Queue;
 
 /**
  * Structures are the root elements in every script. They are essentially the "headers".
@@ -180,12 +180,12 @@ public abstract class Structure implements SyntaxElement, Debuggable {
 	public static Structure parse(String expr, SectionNode sectionNode, @Nullable String defaultError) {
 		ParserInstance.get().getData(StructureData.class).sectionNode = sectionNode;
 
-		Iterator<StructureInfo<? extends Structure>> iterator =
-			new ConsumingIterator<>(Skript.getStructures().iterator(),
-				elementInfo -> ParserInstance.get().getData(StructureData.class).structureInfo = elementInfo);
+		Queue<StructureInfo<? extends Structure>> queue = new ArrayDeque<>(Skript.getStructures());
+		for (StructureInfo<? extends Structure> info : queue)
+			ParserInstance.get().getData(StructureData.class).structureInfo = info;
 
 		try (ParseLogHandler parseLogHandler = SkriptLogger.startParseLogHandler()) {
-			Structure structure = SkriptParser.parseStatic(expr, iterator, ParseContext.EVENT, defaultError);
+			Structure structure = SkriptParser.parse(expr, queue, SkriptParser.PARSE_LITERALS, ParseContext.EVENT, defaultError);
 			if (structure != null) {
 				parseLogHandler.printLog();
 				return structure;

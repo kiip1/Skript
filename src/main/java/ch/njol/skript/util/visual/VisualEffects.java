@@ -31,8 +31,12 @@ import ch.njol.skript.util.Direction;
 import ch.njol.skript.util.SkriptColor;
 import ch.njol.skript.variables.Variables;
 import ch.njol.util.StringUtils;
-import ch.njol.util.coll.iterator.SingleItemIterator;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -40,7 +44,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.eclipse.jdt.annotation.Nullable;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -64,8 +75,8 @@ public class VisualEffects {
 	public static VisualEffect parse(String s) {
 		if (elementInfo == null)
 			return null;
-		return SkriptParser.parseStatic(
-			Noun.stripIndefiniteArticle(s), new SingleItemIterator<>(elementInfo), null);
+		return SkriptParser.parse(Noun.stripIndefiniteArticle(s),
+			new ArrayDeque<>(Collections.singleton(elementInfo)), null);
 	}
 
 	public static VisualEffectType get(int i) {
