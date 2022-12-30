@@ -761,7 +761,7 @@ public final class Skript extends JavaPlugin implements Listener {
 
 				File scriptsFolder = getScriptsFolder();
 				ScriptLoader.updateDisabledScripts(scriptsFolder.toPath());
-				ScriptLoader.loadScripts(scriptsFolder, OpenCloseable.EMPTY)
+				ScriptLoader.loadScripts(scriptsFolder, logHandler)
 					.thenAccept(scriptInfo -> {
 						try {
 							if (logHandler.getCount() == 0)
