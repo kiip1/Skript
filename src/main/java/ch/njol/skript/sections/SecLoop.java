@@ -42,7 +42,7 @@ import java.util.WeakHashMap;
 public class SecLoop extends Section {
 
 	static {
-		Skript.registerSection(SecLoop.class, "loop %objects%");
+		Skript.registerSection(SecLoop.class, SecLoop::new, "loop %objects%");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")

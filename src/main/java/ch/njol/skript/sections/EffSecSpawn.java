@@ -81,7 +81,7 @@ public class EffSecSpawn extends EffectSection {
 	}
 
 	static {
-		Skript.registerSection(EffSecSpawn.class,
+		Skript.registerSection(EffSecSpawn.class, EffSecSpawn::new,
 			"(spawn|summon) %entitytypes% [%directions% %locations%]",
 			"(spawn|summon) %number% of %entitytypes% [%directions% %locations%]"
 		);

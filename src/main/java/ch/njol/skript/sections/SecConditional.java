@@ -59,7 +59,7 @@ public class SecConditional extends Section {
 	});
 
 	static {
-		Skript.registerSection(SecConditional.class, CONDITIONAL_PATTERNS.getPatterns());
+		Skript.registerSection(SecConditional.class, SecConditional::new, CONDITIONAL_PATTERNS.getPatterns());
 	}
 
 	private enum ConditionalType {

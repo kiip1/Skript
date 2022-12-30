@@ -34,7 +34,7 @@ import java.util.List;
 public class SecWhile extends Section {
 
 	static {
-		Skript.registerSection(SecWhile.class, "[(1¦do)] while <.+>");
+		Skript.registerSection(SecWhile.class, SecWhile::new, "[(1¦do)] while <.+>");
 	}
 
 	@SuppressWarnings("NotNullFieldNotInitialized")
