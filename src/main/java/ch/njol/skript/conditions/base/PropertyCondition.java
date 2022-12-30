@@ -18,6 +18,7 @@
  */
 package ch.njol.skript.conditions.base;
 
+import ch.njol.skript.util.MarkedForRemoval;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -28,6 +29,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
+
+import java.util.function.Supplier;
 
 /**
  * This class can be used for an easier writing of conditions that contain only one type in the pattern,
@@ -43,13 +46,13 @@ import ch.njol.util.Kleenean;
  * <ul>
  *     <li>The {@link ch.njol.skript.lang.Debuggable#toString(Event, boolean)} method is already implemented,
  *     and it works well with the plural and negated forms</li>
- *     <li>You can use the {@link PropertyCondition#register(Class, PropertyType, String, String)}
+ *     <li>You can use the {@link PropertyCondition#register(Class, Supplier, PropertyType, String, String)}
  *     method for an easy registration</li>
  * </ul>
  *
  * <b>Note:</b> if you choose to register this class in any other way than by calling
- * {@link PropertyCondition#register(Class, PropertyType, String, String)} or
- * {@link PropertyCondition#register(Class, String, String)}, be aware that there can only be two patterns -
+ * {@link PropertyCondition#register(Class, Supplier, PropertyType, String, String)} or
+ * {@link PropertyCondition#register(Class, Supplier, String, String)}, be aware that there can only be two patterns -
  * the first one needs to be a non-negated one and a negated one.
  */
 public abstract class PropertyCondition<T> extends Condition implements Checker<T> {
@@ -81,37 +84,73 @@ public abstract class PropertyCondition<T> extends Condition implements Checker<
 	private Expression<? extends T> expr;
 	
 	/**
-	 * @param c the class to register
+	 * @param clazz the class to register
 	 * @param property the property name, for example <i>fly</i> in <i>players can fly</i>
 	 * @param type must be plural, for example <i>players</i> in <i>players can fly</i>
+	 * @deprecated Use {@link #register(Class, Supplier, String, String)}
 	 */
-	public static void register(final Class<? extends Condition> c, final String property, final String type) {
-		register(c, PropertyType.BE, property, type);
+	@Deprecated
+	@MarkedForRemoval
+	public static void register(Class<? extends Condition> clazz, String property, String type) {
+		register(clazz, PropertyType.BE, property, type);
 	}
 	
 	/**
-	 * @param c the class to register
+	 * @param clazz the class to register
+	 * @param property the property name, for example <i>fly</i> in <i>players can fly</i>
+	 * @param type must be plural, for example <i>players</i> in <i>players can fly</i>
+	 */
+	public static <E extends Condition> void register(Class<E> clazz, Supplier<E> supplier,
+	                                                  String property, String type) {
+		
+		register(clazz, supplier, PropertyType.BE, property, type);
+	}
+	
+	/**
+	 * @param clazz the class to register
+	 * @param propertyType the property type, see {@link PropertyType}
+	 * @param property the property name, for example <i>fly</i> in <i>players can fly</i>
+	 * @param type must be plural, for example <i>players</i> in <i>players can fly</i>
+	 * @deprecated Use {@link #register(Class, Supplier, PropertyType, String, String)}
+	 */
+	@Deprecated
+	@MarkedForRemoval
+	public static void register(Class<? extends Condition> clazz, PropertyType propertyType,
+	                            String property, String type) {
+		
+		// Null can be passed for now, but whenever these methods get removed
+		// null won't be supported anymore
+		//noinspection DataFlowIssue
+		register(clazz, null, propertyType, property, type);
+	}
+	
+	/**
+	 * @param clazz the class to register
+	 * @param supplier Supplier which will instantiate the condition
 	 * @param propertyType the property type, see {@link PropertyType}
 	 * @param property the property name, for example <i>fly</i> in <i>players can fly</i>
 	 * @param type must be plural, for example <i>players</i> in <i>players can fly</i>
 	 */
-	public static void register(final Class<? extends Condition> c, final PropertyType propertyType, final String property, final String type) {
+	public static <E extends Condition> void register(Class<E> clazz, Supplier<E> supplier,
+	                                                  PropertyType propertyType, String property, String type) {
+		
 		if (type.contains("%")) {
 			throw new SkriptAPIException("The type argument must not contain any '%'s");
 		}
+		
 		switch (propertyType) {
 			case BE:
-				Skript.registerCondition(c,
+				Skript.registerCondition(clazz, supplier,
 						"%" + type + "% (is|are) " + property,
 						"%" + type + "% (isn't|is not|aren't|are not) " + property);
 				break;
 			case CAN:
-				Skript.registerCondition(c,
+				Skript.registerCondition(clazz, supplier,
 						"%" + type + "% can " + property,
 						"%" + type + "% (can't|cannot|can not) " + property);
 				break;
 			case HAVE:
-				Skript.registerCondition(c,
+				Skript.registerCondition(clazz, supplier,
 						"%" + type + "% (has|have) " + property,
 						"%" + type + "% (doesn't|does not|do not|don't) have " + property);
 				break;
