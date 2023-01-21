@@ -26,12 +26,12 @@ import java.lang.annotation.Target;
 
 /**
  * Provides the name of annotated element to be used in documentation.
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Name {
 	
-	public String value();
+	String value();
+	
 }

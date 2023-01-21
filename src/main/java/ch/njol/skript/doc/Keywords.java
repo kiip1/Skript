@@ -32,5 +32,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Keywords {
 	
-	public String[] value();
+	String[] value();
+	
 }
