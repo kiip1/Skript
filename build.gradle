@@ -22,6 +22,7 @@ allprojects {
 }
 
 dependencies {
+	shadow project(path: ':skript-docs-tool', configuration: 'shadow')
 	shadow group: 'io.papermc', name: 'paperlib', version: '1.0.8'
 	shadow group: 'org.bstats', name: 'bstats-bukkit', version: '3.0.0'
 	implementation group: 'io.papermc.paper', name: 'paper-api', version: '1.19.3-R0.1-SNAPSHOT'
@@ -73,6 +74,7 @@ tasks.withType(ShadowJar) {
 		project.configurations.shadow
 	]
 	dependencies {
+		include(project(':skript-docs-tool'))
 		include(dependency('io.papermc:paperlib'))
 		include(dependency('org.bstats:bstats-bukkit'))
 		include(dependency('org.bstats:bstats-base'))

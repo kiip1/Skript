@@ -22,6 +22,7 @@ import ch.njol.skript.lang.SkriptEvent;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.bukkit.registration.BukkitSyntaxInfos.Event;
 import org.skriptlang.skript.registration.SyntaxInfoImpl;
 import org.skriptlang.skript.registration.SyntaxOrigin;
@@ -34,21 +35,66 @@ final class BukkitSyntaxInfosImpl {
 	static final class EventImpl<E extends SkriptEvent> extends SyntaxInfoImpl.StructureImpl<E> implements Event<E> {
 		
 		private final String name;
+		@Nullable
+		private final String since;
+		@Nullable
+		private final String documentationId;
+		private final List<String> description;
+		private final List<String> examples;
+		private final List<String> keywords;
+		private final List<String> requiredPlugins;
 		private final List<Class<? extends org.bukkit.event.Event>> events;
 		
 		EventImpl(
-			SyntaxOrigin origin, Class<E> type, List<String> patterns,
-			String name, List<Class<? extends org.bukkit.event.Event>> events
+			SyntaxOrigin origin, Class<E> type, List<String> patterns, String name, @Nullable String since,
+			@Nullable String documentationId, List<String> description, List<String> examples, List<String> keywords,
+			List<String> requiredPlugins, List<Class<? extends org.bukkit.event.Event>> events
 		) {
 			super(origin, type, patterns.stream().map(EventImpl::pattern)
 				.collect(Collectors.toList()), null);
 			this.name = name;
+			this.since = since;
+			this.documentationId = documentationId;
+			this.description = ImmutableList.copyOf(description);
+			this.examples = ImmutableList.copyOf(examples);
+			this.keywords = ImmutableList.copyOf(keywords);
+			this.requiredPlugins = ImmutableList.copyOf(requiredPlugins);
 			this.events = ImmutableList.copyOf(events);
 		}
 		
 		@Override
 		public String name() {
 			return name;
+		}
+		
+		@Override
+		public String since() {
+			return since;
+		}
+		
+		@Override
+		public String documentationId() {
+			return documentationId;
+		}
+		
+		@Override
+		public List<String> description() {
+			return description;
+		}
+		
+		@Override
+		public List<String> examples() {
+			return examples;
+		}
+		
+		@Override
+		public List<String> keywords() {
+			return keywords;
+		}
+		
+		@Override
+		public List<String> requiredPlugins() {
+			return requiredPlugins;
 		}
 		
 		@Override

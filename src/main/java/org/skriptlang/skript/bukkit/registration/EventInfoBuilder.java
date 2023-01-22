@@ -22,6 +22,7 @@ import ch.njol.skript.lang.SkriptEvent;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.registration.SyntaxOrigin;
 
 import java.util.ArrayList;
@@ -30,15 +31,24 @@ import java.util.List;
 @ApiStatus.Experimental
 public final class EventInfoBuilder<E extends SkriptEvent> {
 	
+	@Contract("_, _ -> new")
 	public static <E extends SkriptEvent> EventInfoBuilder<E> builder(Class<E> type, String name) {
 		return new EventInfoBuilder<>(type, name);
 	}
 	
 	private final Class<E> type;
 	private final String name;
+	private final List<String> description = new ArrayList<>();
+	private final List<String> examples = new ArrayList<>();
+	private final List<String> keywords = new ArrayList<>();
+	private final List<String> requiredPlugins = new ArrayList<>();
 	private final List<String> patterns = new ArrayList<>();
 	private final List<Class<? extends Event>> events = new ArrayList<>();
 	private SyntaxOrigin origin = SyntaxOrigin.UNKNOWN;
+	@Nullable
+	private String since;
+	@Nullable
+	private String documentationId;
 	
 	private EventInfoBuilder(Class<E> type, String name) {
 		this.type = type;
@@ -48,6 +58,98 @@ public final class EventInfoBuilder<E extends SkriptEvent> {
 	@Contract("_ -> this")
 	public EventInfoBuilder<E> origin(SyntaxOrigin origin) {
 		this.origin = origin;
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> since(String since) {
+		this.since = since;
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> documentationId(String documentationId) {
+		this.documentationId = documentationId;
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addDescription(String description) {
+		this.description.add(description);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addDescription(String... description) {
+		for (String line : description)
+			addDescription(line);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addDescription(List<String> description) {
+		for (String line : description)
+			addDescription(line);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addExample(String example) {
+		examples.add(example);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addExamples(String... examples) {
+		for (String example : examples)
+			addExample(example);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addExamples(List<String> examples) {
+		for (String example : examples)
+			addExample(example);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addKeyword(String keyword) {
+		keywords.add(keyword);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addKeywords(String... keywords) {
+		for (String keyword : keywords)
+			addKeyword(keyword);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addKeywords(List<String> keywords) {
+		for (String keyword : keywords)
+			addKeyword(keyword);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addRequiredPlugin(String requiredPlugin) {
+		requiredPlugins.add(requiredPlugin);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addRequiredPlugins(String... requiredPlugins) {
+		for (String requiredPlugin : requiredPlugins)
+			addRequiredPlugin(requiredPlugin);
+		return this;
+	}
+	
+	@Contract("_ -> this")
+	public EventInfoBuilder<E> addRequiredPlugins(List<String> requiredPlugins) {
+		for (String requiredPlugin : requiredPlugins)
+			addRequiredPlugin(requiredPlugin);
 		return this;
 	}
 	
@@ -93,7 +195,8 @@ public final class EventInfoBuilder<E extends SkriptEvent> {
 	
 	@Contract("-> new")
 	public BukkitSyntaxInfos.Event<E> build() {
-		return BukkitSyntaxInfos.Event.of(origin, name, type, patterns, events);
+		return BukkitSyntaxInfos.Event.of(origin, type, patterns, name, since, documentationId,
+			description, examples, keywords, requiredPlugins, events);
 	}
 	
 }

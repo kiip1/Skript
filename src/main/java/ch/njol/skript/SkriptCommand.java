@@ -20,8 +20,6 @@ package ch.njol.skript;
 
 import ch.njol.skript.aliases.Aliases;
 import ch.njol.skript.command.CommandHelp;
-import ch.njol.skript.doc.Documentation;
-import ch.njol.skript.doc.HTMLGenerator;
 import ch.njol.skript.localization.ArgsMessage;
 import ch.njol.skript.localization.Language;
 import ch.njol.skript.localization.PluralizingArgsMessage;
@@ -42,6 +40,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.eclipse.jdt.annotation.Nullable;
+import org.skriptlang.skript.docs.Documentation;
+import org.skriptlang.skript.docs.HtmlDocumentation;
 import org.skriptlang.skript.lang.script.Script;
 
 import java.io.File;
@@ -403,9 +403,8 @@ public class SkriptCommand implements CommandExecutor {
 				}
 				File outputDir = Documentation.getDocsOutputDirectory();
 				outputDir.mkdirs();
-				HTMLGenerator generator = new HTMLGenerator(templateDir, outputDir);
 				Skript.info(sender, "Generating docs...");
-				generator.generate(); // Try to generate docs... hopefully
+				new HtmlDocumentation(templateDir, outputDir).generate();
 				Skript.info(sender, "Documentation generated!");
 			}
 
