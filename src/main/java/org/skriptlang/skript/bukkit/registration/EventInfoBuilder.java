@@ -31,13 +31,14 @@ import java.util.List;
 @ApiStatus.Experimental
 public final class EventInfoBuilder<E extends SkriptEvent> {
 	
-	@Contract("_, _ -> new")
-	public static <E extends SkriptEvent> EventInfoBuilder<E> builder(Class<E> type, String name) {
-		return new EventInfoBuilder<>(type, name);
+	@Contract("_, _, _ -> new")
+	public static <E extends SkriptEvent> EventInfoBuilder<E> builder(Class<E> type, String name, String id) {
+		return new EventInfoBuilder<>(type, name, id);
 	}
 	
 	private final Class<E> type;
 	private final String name;
+	private final String id;
 	private final List<String> description = new ArrayList<>();
 	private final List<String> examples = new ArrayList<>();
 	private final List<String> keywords = new ArrayList<>();
@@ -50,9 +51,10 @@ public final class EventInfoBuilder<E extends SkriptEvent> {
 	@Nullable
 	private String documentationId;
 	
-	private EventInfoBuilder(Class<E> type, String name) {
+	private EventInfoBuilder(Class<E> type, String name, String id) {
 		this.type = type;
 		this.name = name;
+		this.id = id;
 	}
 	
 	@Contract("_ -> this")
@@ -195,7 +197,7 @@ public final class EventInfoBuilder<E extends SkriptEvent> {
 	
 	@Contract("-> new")
 	public BukkitSyntaxInfos.Event<E> build() {
-		return BukkitSyntaxInfos.Event.of(origin, type, patterns, name, since, documentationId,
+		return BukkitSyntaxInfos.Event.of(origin, type, patterns, name, id, since, documentationId,
 			description, examples, keywords, requiredPlugins, events);
 	}
 	

@@ -109,7 +109,6 @@ import org.skriptlang.skript.Skript.State;
 import org.skriptlang.skript.bukkit.registration.BukkitOrigin;
 import org.skriptlang.skript.bukkit.registration.BukkitRegistry;
 import org.skriptlang.skript.bukkit.registration.BukkitSyntaxInfos;
-import org.skriptlang.skript.bukkit.registration.EventInfoBuilder;
 import org.skriptlang.skript.lang.entry.EntryValidator;
 import org.skriptlang.skript.lang.script.Script;
 import org.skriptlang.skript.lang.structure.Structure;
@@ -1463,13 +1462,12 @@ public final class Skript extends JavaPlugin implements Listener {
 		String name, Class<E> eventClass, Class<? extends Event>[] events, String... patterns
 	) {
 		String originClass = Thread.currentThread().getStackTrace()[2].getClassName();
-		BukkitSyntaxInfos.Event<E> info = EventInfoBuilder.builder(eventClass, name)
-				.origin(BukkitOrigin.of(originClass))
-				.addPatterns(patterns)
-				.addEvents(events)
-				.build();
+		for (int i = 0; i < patterns.length; i++)
+			patterns[i] = BukkitSyntaxInfos.pattern(patterns[i]);
+		SkriptEventInfo<E> legacy = new SkriptEventInfo<>(name, patterns, eventClass, originClass, events);
+		BukkitSyntaxInfos.Event<E> info = BukkitSyntaxInfos.Event.legacy(legacy);
 		instance().registry().register(BukkitRegistry.EVENT, info);
-		return SyntaxElementInfo.fromModern(info);
+		return legacy;
 	}
 	
 	/**
