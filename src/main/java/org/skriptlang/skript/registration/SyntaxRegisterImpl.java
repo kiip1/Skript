@@ -18,58 +18,55 @@
  */
 package org.skriptlang.skript.registration;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 final class SyntaxRegisterImpl<T extends SyntaxInfo<?>> implements SyntaxRegister<T> {
 	
-	private final BlockingQueue<T> registry = new LinkedBlockingDeque<>();
+	private final Set<T> syntaxes = new ConcurrentSkipListSet<>(Comparator.comparingInt(SyntaxInfo::priority));
 	
 	@Override
 	@Unmodifiable 
-	public Set<T> syntaxes() {
-		return ImmutableSet.copyOf(registry);
+	public List<T> syntaxes() {
+		synchronized (syntaxes) {
+			return ImmutableList.copyOf(syntaxes);
+		}
 	}
 	
 	@Override
-	@Contract("_ -> this")
-	public SyntaxRegister<T> register(T info) {
-		registry.add(info);
-		return this;
+	public void add(T info) {
+		syntaxes.add(info);
 	}
 	
 	@Override
 	@Contract("-> new")
 	public SyntaxRegister<T> closeRegistration() {
-		return new FinalSyntaxRegister<>(registry);
+		return new FinalSyntaxRegister<>(this);
 	}
 	
 	static final class FinalSyntaxRegister<T extends SyntaxInfo<?>> implements SyntaxRegister<T> {
 		
-		private final Set<T> registry;
+		private final List<T> syntaxes;
 		
-		FinalSyntaxRegister(BlockingQueue<T> registry) {
-			Set<T> set = new HashSet<>();
-			registry.drainTo(set);
-			this.registry = Collections.unmodifiableSet(set);
+		FinalSyntaxRegister(SyntaxRegister<T> register) {
+			syntaxes = register.syntaxes();
 		}
 		
 		@Override
 		@Unmodifiable 
-		public Set<T> syntaxes() {
-			return registry;
+		public List<T> syntaxes() {
+			return syntaxes;
 		}
 		
 		@Override
 		@Contract("_ -> fail")
-		public SyntaxRegister<T> register(T info) {
+		public void add(T info) {
 			throw new UnsupportedOperationException("Registration is closed");
 		}
 		

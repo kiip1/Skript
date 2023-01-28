@@ -29,13 +29,18 @@ import org.jetbrains.annotations.Unmodifiable;
 import org.skriptlang.skript.lang.entry.EntryValidator;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ApiStatus.Internal
 public class SyntaxInfoImpl<T extends SyntaxElement> implements SyntaxInfo<T> {
 	
+	static final AtomicInteger IOTA = new AtomicInteger();
+	private static final int UNIDENTIFIED = -1;
+	
 	private final SyntaxOrigin origin;
 	private final Class<T> type;
 	private final List<String> patterns;
+	private int id = UNIDENTIFIED;
 	
 	SyntaxInfoImpl(SyntaxOrigin origin, Class<T> type, List<String> patterns) {
 		this.origin = origin;
@@ -57,6 +62,13 @@ public class SyntaxInfoImpl<T extends SyntaxElement> implements SyntaxInfo<T> {
 	@Unmodifiable
 	public List<String> patterns() {
 		return patterns;
+	}
+	
+	@Override
+	public int priority() {
+		if (id == UNIDENTIFIED)
+			id = IOTA.getAndIncrement();
+		return id;
 	}
 	
 	@Override
@@ -137,6 +149,11 @@ public class SyntaxInfoImpl<T extends SyntaxElement> implements SyntaxInfo<T> {
 				.add("returnType", returnType())
 				.add("expressionType", expressionType())
 				.toString();
+		}
+		
+		@Override
+		public int priority() {
+			return super.priority() | expressionType.ordinal() << 24;
 		}
 		
 	}

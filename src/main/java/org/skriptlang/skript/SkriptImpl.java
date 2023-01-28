@@ -52,7 +52,7 @@ final class SkriptImpl implements Skript {
 	
 	@Override
 	public void updateState(State state) {
-		if (state == State.POST_REGISTRATION)
+		if (state == State.CLOSED_REGISTRATION)
 			registry.closeRegistration();
 		this.state = state;
 	}

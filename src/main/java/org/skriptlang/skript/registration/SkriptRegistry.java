@@ -25,7 +25,7 @@ import ch.njol.skript.lang.Statement;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Unmodifiable;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * The Skript registry manages all registries for syntax registration.
@@ -38,7 +38,7 @@ public interface SkriptRegistry {
 	 * Gets all syntaxes related to a key.
 	 */
 	@Unmodifiable
-	<I extends SyntaxInfo<?>> Set<I> syntaxes(Key<I> key);
+	<I extends SyntaxInfo<?>> List<I> syntaxes(Key<I> key);
 	
 	<I extends SyntaxInfo<?>> void register(Key<I> key, I info);
 	

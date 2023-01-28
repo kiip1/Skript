@@ -21,7 +21,7 @@ package ch.njol.skript;
 import ch.njol.skript.aliases.Aliases;
 import ch.njol.skript.bukkitutil.BurgerHelper;
 import ch.njol.skript.classes.ClassInfo;
-import ch.njol.skript.classes.Converter;
+import org.skriptlang.skript.lang.comparator.Comparator;
 import ch.njol.skript.classes.data.BukkitClasses;
 import ch.njol.skript.classes.data.BukkitEventValues;
 import ch.njol.skript.classes.data.DefaultComparators;
@@ -57,7 +57,9 @@ import ch.njol.skript.log.LogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.log.Verbosity;
 import ch.njol.skript.registrations.Classes;
-import ch.njol.skript.registrations.Converters;
+import org.skriptlang.skript.lang.comparator.Comparators;
+import org.skriptlang.skript.lang.converter.Converter;
+import org.skriptlang.skript.lang.converter.Converters;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.tests.runner.SkriptTestEvent;
 import ch.njol.skript.tests.runner.TestMode;
@@ -1221,9 +1223,10 @@ public final class Skript extends JavaPlugin implements Listener {
 	}
 	
 	private static void stopAcceptingRegistrations() {
-		instance().updateState(State.POST_REGISTRATION);
-		Converters.createMissingConverters();
+		instance().updateState(State.ENDED_REGISTRATION);
+		Converters.createChainedConverters();
 		Classes.onRegistrationsStop();
+		instance().updateState(State.CLOSED_REGISTRATION);
 	}
 	
 	// ================ ADDONS ================
