@@ -41,6 +41,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -570,7 +571,7 @@ public class ItemData implements Cloneable, YggdrasilExtendedSerializable {
 	private static final Material[] materials = Material.values();
 
 	@Override
-	public void deserialize(Fields fields) throws StreamCorruptedException, NotSerializableException {
+	public void deserialize(@NotNull Fields fields) throws StreamCorruptedException, NotSerializableException {
 		this.type = materials[fields.getAndRemovePrimitive("id", int.class)];
 		ItemMeta meta = fields.getAndRemoveObject("meta", ItemMeta.class);
 

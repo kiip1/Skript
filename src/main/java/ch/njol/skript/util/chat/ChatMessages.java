@@ -156,7 +156,7 @@ public class ChatMessages {
 	 */
 	private static class ComponentList {
 		
-		public ComponentList(List<MessageComponent> components) {
+		public ComponentList(@org.jetbrains.annotations.Nullable List<MessageComponent> components) {
 			this.extra = components;
 		}
 		

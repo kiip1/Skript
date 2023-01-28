@@ -80,7 +80,7 @@ public enum PotionDataUtils {
 	private final int duration;
 	private final int amplifier;
 	
-	PotionDataUtils(PotionType potionType, boolean extended, boolean upgraded, int duration, int amplifier) {
+	PotionDataUtils(@org.jetbrains.annotations.Nullable PotionType potionType, boolean extended, boolean upgraded, int duration, int amplifier) {
 		this.potionType = potionType;
 		this.extended = extended;
 		this.upgraded = upgraded;

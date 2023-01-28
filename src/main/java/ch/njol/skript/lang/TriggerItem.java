@@ -45,7 +45,7 @@ public abstract class TriggerItem implements Debuggable {
 	
 	protected TriggerItem() {}
 	
-	protected TriggerItem(final TriggerSection parent) {
+	protected TriggerItem(final @org.jetbrains.annotations.Nullable TriggerSection parent) {
 		this.parent = parent;
 	}
 	

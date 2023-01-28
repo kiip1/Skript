@@ -60,7 +60,6 @@ public class EvtPeriodical extends SelfRegisteringSkriptEvent {
 	
 	@Nullable
 	private Trigger t;
-	@Nullable
 	private int[] taskIDs;
 	
 	@Nullable

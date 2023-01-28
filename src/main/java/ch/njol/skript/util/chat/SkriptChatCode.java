@@ -161,20 +161,20 @@ public enum SkriptChatCode implements ChatCode {
 	
 	private char colorChar;
 	
-	SkriptChatCode(@Nullable String colorCode, String langName, char colorChar) {
+	SkriptChatCode(@Nullable String colorCode, @org.jetbrains.annotations.Nullable String langName, char colorChar) {
 		this.colorCode = colorCode;
 		this.langName = langName;
 		this.hasParam = false;
 		this.colorChar = colorChar;
 	}
 	
-	SkriptChatCode(@Nullable String colorCode, String langName) {
+	SkriptChatCode(@Nullable String colorCode, @org.jetbrains.annotations.Nullable String langName) {
 		this.colorCode = colorCode;
 		this.langName = langName;
 		this.hasParam = false;
 	}
 	
-	SkriptChatCode(String colorCode, char colorChar) {
+	SkriptChatCode(@org.jetbrains.annotations.Nullable @org.jetbrains.annotations.Nullable String colorCode, char colorChar) {
 		this.colorCode = colorCode;
 		this.langName = colorCode;
 		this.hasParam = false;

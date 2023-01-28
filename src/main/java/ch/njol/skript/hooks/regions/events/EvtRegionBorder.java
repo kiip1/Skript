@@ -45,6 +45,7 @@ import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import ch.njol.util.Checker;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Peter Güttinger
@@ -146,7 +147,7 @@ public class EvtRegionBorder extends SelfRegisteringSkriptEvent {
 		
 		@SuppressWarnings("null")
 		@Override
-		public void execute(final @Nullable Listener listener, final Event event) throws EventException {
+		public void execute(final @Nullable Listener listener, final @NotNull Event event) throws EventException {
 			if (event == last)
 				return;
 			last = event;

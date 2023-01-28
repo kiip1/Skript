@@ -122,7 +122,7 @@ public class Signature<T> {
 		return single;
 	}
 
-	public String getOriginClassPath() {
+	public @org.jetbrains.annotations.Nullable String getOriginClassPath() {
 		return originClassPath;
 	}
 
