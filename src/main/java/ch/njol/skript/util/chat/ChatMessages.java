@@ -18,6 +18,16 @@
  */
 package ch.njol.skript.util.chat;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
+import ch.njol.skript.localization.Language;
+import ch.njol.skript.localization.LanguageChangeListener;
+import ch.njol.skript.util.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.md_5.bungee.api.ChatColor;
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,17 +38,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import ch.njol.skript.Skript;
-import ch.njol.skript.SkriptAddon;
-import ch.njol.skript.localization.Language;
-import ch.njol.skript.localization.LanguageChangeListener;
-import ch.njol.skript.util.Utils;
-import net.md_5.bungee.api.ChatColor;
 
 /**
  * Handles parsing chat messages.
@@ -156,7 +155,7 @@ public class ChatMessages {
 	 */
 	private static class ComponentList {
 		
-		public ComponentList(@org.jetbrains.annotations.Nullable List<MessageComponent> components) {
+		public ComponentList(@Nullable List<MessageComponent> components) {
 			this.extra = components;
 		}
 		

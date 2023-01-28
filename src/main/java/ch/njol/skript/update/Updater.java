@@ -172,7 +172,7 @@ public abstract class Updater {
 		return currentRelease;
 	}
 	
-	public void setReleaseChannel(@org.jetbrains.annotations.Nullable ReleaseChannel channel) {
+	public void setReleaseChannel(@Nullable ReleaseChannel channel) {
 		this.releaseChannel = channel;
 	}
 	
