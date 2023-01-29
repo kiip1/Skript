@@ -101,14 +101,15 @@ If we need to remove or alter contributed code due to a licensing issue we will 
   - Avoid omitting brackets if it produces hard-to-read code
 * Annotations for methods and classes are placed in lines before their declarations, one per line
   - Annotations affecting the return type should be placed before the return type if it doesn't hurt readability.
+    Good Example:
     ```java
     @Nullable String motd();
     ```
-    Is good, whereas:
+    Bad Example:
     ```java
     @Contract("null -> null; !null -> !null") Skript instance(Plugin plugin);
     ```
-    Is not, here the contract should be placed on the line before.
+    In the above the contract should be placed on the line before.
 * When there are multiple annotations, place them in order:
   - @Override -> @SuppressWarnings
   - For other annotations, doesn't matter; let your IDE decide
@@ -189,7 +190,7 @@ Your comments should look something like these:
   ```
 
 ### Nullness
-* Mark nullability in public api
+* Mark nullability whenever possible, but it is mandatory whenever it's supposed to be accessed by addons.
 * Only ignore nullness errors when a variable is effectively non-null - if in doubt: check
   - Most common example is syntax elements, which are not initialised using a constructor
 * Use assertions liberally: if you're sure something is not null, assert so to the compiler
