@@ -95,6 +95,8 @@ public class ChatMessages {
 				Skript.debug("Parsing message style lang files");
 				for (SkriptChatCode code : SkriptChatCode.values()) {
 					assert code != null;
+					if (code == SkriptChatCode.copy_to_clipboard && !Utils.COPY_SUPPORTED)
+						continue;
 					registerChatCode(code);
 				}
 				
@@ -572,25 +574,33 @@ public class ChatMessages {
 		registerChatCode(code);
 	}
 	
+	private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("[§&]x");
+	private static final Pattern ANY_COLOR_PATTERN = Pattern.compile("(?i)[&§][0-9a-folkrnm]");
+	
 	/**
 	 * Strips all styles from given string.
 	 * @param text String to strip styles from.
 	 * @return A string without styles.
 	 */
 	public static String stripStyles(String text) {
-		List<MessageComponent> components = parse(text);
-		StringBuilder sb = new StringBuilder();
-		for (MessageComponent component : components) { // This also strips bracket tags ex. <red> <ttp:..> etc.
-			sb.append(component.text);
-		}
-		String plain = sb.toString();
-
-		if (Utils.HEX_SUPPORTED) // Strip '§x', '&x'
-			plain = plain.replaceAll("[§&]x", "");
-
-		plain = plain.replaceAll("(?i)[&§][0-9a-folkrnm]", ""); // strips colors & or § (ex. &5)
-
-		assert plain != null;
-		return plain;
+		String previous;
+		String result = text;
+		do {
+			previous = result;
+			
+			List<MessageComponent> components = parse(result);
+			StringBuilder builder = new StringBuilder();
+			for (MessageComponent component : components) { // This also strips bracket tags ex. <red> <ttp:..> etc.
+				builder.append(component.text);
+			}
+			String plain = builder.toString();
+			
+			if (Utils.HEX_SUPPORTED) // Strip '§x', '&x'
+				plain = HEX_COLOR_PATTERN.matcher(plain).replaceAll("");
+			
+			result = ANY_COLOR_PATTERN.matcher(plain).replaceAll(""); // strips colors & or § (ex. &5)
+		} while (!previous.equals(result));
+		
+		return result;
 	}
 }
