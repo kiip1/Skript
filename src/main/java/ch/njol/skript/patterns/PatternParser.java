@@ -3,14 +3,14 @@ package ch.njol.skript.patterns;
 import ch.njol.skript.patterns.elements.PatternElement;
 import org.jetbrains.annotations.Contract;
 
-public interface Parser {
+public interface PatternParser {
 	
-	static Parser of(Lexer lexer) {
-		return new ParserImpl(lexer);
+	static PatternParser of(PatternLexer lexer) {
+		return new PatternParserImpl(lexer);
 	}
 	
 	@Contract("-> new")
-	Parser.Instance instance();
+	PatternParser.Instance instance();
 	
 	String pattern();
 	

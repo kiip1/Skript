@@ -42,17 +42,17 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
-final class ParserImpl implements Parser {
+final class PatternParserImpl implements PatternParser {
 	
-	private final Lexer lexer;
+	private final PatternLexer lexer;
 	
-	ParserImpl(Lexer lexer) {
+	PatternParserImpl(PatternLexer lexer) {
 		this.lexer = lexer;
 	}
 	
 	@Override
-	public Parser.Instance instance() {
-		return new ParserImpl.InstanceImpl(this, lexer.instance());
+	public PatternParser.Instance instance() {
+		return new PatternParserImpl.InstanceImpl(this, lexer.instance());
 	}
 	
 	@Override
@@ -60,15 +60,15 @@ final class ParserImpl implements Parser {
 		return lexer.pattern();
 	}
 	
-	private static final class InstanceImpl implements Parser.Instance {
+	private static final class InstanceImpl implements PatternParser.Instance {
 		
-		private final Parser parser;
-		private final Lexer.Instance lexer;
+		private final PatternParser parser;
+		private final PatternLexer.Instance lexer;
 		private final AtomicInteger expressionOffset = new AtomicInteger();
 		private Token previous = new Token(TokenType.END, "");
 		private Token current = new Token(TokenType.END, "");
 		
-		private InstanceImpl(Parser parser, Lexer.Instance lexer) {
+		private InstanceImpl(PatternParser parser, PatternLexer.Instance lexer) {
 			this.parser = parser;
 			this.lexer = lexer;
 			next();

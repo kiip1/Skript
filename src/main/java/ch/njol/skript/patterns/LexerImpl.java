@@ -25,7 +25,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.stream.Collectors;
 
-final class LexerImpl implements Lexer {
+final class LexerImpl implements PatternLexer {
 	
 	private final String pattern;
 	
@@ -34,7 +34,7 @@ final class LexerImpl implements Lexer {
 	}
 	
 	@Override
-	public Lexer.Instance instance() {
+	public PatternLexer.Instance instance() {
 		return new InstanceImpl(Queues.newArrayDeque(pattern.chars()
 			.mapToObj(integer -> (char) integer)
 			.collect(Collectors.toList())));
@@ -45,7 +45,7 @@ final class LexerImpl implements Lexer {
 		return pattern;
 	}
 	
-	private static final class InstanceImpl implements Lexer.Instance {
+	private static final class InstanceImpl implements PatternLexer.Instance {
 		
 		private final Deque<Character> chars;
 		private final int length;

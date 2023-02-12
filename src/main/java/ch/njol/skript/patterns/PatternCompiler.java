@@ -34,8 +34,8 @@ public final class PatternCompiler {
 		.expireAfterAccess(Duration.ofMinutes(1))
 		.maximumSize(10000)
 		.build(CacheLoader.from(pattern -> {
-			Parser parser = Parser.of(Lexer.of(pattern));
-			Parser.Instance instance = parser.instance();
+			PatternParser parser = PatternParser.of(PatternLexer.of(pattern));
+			PatternParser.Instance instance = parser.instance();
 			PatternElement element = instance.parse();
 			return new SkriptPattern(element, instance.expressionOffset());
 		}));

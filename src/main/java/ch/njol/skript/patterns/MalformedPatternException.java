@@ -24,15 +24,15 @@ import org.jetbrains.annotations.Nullable;
 @ApiStatus.Internal
 public final class MalformedPatternException extends IllegalArgumentException {
 	
-	public MalformedPatternException(Lexer.Instance lexer, String pattern, TokenType received) {
+	public MalformedPatternException(PatternLexer.Instance lexer, String pattern, TokenType received) {
 		this(lexer.position(), pattern, "Unexpected " + received);
 	}
 	
-	public MalformedPatternException(Lexer.Instance lexer, String pattern, TokenType expected, TokenType received) {
+	public MalformedPatternException(PatternLexer.Instance lexer, String pattern, TokenType expected, TokenType received) {
 		this(lexer.position(), pattern, "Expected " + expected + " but got " + received);
 	}
 	
-	public MalformedPatternException(Lexer.Instance lexer, String pattern, @Nullable String message) {
+	public MalformedPatternException(PatternLexer.Instance lexer, String pattern, @Nullable String message) {
 		this(lexer.position(), pattern, message);
 	}
 	

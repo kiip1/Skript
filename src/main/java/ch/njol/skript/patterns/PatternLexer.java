@@ -23,14 +23,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
-public interface Lexer {
+public interface PatternLexer {
 	
-	static Lexer of(String pattern) {
+	static PatternLexer of(String pattern) {
 		return new LexerImpl(pattern);
 	}
 	
 	@Contract("-> new")
-	Lexer.Instance instance();
+	PatternLexer.Instance instance();
 	
 	String pattern();
 	
