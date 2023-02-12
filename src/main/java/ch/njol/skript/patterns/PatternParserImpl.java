@@ -124,7 +124,7 @@ final class PatternParserImpl implements PatternParser {
 						elements.add(type());
 						break;
 					default:
-						if (peek().type() == TokenType.MARK)
+						if (current.type() == TokenType.MARK || peek().type() == TokenType.MARK)
 							elements.add(tag());
 						else
 							elements.add(literal());
@@ -218,11 +218,14 @@ final class PatternParserImpl implements PatternParser {
 			List<PatternElement> choices = new ArrayList<>();
 			
 			while (current.type() != closer) {
-				choices.add(element(TokenType.CHOICE, TokenType.GROUP_CLOSE));
+				choices.add(element(TokenType.CHOICE, closer));
 				if (current.type() != TokenType.CHOICE)
 					break;
-				else if (peek().type() == closer)
-					throw new MalformedPatternException(lexer, parser.pattern(), "Trailing pipe found");
+				else if (peek().type() == closer) {
+					choices.add(new LiteralPatternElement(""));
+					eat(TokenType.CHOICE);
+					break;
+				}
 				
 				eat(TokenType.CHOICE);
 			}
@@ -238,7 +241,7 @@ final class PatternParserImpl implements PatternParser {
 		@Nullable
 		private PatternElement optional() {
 			eat(TokenType.OPTIONAL_OPEN);
-			PatternElement element = element(TokenType.OPTIONAL_CLOSE);
+			PatternElement element = choice(TokenType.OPTIONAL_CLOSE);
 			eat(TokenType.OPTIONAL_CLOSE);
 			
 			if (element == null)
@@ -275,9 +278,15 @@ final class PatternParserImpl implements PatternParser {
 		
 		@Nullable
 		private PatternElement tag() {
-			String tag = current.value();
-			eat(TokenType.IDENTIFIER);
-			eat(TokenType.MARK);
+			String tag;
+			if (ifEat(TokenType.MARK)) {
+				tag = current.value();
+				eat(TokenType.IDENTIFIER);
+			} else {
+				tag = current.value();
+				eat(TokenType.IDENTIFIER);
+				eat(TokenType.MARK);
+			}
 			PatternElement element = element(TokenType.CHOICE, TokenType.GROUP_CLOSE, TokenType.OPTIONAL_CLOSE);
 			
 			if (element == null)

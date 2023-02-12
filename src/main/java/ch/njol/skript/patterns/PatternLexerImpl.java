@@ -25,11 +25,11 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.stream.Collectors;
 
-final class LexerImpl implements PatternLexer {
+final class PatternLexerImpl implements PatternLexer {
 	
 	private final String pattern;
 	
-	LexerImpl(String pattern) {
+	PatternLexerImpl(String pattern) {
 		this.pattern = pattern;
 	}
 	
@@ -63,33 +63,34 @@ final class LexerImpl implements PatternLexer {
 		@Override
 		public Token next() {
 			peek = null;
-			while (!chars.isEmpty()) {
-				Character next = chars.peek();
-				
-				if (Character.isDigit(next)) {
-					previous = TokenType.NUMBER;
-					return number();
-				}
-				
-				if (previous == TokenType.REGEX_OPEN) {
-					previous = TokenType.STRING;
-					return string();
-				}
-				
-				if (Character.isAlphabetic(next) || Character.isWhitespace(next)) {
-					previous = TokenType.IDENTIFIER;
-					return identifier();
-				}
-				
-				chars.poll();
-				TokenType tokenType = TokenType.typeOfCharacter(next);
-				if (tokenType != null) {
-					previous = tokenType;
-					return new Token(tokenType, next.toString());
-				}
+			Character next = chars.peek();
+			if (next == null)
+				return new Token(TokenType.END, "");
+			
+			chars.poll();
+			Character digitPeek = chars.peek();
+			chars.addFirst(next);
+			if (digitPeek != null && ((next == '-' && Character.isDigit(digitPeek)) || Character.isDigit(next))) {
+				previous = TokenType.NUMBER;
+				return number();
 			}
 			
-			return new Token(TokenType.END, "");
+			if (previous == TokenType.REGEX_OPEN) {
+				previous = TokenType.STRING;
+				return string();
+			}
+			
+			TokenType tokenType = TokenType.typeOfCharacter(next);
+			if (tokenType != null && (tokenType.previous.isEmpty() || previous == null ||
+				previous.value == null || tokenType.previous.contains(previous.value.charValue()))) {
+				
+				chars.poll();
+				previous = tokenType;
+				return new Token(tokenType, next.toString());
+			}
+			
+			previous = TokenType.IDENTIFIER;
+			return identifier();
 		}
 		
 		@Override
@@ -120,7 +121,7 @@ final class LexerImpl implements PatternLexer {
 		
 		private Token number() {
 			StringBuilder result = new StringBuilder();
-			while (!chars.isEmpty() && Character.isDigit(chars.peek()))
+			while (!chars.isEmpty() && (chars.peek() == '-' || Character.isDigit(chars.peek())))
 				result.append(chars.poll());
 			
 			return new Token(TokenType.NUMBER, result.toString());
@@ -128,9 +129,9 @@ final class LexerImpl implements PatternLexer {
 		
 		private Token identifier() {
 			StringBuilder result = new StringBuilder();
-			//noinspection DataFlowIssue
-			while (!chars.isEmpty() && (Character.isAlphabetic(chars.peek()) || Character.isWhitespace(chars.peek())))
-				result.append(chars.poll());
+//			do result.append(chars.poll());
+//			while (!chars.isEmpty() && (TokenType.noAssociatedValue(chars.peek()) ? true : (TokenType.typeOfCharacter(chars.peek()).previous.isEmpty() || previous == null ||
+//				previous.value == null || TokenType.typeOfCharacter(chars.peek()).previous.contains(previous.value.charValue()))));
 			
 			return new Token(TokenType.IDENTIFIER, result.toString());
 		}

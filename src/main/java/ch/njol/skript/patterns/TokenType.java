@@ -18,6 +18,7 @@
  */
 package ch.njol.skript.patterns;
 
+import it.unimi.dsi.fastutil.chars.CharList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -45,9 +46,9 @@ enum TokenType {
 	
 	TYPE('%'),
 	SLASH('/'),
-	NULLABLE('-'),
-	PARSE_EXPRESSIONS('*'),
-	PARSE_LITERALS('~'),
+	NULLABLE('-', '%', '*', '~'),
+	PARSE_EXPRESSIONS('*', '%', '-', '~'),
+	PARSE_LITERALS('~', '%', '-', '*'),
 	TIME('@'),
 	
 	END;
@@ -62,13 +63,21 @@ enum TokenType {
 	
 	@Nullable
 	public final Character value;
+	public final CharList previous;
 	
 	TokenType() {
-		this.value = null;
+		value = null;
+		previous = CharList.of();
 	}
 	
 	TokenType(char value) {
 		this.value = value;
+		previous = CharList.of();
+	}
+	
+	TokenType(char value, char... previous) {
+		this.value = value;
+		this.previous = CharList.of(previous);
 	}
 	
 	@Override
@@ -82,6 +91,10 @@ enum TokenType {
 	@Nullable
 	public static TokenType typeOfCharacter(char character) {
 		return BY_VALUE.get(character);
+	}
+	
+	public static boolean noAssociatedValue(char character) {
+		return BY_VALUE.get(character) == null;
 	}
 	
 }

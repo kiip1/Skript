@@ -26,7 +26,7 @@ import java.util.Iterator;
 public interface PatternLexer {
 	
 	static PatternLexer of(String pattern) {
-		return new LexerImpl(pattern);
+		return new PatternLexerImpl("(" + pattern + ")");
 	}
 	
 	@Contract("-> new")
