@@ -231,6 +231,7 @@ final class PatternParserImpl implements PatternParser {
 				return null;
 			else if (choices.size() == 1)
 				return choices.get(0);
+			choices.removeIf(Objects::isNull);
 			return new ChoicePatternElement(choices);
 		}
 		
