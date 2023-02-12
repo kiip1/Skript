@@ -22,17 +22,19 @@ import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.events.bukkit.SkriptParseEvent;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.Section;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.patterns.PatternCompiler;
 import ch.njol.skript.patterns.SkriptPattern;
-import ch.njol.skript.patterns.elements.PatternElement;
 import ch.njol.skript.util.Patterns;
 import ch.njol.util.Kleenean;
 import com.google.common.collect.Iterables;
@@ -44,6 +46,32 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Name("Conditionals")
+@Description({
+	"Conditional sections",
+	"if: executed when its condition is true",
+	"else if: executed if all previous chained conditionals weren't executed, and its condition is true",
+	"else: executed if all previous chained conditionals weren't executed",
+	"",
+	"parse if: a special case of 'if' condition that its code will not be parsed if the condition is not true",
+	"else parse if: another special case of 'else if' condition that its code will not be parsed if all previous chained " +
+		"conditionals weren't executed, and its condition is true",
+})
+@Examples({
+	"if player's health is greater than or equal to 4:",
+	"\tsend \"Your health is okay so far but be careful!\"",
+	"",
+	"else if player's health is greater than 2:",
+	"\tsend \"You need to heal ASAP, your health is very low!\"",
+	"",
+	"else: # Less than 2 hearts",
+	"\tsend \"You are about to DIE if you don't heal NOW. You have only %player's health% heart(s)!\"",
+	"",
+	"parse if plugin \"SomePluginName\" is enabled: # parse if %condition%",
+	"\t# This code will only be executed if the condition used is met otherwise Skript will not parse this section therefore will not give any errors/info about this section",
+	""
+})
+@Since("1.0")
 @SuppressWarnings("NotNullFieldNotInitialized")
 public class SecConditional extends Section {
 
@@ -113,8 +141,7 @@ public class SecConditional extends Section {
 				String error = (ifAny ? "'if any'" : "'if all'") + " has to be placed just before a 'then' section";
 				if (nextNode instanceof SectionNode && nextNode.getKey() != null) {
 					String nextNodeKey = ScriptLoader.replaceOptions(nextNode.getKey());
-					PatternElement.CheckContext context = THEN_PATTERN.check(nextNodeKey);
-					if (THEN_PATTERN.visit(nextNodeKey, 0, context, ParseContext.SCRIPT) == null) {
+					if (THEN_PATTERN.match(nextNodeKey) == null) {
 						Skript.error(error);
 						return false;
 					}

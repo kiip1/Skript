@@ -18,28 +18,6 @@
  */
 package ch.njol.skript.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.messaging.Messenger;
-import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.common.collect.Iterables;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.effects.EffTeleport;
 import ch.njol.skript.localization.Language;
@@ -51,7 +29,27 @@ import ch.njol.util.NonNullPair;
 import ch.njol.util.Pair;
 import ch.njol.util.StringUtils;
 import ch.njol.util.coll.CollectionUtils;
+import com.google.common.collect.Iterables;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Utility class.

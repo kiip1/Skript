@@ -18,23 +18,23 @@
  */
 package ch.njol.skript.patterns.elements;
 
-import ch.njol.skript.SkriptAPIException;
-import ch.njol.skript.lang.DefaultExpression;
+import ch.njol.skript.Skript;
+import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.SkriptParser.ExprInfo;
+import ch.njol.skript.lang.parser.ParserInstance;
+import ch.njol.skript.log.ErrorQuality;
+import ch.njol.skript.log.ParseLogHandler;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.patterns.MatchResult;
-import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
-import ch.njol.util.NonNullPair;
+import ch.njol.util.Kleenean;
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -42,83 +42,127 @@ import java.util.function.Consumer;
 /**
  * A {@link PatternElement} that contains a type to be matched with an expressions, for example {@code %number%}.
  */
-public final class TypePatternElement implements PatternElement {
-	
-	private final List<String> types;
+public final class TypePatternElement extends PatternElement {
+
+	private final ClassInfo<?>[] classes;
+	private final boolean[] isPlural;
 	private final List<Modifier> modifiers;
 	private final int time;
-	
-	public TypePatternElement(List<String> types, List<Modifier> modifiers, int time) {
-		this.types = types;
+
+	private final int expressionIndex;
+
+	public TypePatternElement(ClassInfo<?>[] classes, boolean[] isPlural, List<Modifier> modifiers, int time, int expressionIndex) {
+		this.classes = classes;
+		this.isPlural = isPlural;
 		this.modifiers = modifiers;
 		this.time = time;
+		this.expressionIndex = expressionIndex;
 	}
-	
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		if (context.next == null) {
-			context.position = context.input.length();
-			context.pushMatch(this, start);
-			return true;
-		}
-		
-		int length = 0;
-		while (!context.next.check(context)) {
-			context.position++;
-			length++;
-			
-			if (context.position > context.input.length()) {
-				context.position = start;
-				return false;
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		int newExprOffset;
+
+		String nextLiteral = null;
+		boolean nextLiteralIsWhitespace = false;
+
+		if (next == null) {
+			newExprOffset = expr.length();
+		} else if (next instanceof LiteralPatternElement) {
+			nextLiteral = next.pattern();
+
+			nextLiteralIsWhitespace = nextLiteral.trim().isEmpty();
+
+			if (!nextLiteralIsWhitespace) { // Don't do this for literal patterns that are *only* whitespace - they have their own special handling
+				// trim trailing whitespace - it can cause issues with optional patterns following the literal
+				int nextLength = nextLiteral.length();
+				for (int i = nextLength; i > 0; i--) {
+					if (nextLiteral.charAt(i - 1) != ' ') {
+						if (i != nextLength)
+							nextLiteral = nextLiteral.substring(0, i);
+						break;
+					}
+				}
 			}
+
+			newExprOffset = SkriptParser.nextOccurrence(expr, nextLiteral, matchResult.expressionOffset(), matchResult.parseContext(), false);
+			if (newExprOffset == -1 && nextLiteralIsWhitespace) { // We need to tread more carefully here
+				// This may be because the next PatternElement is optional or an empty choice (there may be other cases too)
+				nextLiteral = null;
+				newExprOffset = SkriptParser.next(expr, matchResult.expressionOffset(), matchResult.parseContext());
+			}
+		} else {
+			newExprOffset = SkriptParser.next(expr, matchResult.expressionOffset(), matchResult.parseContext());
 		}
-		
-		context.position = start + length;
-		context.pushMatch(this, start, start + length);
-		return true;
+
+		if (newExprOffset == -1)
+			return null;
+
+		ExprInfo exprInfo = getExprInfo();
+
+		ParseLogHandler loopLogHandler = SkriptLogger.startParseLogHandler();
+		try {
+			while (newExprOffset != -1) {
+				loopLogHandler.clear();
+
+				MatchResult matchResultCopy = matchResult.copy();
+				matchResultCopy.setExpressionOffset(newExprOffset);
+
+				MatchResult newMatchResult = matchNext(expr, matchResultCopy);
+
+				if (newMatchResult != null) {
+					ParseLogHandler expressionLogHandler = SkriptLogger.startParseLogHandler();
+					try {
+						Expression<?> expression = new SkriptParser(expr.substring(matchResult.expressionOffset(), newExprOffset), matchResult.flags() & exprInfo.flagMask, matchResult.parseContext()).parseExpression(exprInfo);
+						if (expression != null) {
+							if (time != 0) {
+								if (expression instanceof Literal)
+									return null;
+
+								if (ParserInstance.get().getHasDelayBefore() == Kleenean.TRUE) {
+									Skript.error("Cannot use time states after the event has already passed", ErrorQuality.SEMANTIC_ERROR);
+									return null;
+								}
+
+								if (!expression.setTime(time)) {
+									Skript.error(expression + " does not have a " + (time == -1 ? "past" : "future") + " state", ErrorQuality.SEMANTIC_ERROR);
+									return null;
+								}
+							}
+
+							expressionLogHandler.printLog();
+							loopLogHandler.printLog();
+
+							newMatchResult.expressions().set(expressionIndex, expression);
+							return newMatchResult;
+						}
+					} finally {
+						expressionLogHandler.printError();
+					}
+				}
+
+				if (nextLiteral != null) {
+					int oldNewExprOffset = newExprOffset;
+					newExprOffset = SkriptParser.nextOccurrence(expr, nextLiteral, newExprOffset + 1, matchResult.parseContext(), false);
+					if (newExprOffset == -1 && nextLiteralIsWhitespace) {
+						// This may be because the next PatternElement is optional or an empty choice (there may be other cases too)
+						// So, from this point on, we're going to go character by character
+						nextLiteral = null;
+						newExprOffset = SkriptParser.next(expr, oldNewExprOffset, matchResult.parseContext());
+					}
+				} else {
+					newExprOffset = SkriptParser.next(expr, newExprOffset, matchResult.parseContext());
+				}
+			}
+		} finally {
+			if (!loopLogHandler.isStopped())
+				loopLogHandler.printError();
+		}
+
+		return null;
 	}
-	
-	@Override
-	public boolean visit(MatchResult result) {
-		ExprInfo info = new ExprInfo(types.size());
-		int i = 0;
-		for (String type : types) {
-			NonNullPair<String, Boolean> pair = Utils.getEnglishPlural(type);
-			info.classes[i] = Classes.getClassInfo(pair.getFirst());
-			info.isPlural[i] = pair.getSecond();
-			for (Modifier modifier : modifiers)
-				modifier.apply(info);
-			
-			i++;
-		}
-		
-		if (modifiers.contains(Modifier.NULLABLE)) {
-			Expression<?> expression = new SkriptParser(result.checkContext().matches.get(this).string,
-				result.flags() & info.flagMask, result.parseContext()).parseExpression(info);
-			return true;
-		}
-		
-		DefaultExpression<?> expression = info.classes[0].getDefaultExpression();
-		String name = info.classes[0].getCodeName();
-		String suffix = " [pattern: " + pattern() + "] ";
-		if (expression == null)
-			throw new SkriptAPIException("The class '" + info.classes[0].getCodeName() + "' does not provide a default expression. Either allow null (with %-" + name + "%) or make it mandatory" + suffix);
-		if (!(expression instanceof Literal) && !modifiers.contains(Modifier.PARSE_EXPRESSIONS))
-			throw new SkriptAPIException("The default expression of '" + name + "' is not a literal. Either allow null (with %-*" + name + "%) or make it mandatory" + suffix);
-		if (expression instanceof Literal && !modifiers.contains(Modifier.PARSE_LITERALS))
-			throw new SkriptAPIException("The default expression of '" + name + "' is a literal. Either allow null (with %-~" + name + "%) or make it mandatory" + suffix);
-		if (!info.isPlural[0] && !expression.isSingle())
-			throw new SkriptAPIException("The default expression of '" + name + "' is not a single-element expression. Change your pattern to allow multiple elements or make the expression mandatory" + suffix);
-		if (info.time != 0 && !expression.setTime(info.time))
-			throw new SkriptAPIException("The default expression of '" + name + "' does not have distinct time states." + suffix);
-		if (!expression.init())
-			return false;
-		
-		result.info = info;
-		return true;
-	}
-	
+
 	@Override
 	public String pattern() {
 		StringBuilder builder = new StringBuilder().append("%");
@@ -126,22 +170,42 @@ public final class TypePatternElement implements PatternElement {
 		for (Modifier modifier : modifiers)
 			builder.append(modifier.character());
 		
-		for (String type : types)
-			builder.append(type).append("/");
+		for (int i = 0; i < classes.length; i++) {
+			String codeName = classes[i].getCodeName();
+			builder.append(isPlural[i]
+					? Utils.toEnglishPlural(codeName)
+					: codeName).append("/");
+		}
+		
 		builder.deleteCharAt(builder.length() - 1);
 		
 		if (time != 0)
 			builder.append("@").append(time);
-		
 		return builder.append("%").toString();
+	}
+
+	private ExprInfo getExprInfo() {
+		ExprInfo exprInfo = new ExprInfo(classes.length);
+		for (int i = 0; i < classes.length; i++) {
+			exprInfo.classes[i] = classes[i];
+			exprInfo.isPlural[i] = isPlural[i];
+		}
+		for (Modifier modifier : modifiers)
+			modifier.apply(exprInfo);
+		exprInfo.time = time;
+		return exprInfo;
 	}
 	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-			.add("types", types)
+			.add("classes", classes)
+			.add("isPlural", isPlural)
 			.add("modifiers", modifiers)
 			.add("time", time)
+			.add("expressionIndex", expressionIndex)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
 	

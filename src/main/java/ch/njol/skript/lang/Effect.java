@@ -25,7 +25,7 @@ import ch.njol.skript.log.SkriptLogger;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-import java.util.ArrayDeque;
+import java.util.Iterator;
 
 /**
  * An effect which is unconditionally executed when reached, and execution will usually continue with the next item of the trigger after this effect is executed (the stop effect
@@ -50,28 +50,29 @@ public abstract class Effect extends Statement {
 		return true;
 	}
 	
-	@SuppressWarnings({"null"})
+	@SuppressWarnings({"rawtypes", "unchecked", "null"})
 	@Nullable
-	public static Effect parse(String input, @Nullable String defaultError) {
-		try (ParseLogHandler log = SkriptLogger.startParseLogHandler()) {
-			EffFunctionCall call = EffFunctionCall.parse(input);
-			if (call != null) {
+	public static Effect parse(String s, @Nullable String defaultError) {
+		ParseLogHandler log = SkriptLogger.startParseLogHandler();
+		try {
+			EffFunctionCall f = EffFunctionCall.parse(s);
+			if (f != null) {
 				log.printLog();
-				return call;
+				return f;
 			} else if (log.hasError()) {
 				log.printError();
 				return null;
 			}
 			log.clear();
 
-			EffectSection section = EffectSection.parse(input, null, null, null);
+			EffectSection section = EffectSection.parse(s, null, null, null);
 			if (section != null) {
 				log.printLog();
 				return new EffectSectionEffect(section);
 			}
 			log.clear();
 
-			Effect effect = SkriptParser.parse(input, new ArrayDeque<>(Skript.getEffects()), defaultError);
+			Effect effect = (Effect) SkriptParser.parse(s, (Iterator) Skript.getEffects().iterator(), defaultError);
 			if (effect != null) {
 				log.printLog();
 				return effect;
@@ -79,6 +80,8 @@ public abstract class Effect extends Statement {
 
 			log.printError();
 			return null;
+		} finally {
+			log.stop();
 		}
 	}
 	

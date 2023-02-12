@@ -18,46 +18,66 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.log.ParseLogHandler;
+import ch.njol.skript.log.SkriptLogger;
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A {@link PatternElement} that contains a regex {@link Pattern}, for example {@code <.+>}.
- */
-public final class RegexPatternElement implements PatternElement {
+public final class RegexPatternElement extends PatternElement {
 
 	private final Pattern pattern;
 
 	public RegexPatternElement(Pattern pattern) {
 		this.pattern = pattern;
 	}
-	
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		while (context.next != null && context.position < context.input.length() && !context.next.check(context))
-			context.position++;
-		
-		if (pattern.matcher(context.input.substring(start, context.position)).find()) {
-			context.pushMatch(this, start);
-			return true;
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		int exprIndex = matchResult.expressionOffset();
+		try (ParseLogHandler log = SkriptLogger.startParseLogHandler()) {
+			Matcher matcher = pattern.matcher(expr);
+			for (int nextExprOffset = SkriptParser.next(expr, exprIndex, matchResult.parseContext());
+			     nextExprOffset != -1;
+			     nextExprOffset = SkriptParser.next(expr, nextExprOffset, matchResult.parseContext())
+			) {
+				log.clear();
+				matcher.region(exprIndex, nextExprOffset);
+				if (matcher.matches()) {
+					MatchResult matchResultCopy = matchResult.copy();
+					matchResultCopy.setExpressionOffset(nextExprOffset);
+
+					MatchResult newMatchResult = matchNext(expr, matchResultCopy);
+					if (newMatchResult != null) {
+						// Append to end of list
+						newMatchResult.regexResults().add(0, matcher.toMatchResult());
+						log.printLog();
+						return newMatchResult;
+					}
+				}
+			}
+			log.printError(null);
+			return null;
 		}
-		
-		context.position = start;
-		return false;
 	}
-	
+
 	@Override
 	public String pattern() {
 		return "<" + pattern + ">";
 	}
-
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 			.add("pattern", pattern)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
-
+	
 }

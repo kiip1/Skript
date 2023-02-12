@@ -19,69 +19,54 @@
 package ch.njol.skript.patterns.elements;
 
 import ch.njol.skript.patterns.MatchResult;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
+public abstract class PatternElement {
 
-@ApiStatus.NonExtendable
-public interface PatternElement {
-	
-	default boolean check(CheckContext context) {
-		return true;
+	@Nullable
+	public PatternElement next;
+
+	@Nullable
+	public PatternElement originalNext;
+
+	void setNext(@Nullable PatternElement next) {
+		this.next = next;
 	}
-	
-	default boolean visit(MatchResult result) {
-		return true;
+
+	void setLastNext(@Nullable PatternElement newNext) {
+		PatternElement next = this;
+		for (int i = 0; i < 10000; i++) {
+			if (next.next == null) {
+				next.setNext(newNext);
+				return;
+			}
+			next = next.next;
+		}
+		
+		throw new IllegalStateException("Pattern element chain did not resolve within 10000 iterations");
 	}
-	
-	String pattern();
-	
-	final class CheckContext {
-		
-		// Only mutate if you are returning true
-		public final Map<PatternElement, PositionedString> matches = new HashMap<>();
-		
-		final String input;
-		
-		int position;
-		@Nullable
-		PatternElement previous = null;
-		@Nullable
-		PatternElement next = null;
-		
-		public CheckContext(String input) {
-			this.input = input;
+
+	@Nullable
+	public abstract MatchResult match(String expr, MatchResult matchResult);
+
+	@Nullable
+	protected MatchResult matchNext(String expr, MatchResult matchResult) {
+		if (next == null) {
+			return matchResult.expressionOffset() == expr.length() ? matchResult : null;
 		}
-		
-		String from(int start) {
-			if (position > input.length())
-				return "";
-			
-			return input.substring(start, position);
-		}
-		
-		void pushMatch(PatternElement element, int start) {
-			matches.put(element, new PositionedString(start, from(start)));
-		}
-		
-		void pushMatch(PatternElement element, int start, int end) {
-			matches.put(element, new PositionedString(start, input.substring(start, end)));
-		}
-		
+		return next.match(expr, matchResult);
 	}
-	
-	final class PositionedString {
-		
-		public final int position;
-		public final String string;
-		
-		public PositionedString(int position, String string) {
-			this.position = position;
-			this.string = string;
+
+	public abstract String pattern();
+
+	public String fullPattern() {
+		StringBuilder builder = new StringBuilder(pattern());
+		PatternElement next = this;
+		while ((next = next.originalNext) != null) {
+			builder.append(next);
 		}
 		
+		return builder.toString();
 	}
-	
+
 }

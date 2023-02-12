@@ -25,24 +25,22 @@ import ch.njol.skript.lang.Debuggable;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.ParseContext;
-import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.SyntaxElement;
-import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
+import ch.njol.util.coll.iterator.ConsumingIterator;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.skriptlang.skript.lang.entry.EntryContainer;
 import org.skriptlang.skript.lang.entry.EntryData;
 import org.skriptlang.skript.lang.entry.EntryValidator;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Queue;
+import java.util.Iterator;
 
 /**
  * Structures are the root elements in every script. They are essentially the "headers".
@@ -151,12 +149,12 @@ public abstract class Structure implements SyntaxElement, Debuggable {
 	}
 
 	/**
-	 * Called when this structure is unloaded, similar to {@link SelfRegisteringSkriptEvent#unregister(Trigger)}.
+	 * Called when this structure is unloaded.
 	 */
 	public void unload() { }
 
 	/**
-	 * Called when this structure is unloaded, similar to {@link SelfRegisteringSkriptEvent#unregister(Trigger)}.
+	 * Called when this structure is unloaded.
 	 * This method is primarily designed for Structures that wish to execute actions after
 	 * 	most other Structures have finished unloading.
 	 */
@@ -180,12 +178,12 @@ public abstract class Structure implements SyntaxElement, Debuggable {
 	public static Structure parse(String expr, SectionNode sectionNode, @Nullable String defaultError) {
 		ParserInstance.get().getData(StructureData.class).sectionNode = sectionNode;
 
-		Queue<StructureInfo<? extends Structure>> queue = new ArrayDeque<>(Skript.getStructures());
-		for (StructureInfo<? extends Structure> info : queue)
-			ParserInstance.get().getData(StructureData.class).structureInfo = info;
+		Iterator<StructureInfo<? extends Structure>> iterator =
+			new ConsumingIterator<>(Skript.getStructures().iterator(),
+				elementInfo -> ParserInstance.get().getData(StructureData.class).structureInfo = elementInfo);
 
 		try (ParseLogHandler parseLogHandler = SkriptLogger.startParseLogHandler()) {
-			Structure structure = SkriptParser.parse(expr, queue, SkriptParser.PARSE_LITERALS, ParseContext.EVENT, defaultError);
+			Structure structure = SkriptParser.parseStatic(expr, iterator, ParseContext.EVENT, defaultError);
 			if (structure != null) {
 				parseLogHandler.printLog();
 				return structure;

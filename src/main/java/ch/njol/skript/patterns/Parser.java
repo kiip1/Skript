@@ -18,6 +18,8 @@ public interface Parser {
 		
 		PatternElement parse();
 		
+		int expressionOffset();
+		
 	}
 	
 }

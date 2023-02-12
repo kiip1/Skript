@@ -28,8 +28,8 @@ import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.structure.Structure;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -171,13 +171,12 @@ public abstract class Section extends TriggerSection implements SyntaxElement {
 			getParser().setHasDelayBefore(Kleenean.UNKNOWN);
 	}
 
-	@SuppressWarnings("RedundantSuppression")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Nullable
 	public static Section parse(String expr, @Nullable String defaultError, SectionNode sectionNode, List<TriggerItem> triggerItems) {
 		SectionContext sectionContext = ParserInstance.get().getData(SectionContext.class);
-		//noinspection RedundantCast That cast is not redundant!!!
-		return sectionContext.modify(sectionNode, triggerItems, () ->
-			(Section) SkriptParser.parse(expr, new ArrayDeque<>(Skript.getSections()), defaultError));
+		return sectionContext.modify(sectionNode, triggerItems,
+			() -> (Section) SkriptParser.parse(expr, (Iterator) Skript.getSections().iterator(), defaultError));
 	}
 
 	static {

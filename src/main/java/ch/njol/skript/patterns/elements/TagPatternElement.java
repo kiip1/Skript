@@ -18,45 +18,75 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link PatternElement} that applies a parse tag when matched.
- */
-public final class TagPatternElement implements PatternElement {
-	
-	private final PatternElement element;
-	private final String tag;
-	
-	public TagPatternElement(PatternElement element, String tag) {
-		this.element = element;
+import java.util.List;
+
+public final class TagPatternElement extends PatternElement {
+
+	private String tag;
+
+	public TagPatternElement(String tag) {
 		this.tag = tag;
 	}
-	
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		if (element.check(context)) {
-			context.pushMatch(this, start);
-			return true;
+	void setNext(@Nullable PatternElement next) {
+		if (tag.isEmpty()) {
+			if (next instanceof LiteralPatternElement) {
+				// (:a)
+				tag = next.pattern().trim();
+			} else {
+				// Get the inner element from either a group or optional pattern element
+				PatternElement inner = null;
+				if (next instanceof GroupPatternElement) {
+					inner = ((GroupPatternElement) next).getElement();
+				} else if (next instanceof OptionalPatternElement) {
+					inner = ((OptionalPatternElement) next).getElement();
+				}
+
+				if (inner instanceof ChoicePatternElement) {
+					// :(a|b) or :[a|b]
+					ChoicePatternElement choicePatternElement = (ChoicePatternElement) inner;
+					List<PatternElement> patternElements = choicePatternElement.elements();
+					for (int i = 0; i < patternElements.size(); i++) {
+						PatternElement patternElement = patternElements.get(i);
+						// Prevent a pattern such as :(a|b|) from being turned into (a:a|b:b|:), instead (a:a|b:b|)
+						if (patternElement instanceof LiteralPatternElement && !patternElement.pattern().isEmpty()) {
+							TagPatternElement newTag = new TagPatternElement(patternElement.pattern().trim());
+							newTag.setNext(patternElement);
+							newTag.originalNext = patternElement;
+							patternElements.set(i, newTag);
+						}
+					}
+				}
+			}
 		}
-		
-		context.position = start;
-		return false;
+		super.setNext(next);
 	}
-	
+
+	@Override
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		matchResult.tags().add(tag);
+		return matchNext(expr, matchResult);
+	}
+
 	@Override
 	public String pattern() {
 		if (tag.isEmpty())
-			return element.pattern();
-		return tag + ":" + element.pattern();
+			return "";
+		return tag + ":";
 	}
 	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-			.add("element", element)
 			.add("tag", tag)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
 	

@@ -18,52 +18,59 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * A {@link PatternElement} that has multiple options, for example {@code hello|world}.
- */
-public final class ChoicePatternElement implements PatternElement {
+public final class ChoicePatternElement extends PatternElement {
+
+	private final List<PatternElement> elements;
 	
-	private final List<PatternElement> choices;
-	
-	public ChoicePatternElement(List<PatternElement> choices) {
-		this.choices = ImmutableList.copyOf(choices);
+	public ChoicePatternElement(List<PatternElement> elements) {
+		this.elements = ImmutableList.copyOf(elements);
 	}
 	
+	public List<PatternElement> elements() {
+		return elements;
+	}
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		for (PatternElement choice : choices) {
-			if (choice.check(context)) {
-				context.pushMatch(this, start);
-				return true;
-			}
-			
-			context.position = start;
-		}
-		
-		return false;
+	void setNext(@Nullable PatternElement next) {
+		super.setNext(next);
+		for (PatternElement patternElement : elements)
+			patternElement.setLastNext(next);
 	}
-	
+
+	@Override
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		for (PatternElement patternElement : elements) {
+			MatchResult matchResultCopy = matchResult.copy();
+			MatchResult newMatchResult = patternElement.match(expr, matchResultCopy);
+			if (newMatchResult != null)
+				return newMatchResult;
+		}
+		return null;
+	}
+
 	@Override
 	public String pattern() {
-		return choices.stream()
-			.map(PatternElement::pattern)
+		return elements.stream()
+			.map(PatternElement::fullPattern)
 			.collect(Collectors.joining("|"));
 	}
 	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-			.add("choices", choices.stream()
-				.map(Object::toString)
-				.collect(Collectors.toList()))
+			.add("patternElements", elements)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
-	
+
 }

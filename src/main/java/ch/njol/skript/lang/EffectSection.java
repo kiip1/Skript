@@ -25,9 +25,8 @@ import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.util.Kleenean;
 import org.eclipse.jdt.annotation.Nullable;
 
-import java.util.ArrayDeque;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A {@link Section} that may also be used as an effect,
@@ -41,13 +40,13 @@ import java.util.stream.Collectors;
  * @see Skript#registerSection(Class, String...)
  */
 public abstract class EffectSection extends Section {
-	
+
 	private boolean hasSection = false;
-	
+
 	public boolean hasSection() {
 		return hasSection;
 	}
-	
+
 	/**
 	 * This method should not be overridden unless you know what you are doing!
 	 */
@@ -59,28 +58,30 @@ public abstract class EffectSection extends Section {
 
 		return super.init(exprs, matchedPattern, isDelayed, parseResult);
 	}
-	
+
 	@Override
-	public abstract boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult,
-								 @Nullable SectionNode sectionNode, @Nullable List<TriggerItem> triggerItems);
-	
+	public abstract boolean init(Expression<?>[] exprs,
+								 int matchedPattern,
+								 Kleenean isDelayed,
+								 ParseResult parseResult,
+								 @Nullable SectionNode sectionNode,
+								 @Nullable List<TriggerItem> triggerItems);
+
 	/**
 	 * Similar to {@link Section#parse(String, String, SectionNode, List)}, but will only attempt to parse from other {@link EffectSection}s.
 	 */
 	@Nullable
-	@SuppressWarnings({"ConstantConditions"})
-	public static EffectSection parse(String input, @Nullable String defaultError, @Nullable SectionNode sectionNode,
-	                                  @Nullable List<TriggerItem> triggerItems) {
-		
+	@SuppressWarnings({"unchecked", "rawtypes", "ConstantConditions"})
+	public static EffectSection parse(String expr, @Nullable String defaultError, @Nullable SectionNode sectionNode, @Nullable List<TriggerItem> triggerItems) {
 		SectionContext sectionContext = ParserInstance.get().getData(SectionContext.class);
 
 		return sectionContext.modify(sectionNode, triggerItems, () ->
-			(EffectSection) SkriptParser.parse(input,
-				Skript.getSections()
-					.stream()
-					.filter(info -> EffectSection.class.isAssignableFrom(info.getElementClass()))
-					.collect(Collectors.toCollection(() -> new ArrayDeque<>())),
+			(EffectSection) SkriptParser.parse(
+				expr,
+				(Iterator) Skript.getSections().stream()
+					.filter(info -> EffectSection.class.isAssignableFrom(info.c))
+					.iterator(),
 				defaultError));
 	}
-	
+
 }

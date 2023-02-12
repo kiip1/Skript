@@ -18,38 +18,45 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link PatternElement} that represents a group, for example {@code (test)}.
- */
-public final class GroupPatternElement implements PatternElement {
-	
+public final class GroupPatternElement extends PatternElement {
+
 	private final PatternElement element;
-	
+
 	public GroupPatternElement(PatternElement element) {
 		this.element = element;
 	}
-	
-	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		if (element.check(context))
-			return true;
-		
-		context.position = start;
-		return false;
+
+	public PatternElement getElement() {
+		return element;
 	}
-	
+
+	@Override
+	void setNext(@Nullable PatternElement next) {
+		super.setNext(next);
+		element.setLastNext(next);
+	}
+
+	@Override
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		return element.match(expr, matchResult);
+	}
+
 	@Override
 	public String pattern() {
-		return "(" + element.pattern() + ")";
+		return "(" + element + ")";
 	}
 	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 			.add("element", element)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
 	

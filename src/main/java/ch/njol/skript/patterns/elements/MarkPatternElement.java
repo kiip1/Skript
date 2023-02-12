@@ -18,43 +18,36 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * A {@link PatternElement} that applies a parse mark when matched.
- */
-public final class MarkPatternElement implements PatternElement {
-	
-	private final PatternElement element;
+public final class MarkPatternElement extends PatternElement {
+
 	private final int mark;
-	
-	public MarkPatternElement(PatternElement element, int mark) {
-		this.element = element;
+
+	public MarkPatternElement(int mark) {
 		this.mark = mark;
 	}
-	
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		if (element.check(context)) {
-			context.pushMatch(this, start);
-			return true;
-		}
-		
-		context.position = start;
-		return false;
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		matchResult.setMark(matchResult.mark() ^ mark);
+		return matchNext(expr, matchResult);
 	}
-	
+
 	@Override
 	public String pattern() {
-		return mark + "¦" + element.pattern();
+		return mark + "¦";
 	}
 	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
-			.add("element", element)
 			.add("mark", mark)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
 	

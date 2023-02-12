@@ -18,41 +18,52 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link PatternElement} that contains an optional part, for example {@code [hello world]}.
  */
-public final class OptionalPatternElement implements PatternElement {
+public final class OptionalPatternElement extends PatternElement {
 
 	private final PatternElement element;
 
 	public OptionalPatternElement(PatternElement element) {
 		this.element = element;
 	}
-	
+
 	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		if (element.check(context)) {
-			context.pushMatch(this, start);
-			return true;
-		}
-		
-		context.position = start;
-		return false;
-	}
-	
-	@Override
-	public String pattern() {
-		return "[" + element.pattern() + "]";
+	void setNext(@Nullable PatternElement next) {
+		super.setNext(next);
+		element.setLastNext(next);
 	}
 
+	@Override
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		MatchResult newMatchResult = element.match(expr, matchResult.copy());
+		if (newMatchResult != null)
+			return newMatchResult;
+		return matchNext(expr, matchResult);
+	}
+
+	public PatternElement getElement() {
+		return element;
+	}
+
+	@Override
+	public String pattern() {
+		return "[" + element.fullPattern() + "]";
+	}
+	
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 			.add("element", element)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
-
+	
 }

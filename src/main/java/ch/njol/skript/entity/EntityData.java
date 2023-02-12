@@ -41,6 +41,7 @@ import ch.njol.skript.localization.Noun;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
+import ch.njol.util.coll.iterator.SingleItemIterator;
 import ch.njol.yggdrasil.Fields;
 import ch.njol.yggdrasil.YggdrasilSerializable.YggdrasilExtendedSerializable;
 import org.bukkit.Bukkit;
@@ -55,29 +56,32 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.io.NotSerializableException;
 import java.io.StreamCorruptedException;
 import java.lang.reflect.Array;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author Peter Güttinger
  */
 @SuppressWarnings("rawtypes")
 public abstract class EntityData<E extends Entity> implements SyntaxElement, YggdrasilExtendedSerializable {// TODO extended horse support, zombie villagers // REMIND unit
-
+	
 	public final static String LANGUAGE_NODE = "entities";
 	
 	public final static Message m_age_pattern = new Message(LANGUAGE_NODE + ".age pattern");
 	public final static Adjective m_baby = new Adjective(LANGUAGE_NODE + ".age adjectives.baby"),
-			m_adult = new Adjective(LANGUAGE_NODE + ".age adjectives.adult");
+		m_adult = new Adjective(LANGUAGE_NODE + ".age adjectives.adult");
 	
 	// must be here to be initialised before 'new SimpleLiteral' is called in the register block below
 	private final static List<EntityDataInfo<EntityData<?>>> infos = new ArrayList<>();
-
+	
 	private static final Pattern REGEX_PATTERN = Pattern.compile("[a-zA-Z -]+");
-
+	
+	private static final List<EntityData> ALL_ENTITY_DATAS = new ArrayList<>();
+	
 	public static Serializer<EntityData> serializer = new Serializer<EntityData>() {
 		@Override
 		public Fields serialize(final EntityData o) throws NotSerializableException {
@@ -116,7 +120,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 			throw new StreamCorruptedException();
 		}
 		
-//		return getInfo((Class<? extends EntityData<?>>) d.getClass()).codeName + ":" + d.serialize();
+		//		return getInfo((Class<? extends EntityData<?>>) d.getClass()).codeName + ":" + d.serialize();
 		@SuppressWarnings("null")
 		@Override
 		@Deprecated
@@ -148,32 +152,45 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	
 	static {
 		Classes.registerClass(new ClassInfo<>(EntityData.class, "entitydata")
-				.user("entity ?types?")
-				.name("Entity Type")
-				.description("The type of an <a href='#entity'>entity</a>, e.g. player, wolf, powered creeper, etc.")
-				.usage("<i>Detailed usage will be added eventually</i>")
-				.examples("victim is a cow",
-						"spawn a creeper")
-				.since("1.3")
-				.defaultExpression(new SimpleLiteral<EntityData>(new SimpleEntityData(Entity.class), true))
-				.before("entitytype")
-				.parser(new Parser<EntityData>() {
-					@Override
-					public String toString(final EntityData d, final int flags) {
-						return d.toString(flags);
-					}
-					
-					@Override
-					@Nullable
-					public EntityData parse(final String s, final ParseContext context) {
-						return EntityData.parse(s);
-					}
-					
-					@Override
-					public String toVariableNameString(final EntityData o) {
-						return "entitydata:" + o.toString();
-					}
-                }).serializer(serializer));
+			.user("entity ?types?")
+			.name("Entity Type")
+			.description("The type of an <a href='#entity'>entity</a>, e.g. player, wolf, powered creeper, etc.")
+			.usage("<i>Detailed usage will be added eventually</i>")
+			.examples("victim is a cow",
+				"spawn a creeper")
+			.since("1.3")
+			.defaultExpression(new SimpleLiteral<EntityData>(new SimpleEntityData(Entity.class), true))
+			.before("entitytype")
+			.parser(new Parser<EntityData>() {
+				@Override
+				public String toString(final EntityData d, final int flags) {
+					return d.toString(flags);
+				}
+				
+				@Override
+				@Nullable
+				public EntityData parse(final String s, final ParseContext context) {
+					return EntityData.parse(s);
+				}
+				
+				@Override
+				public String toVariableNameString(final EntityData o) {
+					return "entitydata:" + o.toString();
+				}
+			}).serializer(serializer));
+	}
+	
+	public static void onRegistrationStop() {
+		infos.forEach(info -> {
+			if (SimpleEntityData.class.equals(info.getElementClass())) {
+				ALL_ENTITY_DATAS.addAll(Arrays.stream(info.codeNames)
+					.map(input -> SkriptParser.parseStatic(input, new SingleItemIterator<>(info), null))
+					.collect(Collectors.toList())
+				);
+			} else {
+				ALL_ENTITY_DATAS.add(SkriptParser.parseStatic(info.codeName, new SingleItemIterator<>(info), null));
+			}
+		});
 	}
 	
 	private final static class EntityDataInfo<T extends EntityData<?>> extends SyntaxElementInfo<T> implements LanguageChangeListener {
@@ -294,7 +311,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	
 	/**
 	 * Returns the super type of this entity data, e.g. 'wolf' for 'angry wolf'.
-	 * 
+	 *
 	 * @return The supertype of this entity data. Must not be null.
 	 */
 	public abstract EntityData getSuperType();
@@ -380,10 +397,10 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Prints errors.
-	 * 
+	 *
 	 * @param s String with optional indefinite article at the beginning
 	 * @return The parsed entity data
 	 */
@@ -392,12 +409,13 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	public static EntityData<?> parse(String s) {
 		if (!REGEX_PATTERN.matcher(s).matches())
 			return null;
-		return SkriptParser.parse(Noun.stripIndefiniteArticle(s), new ArrayDeque<>(infos), null);
+		Iterator<EntityDataInfo<EntityData<?>>> it = infos.iterator();
+		return SkriptParser.parseStatic(Noun.stripIndefiniteArticle(s), it, null);
 	}
 	
 	/**
 	 * Prints errors.
-	 * 
+	 *
 	 * @param s
 	 * @return The parsed entity data
 	 */
@@ -406,14 +424,15 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 	public static EntityData<?> parseWithoutIndefiniteArticle(String s) {
 		if (!REGEX_PATTERN.matcher(s).matches())
 			return null;
-		return SkriptParser.parse(s, new ArrayDeque<>(infos), null);
+		Iterator<EntityDataInfo<EntityData<?>>> it = infos.iterator();
+		return SkriptParser.parseStatic(s, it, null);
 	}
 	
 	@Nullable
 	public final E spawn(Location loc) {
 		return spawn(loc, null);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Nullable
 	public E spawn(Location loc, @Nullable Consumer<E> consumer) {
@@ -424,7 +443,7 @@ public abstract class EntityData<E extends Entity> implements SyntaxElement, Ygg
 				e = loc.getWorld().spawn(loc, (Class<E>) getType(), consumer);
 			else
 				e = loc.getWorld().spawn(loc, getType());
-
+			
 			if (baby.isTrue())
 				EntityUtils.setBaby(e);
 			else if (baby.isFalse())

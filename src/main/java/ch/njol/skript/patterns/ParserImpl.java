@@ -18,10 +18,9 @@
  */
 package ch.njol.skript.patterns;
 
+import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.patterns.elements.ChoicePatternElement;
-import ch.njol.skript.patterns.elements.EmptyPatternElement;
 import ch.njol.skript.patterns.elements.GroupPatternElement;
-import ch.njol.skript.patterns.elements.ListPatternElement;
 import ch.njol.skript.patterns.elements.LiteralPatternElement;
 import ch.njol.skript.patterns.elements.MarkPatternElement;
 import ch.njol.skript.patterns.elements.OptionalPatternElement;
@@ -30,12 +29,17 @@ import ch.njol.skript.patterns.elements.RegexPatternElement;
 import ch.njol.skript.patterns.elements.TagPatternElement;
 import ch.njol.skript.patterns.elements.TypePatternElement;
 import ch.njol.skript.patterns.elements.TypePatternElement.Modifier;
+import ch.njol.skript.registrations.Classes;
+import ch.njol.skript.util.Utils;
+import ch.njol.util.NonNullPair;
 import com.google.common.collect.ImmutableSet;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 final class ParserImpl implements Parser {
@@ -60,6 +64,7 @@ final class ParserImpl implements Parser {
 		
 		private final Parser parser;
 		private final Lexer.Instance lexer;
+		private final AtomicInteger expressionOffset = new AtomicInteger();
 		private Token previous = new Token(TokenType.END, "");
 		private Token current = new Token(TokenType.END, "");
 		
@@ -74,18 +79,28 @@ final class ParserImpl implements Parser {
 			PatternElement element = list();
 			eat(TokenType.END);
 			
+			if (element == null)
+				throw new MalformedPatternException("Can't parse a pattern which resolves to nothing");
 			return element;
 		}
 		
+		@Override
+		public int expressionOffset() {
+			return expressionOffset.get();
+		}
+		
+		@Nullable
 		private PatternElement list() {
 			return element(TokenType.END);
 		}
 		
+		@Nullable
 		private PatternElement element(TokenType... closers) {
 			assert closers.length > 0;
 			return element(ImmutableSet.copyOf(closers));
 		}
 		
+		@Nullable
 		private PatternElement element(Set<TokenType> closers) {
 			assert closers.size() > 0;
 			
@@ -117,12 +132,21 @@ final class ParserImpl implements Parser {
 				}
 			}
 			
-			elements.removeIf(element -> element instanceof EmptyPatternElement);
-			if (elements.size() == 0)
-				return new EmptyPatternElement();
-			else if (elements.size() == 1)
+			elements.removeIf(Objects::isNull);
+			if (elements.size() == 1)
 				return elements.get(0);
-			return new ListPatternElement(elements);
+			
+			PatternElement previous = null;
+			for (PatternElement element : elements) {
+				if (previous == null) {
+					previous = element;
+					continue;
+				}
+				
+				previous.next = element;
+				previous = element;
+			}
+			return previous;
 		}
 		
 		private PatternElement type() {
@@ -132,7 +156,7 @@ final class ParserImpl implements Parser {
 			
 			eat(TokenType.TYPE);
 			TokenType modifier;
-			while ((modifier = ifEat(TokenType.NULLABLE, TokenType.PARSE_EXPRESSIONS, TokenType.PARSE_LITERALS, TokenType.TIME)) != null)
+			while ((modifier = ifEat(TokenType.NULLABLE, TokenType.PARSE_EXPRESSIONS, TokenType.PARSE_LITERALS)) != null)
 				modifiers.add(Modifier.modifierOfCharacter(modifier.value));
 			
 			while (current.type() != TokenType.TYPE) {
@@ -153,7 +177,15 @@ final class ParserImpl implements Parser {
 			
 			eat(TokenType.TYPE);
 			
-			return new TypePatternElement(types, modifiers, time);
+			ClassInfo<?>[] classInfos = new ClassInfo[types.size()];
+			boolean[] isPlural = new boolean[types.size()];
+			for (int i = 0; i < types.size(); i++) {
+				NonNullPair<String, Boolean> p = Utils.getEnglishPlural(types.get(i));
+				classInfos[i] = Classes.getClassInfo(p.getFirst());
+				isPlural[i] = p.getSecond();
+			}
+			
+			return new TypePatternElement(classInfos, isPlural, modifiers, time, expressionOffset.incrementAndGet());
 		}
 		
 		private PatternElement literal() {
@@ -170,16 +202,18 @@ final class ParserImpl implements Parser {
 			return value;
 		}
 		
+		@Nullable
 		private PatternElement group() {
 			eat(TokenType.GROUP_OPEN);
 			PatternElement element = choice(TokenType.GROUP_CLOSE);
 			eat(TokenType.GROUP_CLOSE);
 			
-			if (element instanceof EmptyPatternElement)
-				return new EmptyPatternElement();
+			if (element == null)
+				return null;
 			return new GroupPatternElement(element);
 		}
 		
+		@Nullable
 		private PatternElement choice(TokenType closer) {
 			List<PatternElement> choices = new ArrayList<>();
 			
@@ -194,19 +228,20 @@ final class ParserImpl implements Parser {
 			}
 			
 			if (choices.size() == 0)
-				return new EmptyPatternElement();
+				return null;
 			else if (choices.size() == 1)
 				return choices.get(0);
 			return new ChoicePatternElement(choices);
 		}
 		
+		@Nullable
 		private PatternElement optional() {
 			eat(TokenType.OPTIONAL_OPEN);
 			PatternElement element = element(TokenType.OPTIONAL_CLOSE);
 			eat(TokenType.OPTIONAL_CLOSE);
 			
-			if (element instanceof EmptyPatternElement)
-				return new EmptyPatternElement();
+			if (element == null)
+				return null;
 			return new OptionalPatternElement(element);
 		}
 		
@@ -218,6 +253,7 @@ final class ParserImpl implements Parser {
 			return new RegexPatternElement(Pattern.compile(value));
 		}
 		
+		@Nullable
 		private PatternElement mark() {
 			if (previous.type() == TokenType.MARK || previous.type() == TokenType.OLD_MARK)
 				throw new MalformedPatternException(lexer, parser.pattern(), current.type());
@@ -229,20 +265,25 @@ final class ParserImpl implements Parser {
 				throw new MalformedPatternException(lexer, parser.pattern(), TokenType.MARK, current.type());
 			PatternElement element = element(TokenType.CHOICE, TokenType.GROUP_CLOSE, TokenType.OPTIONAL_CLOSE);
 			
-			if (element instanceof EmptyPatternElement)
-				return new EmptyPatternElement();
-			return new MarkPatternElement(element, mark);
+			if (element == null)
+				return null;
+			PatternElement markElement = new MarkPatternElement(mark);
+			markElement.next = element;
+			return markElement;
 		}
 		
+		@Nullable
 		private PatternElement tag() {
 			String tag = current.value();
 			eat(TokenType.IDENTIFIER);
 			eat(TokenType.MARK);
 			PatternElement element = element(TokenType.CHOICE, TokenType.GROUP_CLOSE, TokenType.OPTIONAL_CLOSE);
 			
-			if (element instanceof EmptyPatternElement)
-				return new EmptyPatternElement();
-			return new TagPatternElement(element, tag);
+			if (element == null)
+				return null;
+			PatternElement tagElement = new TagPatternElement(tag);
+			tagElement.next = element;
+			return tagElement;
 		}
 		
 		private void next() {

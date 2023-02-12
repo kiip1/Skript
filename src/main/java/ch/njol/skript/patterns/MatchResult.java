@@ -21,7 +21,6 @@ package ch.njol.skript.patterns;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.patterns.elements.PatternElement.CheckContext;
 import com.google.common.base.MoreObjects;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -35,25 +34,24 @@ import java.util.List;
 public final class MatchResult {
 
 	private final String input;
-	private final CheckContext checkContext;
 	private final ParseContext parseContext;
 	private final List<Expression<?>> expressions = new ArrayList<>();
 	private final List<String> tags = new ArrayList<>();
 	private final List<java.util.regex.MatchResult> regexResults = new ArrayList<>();
 	
+	private int expressionOffset;
 	private int mark;
 	private int flags;
 	
-	public MatchResult(String input, int mark, int flags, CheckContext checkContext, ParseContext parseContext) {
+	public MatchResult(String input, int mark, int flags, ParseContext parseContext) {
 		this.input = input;
 		this.mark = mark;
 		this.flags = flags;
-		this.checkContext = checkContext;
 		this.parseContext = parseContext;
 	}
 
 	public MatchResult copy() {
-		MatchResult result = new MatchResult(input, mark, flags, checkContext, parseContext);
+		MatchResult result = new MatchResult(input, mark, flags, parseContext);
 		result.expressions().addAll(expressions);
 		result.tags().addAll(tags);
 		result.regexResults().addAll(regexResults);
@@ -76,6 +74,14 @@ public final class MatchResult {
 		return input;
 	}
 	
+	public int expressionOffset() {
+		return expressionOffset;
+	}
+	
+	public void setExpressionOffset(int expressionOffset) {
+		this.expressionOffset = expressionOffset;
+	}
+	
 	public int mark() {
 		return mark;
 	}
@@ -90,10 +96,6 @@ public final class MatchResult {
 	
 	public List<java.util.regex.MatchResult> regexResults() {
 		return regexResults;
-	}
-	
-	public CheckContext checkContext() {
-		return checkContext;
 	}
 	
 	public ParseContext parseContext() {
@@ -117,7 +119,6 @@ public final class MatchResult {
 			.add("input", input)
 			.add("mark", mark)
 			.add("flags", flags)
-			.add("checkContext", checkContext)
 			.add("parseContext", parseContext)
 			.toString();
 	}

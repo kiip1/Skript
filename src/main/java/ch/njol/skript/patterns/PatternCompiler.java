@@ -18,7 +18,6 @@
  */
 package ch.njol.skript.patterns;
 
-import ch.njol.skript.patterns.elements.ListPatternElement;
 import ch.njol.skript.patterns.elements.PatternElement;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -27,9 +26,7 @@ import com.google.common.cache.LoadingCache;
 import java.time.Duration;
 
 /**
- * The pattern structure is a tree of {@link PatternElement}s,
- * where {@link ListPatternElement} points to many elements,
- * and acts as the root of the tree.
+ * The pattern structure is a chain of {@link PatternElement}s
  */
 public final class PatternCompiler {
 	
@@ -38,8 +35,9 @@ public final class PatternCompiler {
 		.maximumSize(10000)
 		.build(CacheLoader.from(pattern -> {
 			Parser parser = Parser.of(Lexer.of(pattern));
-			PatternElement element = parser.instance().parse();
-			return new SkriptPattern(element);
+			Parser.Instance instance = parser.instance();
+			PatternElement element = instance.parse();
+			return new SkriptPattern(element, instance.expressionOffset());
 		}));
 	
 	private PatternCompiler() {}

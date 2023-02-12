@@ -19,43 +19,131 @@
 package ch.njol.skript.patterns;
 
 import ch.njol.skript.lang.ParseContext;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.patterns.elements.ChoicePatternElement;
+import ch.njol.skript.patterns.elements.GroupPatternElement;
+import ch.njol.skript.patterns.elements.LiteralPatternElement;
+import ch.njol.skript.patterns.elements.OptionalPatternElement;
 import ch.njol.skript.patterns.elements.PatternElement;
-import ch.njol.skript.patterns.elements.PatternElement.CheckContext;
-import org.jetbrains.annotations.Contract;
+import ch.njol.skript.patterns.elements.TypePatternElement;
 import org.jetbrains.annotations.Nullable;
 
-public final class SkriptPattern {
-	
-	private final PatternElement element;
-	
-	public SkriptPattern(PatternElement element) {
-		this.element = element;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+public class SkriptPattern {
+
+	private final PatternElement first;
+	private final int expressionAmount;
+
+	private final String[] keywords;
+
+	public SkriptPattern(PatternElement first, int expressionAmount) {
+		this.first = first;
+		this.expressionAmount = expressionAmount;
+		keywords = getKeywords(first);
 	}
-	
-	/**
-	 * @return Null if not a match, the context if a match
-	 */
+
 	@Nullable
-	public CheckContext check(String input) {
-		CheckContext context = new CheckContext(input);
-		return element.check(context) ? context : null;
+	public MatchResult match(String expr, int flags, ParseContext parseContext) {
+		// Matching shortcut
+		String lowerExpr = expr.toLowerCase(Locale.ENGLISH);
+		for (String keyword : keywords)
+			if (!lowerExpr.contains(keyword))
+				return null;
+
+		expr = expr.trim();
+		return first.match(expr, new MatchResult(expr, 0, flags, parseContext));
 	}
-	
-	/**
-	 * @return Null if not a match, the context if a match
-	 */
+
 	@Nullable
-	@Contract("_, _, null, _ -> null")
-	public MatchResult visit(String input, int flags, @Nullable CheckContext checkContext, ParseContext parseContext) {
-		if (checkContext == null)
-			return null;
-		MatchResult result = new MatchResult(input, 0, flags, checkContext, parseContext);
-		return element.visit(result) ? result : null;
+	public MatchResult match(String expr) {
+		return match(expr, SkriptParser.ALL_FLAGS, ParseContext.DEFAULT);
 	}
-	
+
 	@Override
 	public String toString() {
-		return element.toString();
+		return first.fullPattern();
 	}
-	
+
+	public static String[] getKeywords(PatternElement first) {
+		List<String> keywords = new ArrayList<>();
+		PatternElement next = first;
+		while (next != null) {
+			if (next instanceof LiteralPatternElement) {
+				String literal = next.toString().trim();
+				while (literal.contains("  "))
+					literal = literal.replace("  ", " ");
+				keywords.add(literal);
+			} else if (next instanceof GroupPatternElement) {
+				next = ((GroupPatternElement) next).getElement();
+				continue;
+			}
+			next = next.next;
+		}
+		return keywords.toArray(new String[0]);
+	}
+
+	/**
+	 * @return the size of the {@link MatchResult#expressions} array
+	 * from a match.
+	 */
+	public int countTypes() {
+		return expressionAmount;
+	}
+
+	/**
+	 * Count the maximum amount of non-null types in this pattern,
+	 * i.e. the maximum amount of non-null values in the {@link MatchResult#expressions}
+	 * array from a match.
+	 *
+	 * @see #countTypes() for the amount of nullable values
+	 * in the expressions array from a match.
+	 */
+	public int countNonNullTypes() {
+		return countNonNullTypes(first);
+	}
+
+	/**
+	 * Count the maximum amount of non-null types in the given pattern,
+	 * i.e. the maximum amount of non-null values in the {@link MatchResult#expressions}
+	 * array from a match.
+	 */
+	private static int countNonNullTypes(PatternElement patternElement) {
+		int count = 0;
+
+		// Iterate over all consequent pattern elements
+		while (patternElement != null) {
+			if (patternElement instanceof ChoicePatternElement) {
+				// Keep track of the max type count of each component
+				int max = 0;
+
+				for (PatternElement component : ((ChoicePatternElement) patternElement).elements()) {
+					int componentCount = countNonNullTypes(component);
+					if (componentCount > max) {
+						max = componentCount;
+					}
+				}
+
+				// Only one of the components will be used, the rest will be non-null
+				//  So we only need to add the max
+				count += max;
+			} else if (patternElement instanceof GroupPatternElement) {
+				// For groups and optionals, simply recurse
+				count += countNonNullTypes(((GroupPatternElement) patternElement).getElement());
+			} else if (patternElement instanceof OptionalPatternElement) {
+				count += countNonNullTypes(((OptionalPatternElement) patternElement).getElement());
+			} else if (patternElement instanceof TypePatternElement) {
+				// Increment when seeing a type
+				count++;
+			}
+
+			// Move on to the next pattern element
+			patternElement = patternElement.originalNext;
+		}
+
+		return count;
+	}
+
 }

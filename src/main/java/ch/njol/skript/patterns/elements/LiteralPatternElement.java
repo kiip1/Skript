@@ -18,7 +18,9 @@
  */
 package ch.njol.skript.patterns.elements;
 
+import ch.njol.skript.patterns.MatchResult;
 import com.google.common.base.MoreObjects;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -26,29 +28,44 @@ import java.util.Locale;
  * A {@link PatternElement} that contains a literal string to be matched, for example {@code hello world}.
  * This element does not handle spaces as would be expected.
  */
-public final class LiteralPatternElement implements PatternElement {
-	
+public final class LiteralPatternElement extends PatternElement {
+
 	private final String literal;
-	
+
 	public LiteralPatternElement(String literal) {
 		this.literal = literal.toLowerCase(Locale.ENGLISH);
 	}
-	
-	@Override
-	public boolean check(CheckContext context) {
-		int start = context.position;
-		int end = start + literal.length();
-		if (end > context.input.length())
-			return false;
-		
-		if (context.input.substring(start, end).equals(literal)) {
-			context.position = end;
-			return true;
-		}
-		
-		return false;
+
+	public boolean isEmpty() {
+		return literal.length() == 0;
 	}
-	
+
+	@Override
+	@Nullable
+	public MatchResult match(String expr, MatchResult matchResult) {
+		char[] exprChars = expr.toCharArray();
+		int exprIndex = matchResult.expressionOffset();
+		for (char c : literal.toCharArray()) {
+			if (c == ' ') { // spaces have special handling to account for extraneous spaces within lines
+				// ignore patterns leading or ending with spaces (or if we have multiple leading spaces)
+				if (exprIndex == 0 || exprIndex == exprChars.length)
+					continue;
+				if (exprChars[exprIndex] == ' ') { // pattern is ' fly' and we were given ' fly'
+					exprIndex++;
+					continue;
+				}
+				if (exprChars[exprIndex - 1] == ' ') // pattern is ' fly' but we were given something like '  fly' or 'fly'
+					continue;
+				return null;
+			} else if (exprIndex == exprChars.length || Character.toLowerCase(c) != Character.toLowerCase(exprChars[exprIndex]))
+				return null;
+			exprIndex++;
+		}
+
+		matchResult.setExpressionOffset(exprIndex);
+		return matchNext(expr, matchResult);
+	}
+
 	@Override
 	public String pattern() {
 		return literal;
@@ -58,6 +75,8 @@ public final class LiteralPatternElement implements PatternElement {
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 			.add("literal", literal)
+			.add("next", next)
+			.add("originalNext", originalNext)
 			.toString();
 	}
 	
