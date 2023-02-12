@@ -46,7 +46,7 @@ final class SyntaxRegisterImpl<T extends SyntaxInfo<?>> implements SyntaxRegiste
 	
 	@Override
 	@Contract("-> new")
-	public SyntaxRegister<T> closeRegistration() {
+	public SyntaxRegister<T> done() {
 		return new FinalSyntaxRegister<>(this);
 	}
 	
@@ -72,7 +72,7 @@ final class SyntaxRegisterImpl<T extends SyntaxInfo<?>> implements SyntaxRegiste
 		
 		@Override
 		@Contract("-> fail")
-		public SyntaxRegister<T> closeRegistration() {
+		public SyntaxRegister<T> done() {
 			throw new UnsupportedOperationException("Registration is closed");
 		}
 		

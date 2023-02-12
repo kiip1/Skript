@@ -16,21 +16,8 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-package org.skriptlang.skript.registration;
+@NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
+package org.skriptlang.skript.addon;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Unmodifiable;
-
-import java.util.List;
-
-interface SyntaxRegister<I extends SyntaxInfo<?>> {
-	
-	@Unmodifiable
-	List<I> syntaxes();
-	
-	void add(I info);
-	
-	@Contract("-> new")
-	SyntaxRegister<I> done();
-	
-}
+import org.eclipse.jdt.annotation.DefaultLocation;
+import org.eclipse.jdt.annotation.NonNullByDefault;

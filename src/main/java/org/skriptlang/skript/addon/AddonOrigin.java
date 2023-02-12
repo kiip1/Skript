@@ -16,21 +16,29 @@
  *
  * Copyright Peter Güttinger, SkriptLang team and contributors
  */
-package org.skriptlang.skript.registration;
+package org.skriptlang.skript.addon;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Unmodifiable;
+import org.skriptlang.skript.registration.SyntaxOrigin;
 
-import java.util.List;
-
-interface SyntaxRegister<I extends SyntaxInfo<?>> {
+@ApiStatus.Experimental
+public final class AddonOrigin implements SyntaxOrigin {
 	
-	@Unmodifiable
-	List<I> syntaxes();
+	@Contract("_ -> new")
+	public static SyntaxOrigin of(SkriptAddon addon) {
+		return new AddonOrigin(addon.getClass().getCanonicalName());
+	}
 	
-	void add(I info);
+	private final String name;
 	
-	@Contract("-> new")
-	SyntaxRegister<I> done();
+	private AddonOrigin(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String name() {
+		return name;
+	}
 	
 }

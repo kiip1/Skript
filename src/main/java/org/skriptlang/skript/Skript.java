@@ -19,6 +19,7 @@
 package org.skriptlang.skript;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.skriptlang.skript.addon.SkriptAddons;
 import org.skriptlang.skript.registration.SkriptRegistry;
 
 /**
@@ -44,6 +45,11 @@ public interface Skript {
 	SkriptRegistry registry();
 	
 	/**
+	 * @return {@link SkriptAddons}
+	 */
+	SkriptAddons addons();
+	
+	/**
 	 * @return The current state Skript is in
 	 */
 	State state();
@@ -52,18 +58,20 @@ public interface Skript {
 	void updateState(State state);
 	
 	enum State {
-		REGISTRATION(true),
-		ENDED_REGISTRATION(false),
-		CLOSED_REGISTRATION(false);
 		
-		private final boolean acceptRegistration;
+		INIT(false), // Skript starts loading
+		REGISTRATION(true), // Addons and syntax can be registered
+		DONE(false), // Finished loading
+		DISABLE(false); // Disable Skript
 		
-		State(boolean acceptRegistration) {
-			this.acceptRegistration = acceptRegistration;
+		private final boolean registration;
+		
+		State(boolean registration) {
+			this.registration = registration;
 		}
 		
-		public boolean acceptRegistration() {
-			return acceptRegistration;
+		public boolean registration() {
+			return registration;
 		}
 		
 	}

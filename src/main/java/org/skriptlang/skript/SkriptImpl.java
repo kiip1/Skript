@@ -19,6 +19,8 @@
 package org.skriptlang.skript;
 
 import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.addon.SkriptAddons;
+import org.skriptlang.skript.addon.SkriptAddonsImpl;
 import org.skriptlang.skript.registration.SkriptRegistry;
 import org.skriptlang.skript.registration.SkriptRegistryImpl;
 
@@ -36,13 +38,19 @@ final class SkriptImpl implements Skript {
 		return instance;
 	}
 	
-	private final SkriptRegistryImpl registry = new SkriptRegistryImpl();
+	private final SkriptRegistryImpl registry = new SkriptRegistryImpl(this);
+	private final SkriptAddonsImpl addons = new SkriptAddonsImpl(this);
 	
-	private State state = State.REGISTRATION;
+	private volatile State state = State.INIT;
 	
 	@Override
 	public SkriptRegistry registry() {
 		return registry;
+	}
+	
+	@Override
+	public SkriptAddons addons() {
+		return addons;
 	}
 	
 	@Override
@@ -52,9 +60,21 @@ final class SkriptImpl implements Skript {
 	
 	@Override
 	public void updateState(State state) {
-		if (state == State.CLOSED_REGISTRATION)
-			registry.closeRegistration();
+		if (this.state.ordinal() >= state.ordinal())
+			throw new IllegalStateException("State may only go forward");
+		
 		this.state = state;
+		
+		switch (state) {
+			case DONE:
+				registry.done();
+				addons.done();
+				break;
+			case DISABLE:
+				registry.disable();
+				addons.disable();
+				break;
+		}
 	}
 	
 }

@@ -20,6 +20,7 @@ package org.skriptlang.skript.registration;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Unmodifiable;
+import org.skriptlang.skript.Skript;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApiStatus.Internal
 public final class SkriptRegistryImpl implements SkriptRegistry {
 	
+	private final Skript skript;
 	private final Map<Key<?>, SyntaxRegister<?>> registers = new ConcurrentHashMap<>();
+	
+	public SkriptRegistryImpl(Skript skript) {
+		this.skript = skript;
+	}
 	
 	@Override
 	@Unmodifiable
@@ -39,13 +45,20 @@ public final class SkriptRegistryImpl implements SkriptRegistry {
 	
 	@Override
 	public <I extends SyntaxInfo<?>> void register(Key<I> key, I info) {
+		if (!skript.state().registration())
+			throw new IllegalStateException("Registration is closed");
+		
 		register(key).add(info);
 		if (key instanceof ChildKey)
 			register(((ChildKey<? extends I, I>) key).parent(), info);
 	}
 	
-	public void closeRegistration() {
-		registers.replaceAll(((key, register) -> register.closeRegistration()));
+	public void done() {
+		registers.replaceAll(((key, register) -> register.done()));
+	}
+	
+	public void disable() {
+		registers.clear();
 	}
 	
 	private <I extends SyntaxInfo<?>> SyntaxRegister<I> register(Key<I> key) {

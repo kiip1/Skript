@@ -32,6 +32,7 @@ import java.util.List;
  * By default, the implementation is practically a wrapper around {@code Map<Key<?>, SyntaxRegistry<?>>}.
  */
 @ApiStatus.Experimental
+@ApiStatus.NonExtendable
 public interface SkriptRegistry {
 	
 	/**

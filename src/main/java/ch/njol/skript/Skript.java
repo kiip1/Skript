@@ -1218,7 +1218,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	public static boolean isAcceptRegistrations() {
 		if (instance == null)
 			throw new IllegalStateException("Skript was never loaded");
-		return instance().state().acceptRegistration() && instance.isEnabled();
+		return instance().state().registration() && instance.isEnabled();
 	}
 	
 	public static void checkAcceptRegistrations() {
@@ -1227,10 +1227,9 @@ public final class Skript extends JavaPlugin implements Listener {
 	}
 	
 	private static void stopAcceptingRegistrations() {
-		instance().updateState(State.ENDED_REGISTRATION);
+		instance().updateState(State.DISABLE);
 		Converters.createChainedConverters();
 		Classes.onRegistrationsStop();
-		instance().updateState(State.CLOSED_REGISTRATION);
 	}
 	
 	// ================ ADDONS ================
