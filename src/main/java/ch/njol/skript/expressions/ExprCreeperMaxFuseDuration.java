@@ -18,12 +18,6 @@
  */
 package ch.njol.skript.expressions;
 
-import ch.njol.skript.util.Timespan;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.doc.Description;
@@ -31,17 +25,22 @@ import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
+import ch.njol.skript.util.Timespan;
 import ch.njol.util.coll.CollectionUtils;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Creeper Max Fuse Duration")
 @Description("The maximum fuse duration that a creeper has.")
 @Examples("set target entity's max fuse time to 1 second")
-@Since("2.5")
-public class ExprCreeperMaxFuseTicks extends SimplePropertyExpression<LivingEntity, Timespan> {
+@Since("INSERT VERSION")
+public class ExprCreeperMaxFuseDuration extends SimplePropertyExpression<LivingEntity, Timespan> {
 	
 	static {
 		if (Skript.methodExists(Creeper.class, "getMaxFuseTicks"))
-			register(ExprCreeperMaxFuseTicks.class, Timespan.class, "[creeper] max[imum] fuse (time|duration)", "livingentities");
+			register(ExprCreeperMaxFuseDuration.class, Timespan.class, "[creeper] max[imum] fuse (time|duration)", "livingentities");
 	}
 	
 	@Override
