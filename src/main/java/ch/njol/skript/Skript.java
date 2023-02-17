@@ -21,8 +21,6 @@ package ch.njol.skript;
 import ch.njol.skript.aliases.Aliases;
 import ch.njol.skript.bukkitutil.BurgerHelper;
 import ch.njol.skript.classes.ClassInfo;
-import org.skriptlang.skript.lang.comparator.Comparator;
-import org.skriptlang.skript.lang.converter.Converter;
 import ch.njol.skript.classes.data.BukkitClasses;
 import ch.njol.skript.classes.data.BukkitEventValues;
 import ch.njol.skript.classes.data.DefaultComparators;
@@ -34,6 +32,11 @@ import ch.njol.skript.command.Commands;
 import ch.njol.skript.doc.Documentation;
 import ch.njol.skript.events.EvtSkript;
 import ch.njol.skript.hooks.Hook;
+import ch.njol.skript.hooks.VaultHook;
+import ch.njol.skript.hooks.regions.GriefPreventionHook;
+import ch.njol.skript.hooks.regions.PreciousStonesHook;
+import ch.njol.skript.hooks.regions.ResidenceHook;
+import ch.njol.skript.hooks.regions.WorldGuardHook;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -59,8 +62,6 @@ import ch.njol.skript.log.LogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.log.Verbosity;
 import ch.njol.skript.registrations.Classes;
-import org.skriptlang.skript.lang.comparator.Comparators;
-import org.skriptlang.skript.lang.converter.Converters;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.tests.runner.SkriptTestEvent;
 import ch.njol.skript.tests.runner.TestMode;
@@ -83,10 +84,10 @@ import ch.njol.skript.variables.Variables;
 import ch.njol.util.Closeable;
 import ch.njol.util.Kleenean;
 import ch.njol.util.NullableChecker;
-import ch.njol.util.OpenCloseable;
 import ch.njol.util.StringUtils;
 import ch.njol.util.coll.iterator.CheckedIterator;
 import ch.njol.util.coll.iterator.EnumerationIterable;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -108,6 +109,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jdt.annotation.Nullable;
+import org.skriptlang.skript.lang.comparator.Comparator;
+import org.skriptlang.skript.lang.comparator.Comparators;
+import org.skriptlang.skript.lang.converter.Converter;
+import org.skriptlang.skript.lang.converter.Converters;
 import org.skriptlang.skript.lang.entry.EntryValidator;
 import org.skriptlang.skript.lang.script.Script;
 import org.skriptlang.skript.lang.structure.Structure;
@@ -119,7 +124,6 @@ import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -137,8 +141,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.function.Supplier;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -315,7 +318,7 @@ public final class Skript extends JavaPlugin implements Listener {
 		return true;
 	}
 
-	private static final Set<Class<? extends Hook<?>>> disabledHookRegistrations = new HashSet<>();
+	private static final Set<Class<? extends Hook>> disabledHookRegistrations = new HashSet<>();
 	private static boolean finishedLoadingHooks = false;
 
 	/**
@@ -324,7 +327,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @return Whether the hook is enabled.
 	 * @see #disableHookRegistration(Class[]) 
 	 */
-	public static boolean isHookEnabled(Class<? extends Hook<?>> hook) {
+	public static boolean isHookEnabled(Class<? extends Hook> hook) {
 		return !disabledHookRegistrations.contains(hook);
 	}
 
@@ -343,7 +346,7 @@ public final class Skript extends JavaPlugin implements Listener {
 	 * @see #isHookEnabled(Class)    
 	 */
 	@SafeVarargs
-	public static void disableHookRegistration(Class<? extends Hook<?>>... hooks) {
+	public static void disableHookRegistration(Class<? extends Hook>... hooks) {
 		if (finishedLoadingHooks) { // Hooks have been registered if Skript is enabled
 			throw new SkriptAPIException("Disabling hooks is not possible after Skript has been enabled!");
 		}
@@ -550,32 +553,24 @@ public final class Skript extends JavaPlugin implements Listener {
 			@Override
 			public void run() {
 				assert Bukkit.getWorlds().get(0).getFullTime() == tick;
-				
-				// Load hooks from Skript jar
-				try {
-					try (JarFile jar = new JarFile(getFile())) {
-						for (JarEntry e : new EnumerationIterable<>(jar.entries())) {
-							if (e.getName().startsWith("ch/njol/skript/hooks/") && e.getName().endsWith("Hook.class") && StringUtils.count("" + e.getName(), '/') <= 5) {
-								final String c = e.getName().replace('/', '.').substring(0, e.getName().length() - ".class".length());
-								try {
-									Class<?> hook = Class.forName(c, true, getClassLoader());
-									if (Hook.class.isAssignableFrom(hook) && !Modifier.isAbstract(hook.getModifiers()) && isHookEnabled((Class<? extends Hook<?>>) hook)) {
-										hook.getDeclaredConstructor().setAccessible(true);
-										hook.getDeclaredConstructor().newInstance();
-									}
-								} catch (ClassNotFoundException ex) {
-									Skript.exception(ex, "Cannot load class " + c);
-								} catch (ExceptionInInitializerError err) {
-									Skript.exception(err.getCause(), "Class " + c + " generated an exception while loading");
-								} catch (Exception ex) {
-									Skript.exception(ex, "Exception initializing hook: " + c);
-								}
-							}
-						}
+
+				// Hooks
+				Map<Class<? extends Hook>, Supplier<Hook>> hooks = ImmutableMap.of(
+						GriefPreventionHook.class, GriefPreventionHook::new,
+						PreciousStonesHook.class, PreciousStonesHook::new,
+						ResidenceHook.class, ResidenceHook::new,
+						WorldGuardHook.class, WorldGuardHook::new,
+						VaultHook.class, VaultHook::new);
+
+				for (Entry<Class<? extends Hook>, Supplier<Hook>> entry : hooks.entrySet()) {
+					if (!isHookEnabled(entry.getKey()))
+						continue;
+
+					try {
+						entry.getValue().get();
+					} catch (Exception e) {
+						Skript.exception(e, "Exception initializing hook: " + entry.getKey().getSimpleName());
 					}
-				} catch (IOException e) {
-					error("Error while loading plugin hooks" + (e.getLocalizedMessage() == null ? "" : ": " + e.getLocalizedMessage()));
-					Skript.exception(e);
 				}
 				finishedLoadingHooks = true;
 				

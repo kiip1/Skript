@@ -18,20 +18,13 @@
  */
 package ch.njol.skript.hooks.regions;
 
-import static ch.njol.skript.variables.Variables.yggdrasil;
-
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.StreamCorruptedException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import ch.njol.skript.hooks.regions.classes.Region;
+import ch.njol.skript.util.AABB;
+import ch.njol.yggdrasil.Fields;
+import ch.njol.yggdrasil.YggdrasilID;
+import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -40,46 +33,38 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
-import ch.njol.skript.hooks.regions.classes.Region;
-import ch.njol.skript.util.AABB;
-import ch.njol.yggdrasil.Fields;
-import ch.njol.yggdrasil.YggdrasilID;
-import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
-import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
-import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
+import java.io.NotSerializableException;
+import java.io.StreamCorruptedException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
-
-    public PreciousStonesHook() throws IOException {
-    }
-
-    @Override
-    protected boolean init() {
-        return super.init();
-    }
+public final class PreciousStonesHook extends RegionsPlugin {
 
     @Override
-    public String getName() {
+    public String name() {
         return "PreciousStones";
     }
 
     @Override
-    public boolean canBuild_i(final Player p, final Location l) {
-        return PreciousStones.API().canBreak(p, l) && PreciousStones.API().canPlace(p, l);
+    public boolean canBuild_i(Player player, Location location) {
+        return PreciousStones.API().canBreak(player, location) && PreciousStones.API().canPlace(player, location);
     }
 
     @Override
-    public Collection<? extends Region> getRegionsAt_i(final Location l) {
-        Set<PreciousStonesRegion> collect = PreciousStones.API().getFieldsProtectingArea(FieldFlag.ALL, l).stream()
-                .map(PreciousStonesRegion::new)
-                .collect(Collectors.toSet());
-        assert collect != null;
-		return collect;
+    public Collection<? extends Region> getRegionsAt_i(Location location) {
+	    return PreciousStones.API().getFieldsProtectingArea(FieldFlag.ALL, location).stream()
+	            .map(PreciousStonesRegion::new)
+	            .collect(Collectors.toSet());
     }
 
     @Override
-    public @Nullable Region getRegion_i(final World world, final String name) {
+    public @Nullable Region getRegion_i(World world, String name) {
         return null;
     }
 
@@ -96,50 +81,46 @@ public class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
     @YggdrasilID("PreciousStonesRegion")
     public final class PreciousStonesRegion extends Region {
 
+		@UnknownNullability
         private transient Field field;
 
-        public PreciousStonesRegion(final Field field) {
+	    @SuppressWarnings("unused")
+	    public PreciousStonesRegion() {}
+
+        public PreciousStonesRegion(Field field) {
             this.field = field;
         }
 
         @Override
-        public boolean contains(final Location l) {
-            return field.envelops(l);
+        public boolean contains(Location location) {
+            return field.envelops(location);
         }
 
         @Override
-        public boolean isMember(final OfflinePlayer p) {
-            return field.isInAllowedList(p.getName());
+        public boolean isMember(OfflinePlayer player) {
+            return field.isInAllowedList(player.getName());
         }
 
         @Override
         public Collection<OfflinePlayer> getMembers() {
-            @SuppressWarnings("deprecation")
-			Set<OfflinePlayer> collect = field.getAllAllowed().stream()
-                    .map(Bukkit::getOfflinePlayer)
-                    .collect(Collectors.toSet());
-            assert collect != null;
-			return collect;
+	        return field.getAllAllowed().stream()
+					.map(Bukkit::getOfflinePlayer)
+					.collect(Collectors.toSet());
         }
 
         @Override
-        public boolean isOwner(final OfflinePlayer p) {
-            return field.isOwner(p.getName());
+        public boolean isOwner(OfflinePlayer player) {
+            return field.isOwner(player.getName());
         }
 
         @Override
         public Collection<OfflinePlayer> getOwners() {
-            @SuppressWarnings("deprecation")
-			Set<OfflinePlayer> collect = Stream.of(Bukkit.getOfflinePlayer(field.getOwner()))
-                    .collect(Collectors.toSet());
-            assert collect != null;
-			return collect;
+	        return Collections.singleton(Bukkit.getOfflinePlayer(field.getOwner()));
         }
 
-        @SuppressWarnings("null")
 		@Override
         public Iterator<Block> getBlocks() {
-            final List<Vector> vectors = field.getCorners();
+            List<Vector> vectors = field.getCorners();
             return new AABB(Bukkit.getWorld(field.getWorld()), vectors.get(0), vectors.get(7)).iterator();
         }
 
@@ -149,19 +130,17 @@ public class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
         }
 
         @Override
-        public RegionsPlugin<?> getPlugin() {
+        public RegionsPlugin getPlugin() {
             return PreciousStonesHook.this;
         }
 
         @Override
-        public boolean equals(@Nullable final Object o) {
-            if (this == o) {
+        public boolean equals(@Nullable Object other) {
+            if (this == other)
                 return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
+            if (other == null || getClass() != other.getClass())
                 return false;
-            }
-            final PreciousStonesRegion that = (PreciousStonesRegion) o;
+            PreciousStonesRegion that = (PreciousStonesRegion) other;
             return Objects.equals(field, that.field);
         }
 
@@ -176,7 +155,7 @@ public class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
         }
 
         @Override
-        public void deserialize(final Fields fields) throws StreamCorruptedException, NotSerializableException {
+        public void deserialize(Fields fields) throws StreamCorruptedException, NotSerializableException {
             new Fields(fields).setFields(this);
         }
     }
