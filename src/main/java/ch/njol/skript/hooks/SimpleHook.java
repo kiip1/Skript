@@ -31,8 +31,8 @@ import java.io.IOException;
 @ApiStatus.Internal
 public abstract class SimpleHook implements Hook {
 
-	private static final ArgsMessage m_hooked = new ArgsMessage("hooks.hooked");
-	private static final ArgsMessage m_hook_error = new ArgsMessage("hooks.error");
+	private static final ArgsMessage HOOKED_MESSAGE = new ArgsMessage("hooks.hooked");
+	private static final ArgsMessage HOOK_ERROR_MESSAGE = new ArgsMessage("hooks.error");
 
 	@UnknownNullability
 	private final Plugin plugin;

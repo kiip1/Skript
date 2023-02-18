@@ -71,7 +71,7 @@ public final class GriefPreventionHook extends RegionsPlugin {
 				claimsField = null;
 		} catch (NoSuchFieldException | SecurityException ignored) {}
 		if (getClaim == null && claimsField == null) {
-			Skript.error("Skript " + Skript.getVersion() + " is not compatible with GriefPrevention " + plugin().getDescription().getVersion() + "."
+			Skript.error("Skript " + Skript.getVersion() + " is not compatible with " name() + " " + plugin().getDescription().getVersion() + "."
 					+ " Please report this at https://github.com/SkriptLang/Skript/issues/ if this error occurred after you updated GriefPrevention.");
 			return false;
 		}
