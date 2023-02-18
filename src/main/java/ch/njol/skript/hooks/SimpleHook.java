@@ -43,21 +43,21 @@ public abstract class SimpleHook implements Hook {
 			if (Documentation.canGenerateUnsafeDocs()) {
 				loadClasses();
 				if (Skript.logHigh())
-					Skript.info(m_hooked.toString(name()));
+					Skript.info(HOOKED_MESSAGE.toString(name()));
 			}
 
 			return;
 		}
 
 		if (!init()) {
-			Skript.error(m_hook_error.toString(name()));
+			Skript.error(HOOK_ERROR_MESSAGE.toString(name()));
 			return;
 		}
 
 		loadClasses();
 
 		if (Skript.logHigh())
-			Skript.info(m_hooked.toString(name()));
+			Skript.info(HOOKED_MESSAGE.toString(name()));
 	}
 
 	protected Plugin plugin() {

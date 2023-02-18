@@ -71,7 +71,7 @@ public final class GriefPreventionHook extends RegionsPlugin {
 				claimsField = null;
 		} catch (NoSuchFieldException | SecurityException ignored) {}
 		if (getClaim == null && claimsField == null) {
-			Skript.error("Skript " + Skript.getVersion() + " is not compatible with " name() + " " + plugin().getDescription().getVersion() + "."
+			Skript.error("Skript " + Skript.getVersion() + " is not compatible with " + name() + " " + plugin().getDescription().getVersion() + "."
 					+ " Please report this at https://github.com/SkriptLang/Skript/issues/ if this error occurred after you updated GriefPrevention.");
 			return false;
 		}
@@ -126,9 +126,9 @@ public final class GriefPreventionHook extends RegionsPlugin {
 		if (getClaim != null) {
 			try {
 				return (Claim) getClaim.invoke(plugin.dataStore, id);
-			} catch (final IllegalAccessException | IllegalArgumentException e) {
+			} catch (IllegalAccessException | IllegalArgumentException e) {
 				assert false : e;
-			} catch (final InvocationTargetException e) {
+			} catch (InvocationTargetException e) {
 				throw new RuntimeException(e.getCause());
 			}
 		} else {
