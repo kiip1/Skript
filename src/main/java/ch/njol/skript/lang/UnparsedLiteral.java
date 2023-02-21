@@ -38,6 +38,7 @@ import java.util.logging.Level;
 /**
  * A literal which has yet to be parsed. This is returned if %object(s)% is used within patterns and no expression matches.
  *
+ * @author Peter Güttinger
  * @see SimpleLiteral
  */
 public class UnparsedLiteral implements Literal<Object> {
@@ -106,6 +107,7 @@ public class UnparsedLiteral implements Literal<Object> {
 		} finally {
 			log.stop();
 		}
+	}
 	
 	@Override
 	public String toString(final @Nullable Event e, final boolean debug) {

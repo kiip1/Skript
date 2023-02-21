@@ -320,10 +320,9 @@ public class FunctionReference<T> {
 	 */
 	@Contract("-> new")
 	public FunctionReference<T> simplify() {
-		Expression<?>[] parameters = Arrays.stream(this.parameters)
-			.map(Expression::simplify)
-			.toArray(Expression[]::new);
-
+		// TODO Actually simplify parameters
+		// At the current time it is not viable since it hopelessly breaks everything
+		Expression<?>[] parameters = parameters().toArray(new Expression[0]);
 		FunctionReference<T> reference = new FunctionReference<>(functionName, node, script, returnTypes, parameters);
 		reference.signature = signature;
 		reference.single = single;
