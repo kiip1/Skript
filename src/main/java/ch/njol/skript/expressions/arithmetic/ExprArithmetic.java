@@ -18,13 +18,6 @@
  */
 package ch.njol.skript.expressions.arithmetic;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -38,6 +31,12 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.lang.util.SimpleLiteral;
 import ch.njol.skript.util.Patterns;
 import ch.njol.util.Kleenean;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Peter Güttinger
@@ -167,28 +166,27 @@ public class ExprArithmetic extends SimpleExpression<Number> {
 		
 		return one;
 	}
-	
+
 	@Override
 	public Class<? extends Number> getReturnType() {
 		return returnType;
 	}
-	
+
 	@Override
 	public boolean isSingle() {
 		return true;
 	}
-	
+
 	@Override
 	public String toString(final @Nullable Event e, final boolean debug) {
 		return first.toString(e, debug) + " " + op + " " + second.toString(e, debug);
 	}
-	
-	@SuppressWarnings("null")
+
 	@Override
 	public Expression<? extends Number> simplify() {
 		if (first instanceof Literal && second instanceof Literal)
-			return new SimpleLiteral<>(getArray(null), Number.class, false);
+			return new SimpleLiteral<>(getSingle(null), false);
 		return this;
 	}
-	
+
 }

@@ -18,24 +18,6 @@
  */
 package ch.njol.skript.util;
 
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Locale;
-
-import ch.njol.skript.Skript;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.Event;
-import org.bukkit.material.Directional;
-import org.bukkit.util.Vector;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -47,6 +29,20 @@ import ch.njol.skript.localization.Noun;
 import ch.njol.util.Kleenean;
 import ch.njol.yggdrasil.Fields.FieldContext;
 import ch.njol.yggdrasil.YggdrasilSerializable.YggdrasilRobustSerializable;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.Event;
+import org.bukkit.util.Vector;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * @author Peter Güttinger
@@ -430,9 +426,9 @@ public class Direction implements YggdrasilRobustSerializable {
 			
 			@Override
 			public Expression<? extends Location> simplify() {
-				if (dirs instanceof Literal && dirs.isSingle() && Direction.ZERO.equals(((Literal<?>) dirs).getSingle())) {
+				if (dirs instanceof Literal && dirs.isSingle() && Direction.ZERO.equals(((Literal<?>) dirs).getSingle()))
 					return locs;
-				}
+
 				return this;
 			}
 		};
