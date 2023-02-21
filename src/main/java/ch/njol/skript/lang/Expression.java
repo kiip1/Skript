@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Contract;
 import org.skriptlang.skript.lang.converter.Converter;
 
 import java.util.HashMap;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
