@@ -31,11 +31,13 @@ import ch.njol.skript.util.slot.Slot;
 import ch.njol.util.Checker;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.Contract;
 import org.skriptlang.skript.lang.converter.Converter;
 
 import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
@@ -105,9 +107,9 @@ public interface Expression<T> extends SyntaxElement, Debuggable {
 	 * Gets a non-null stream of this expression's values.
 	 *
 	 * @param event The event
-	 * @return A non-null stream of this expression's values
+	 * @return A non-null stream of this expression's non-null values
 	 */
-	default Stream<? extends T> stream(Event event) {
+	default Stream<@NonNull ? extends  T> stream(Event event) {
 		Iterator<? extends T> iter = iterator(event);
 		if (iter == null) {
 			return Stream.empty();
