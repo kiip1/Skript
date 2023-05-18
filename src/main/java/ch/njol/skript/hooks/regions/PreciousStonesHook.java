@@ -44,119 +44,114 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public final class PreciousStonesHook extends RegionsPlugin {
+public final class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
 
-    @Override
-    public String name() {
-        return "PreciousStones";
-    }
+	@Override
+	public boolean canBuild_i(Player player, Location location) {
+		return PreciousStones.API().canBreak(player, location) && PreciousStones.API().canPlace(player, location);
+	}
 
-    @Override
-    public boolean canBuild_i(Player player, Location location) {
-        return PreciousStones.API().canBreak(player, location) && PreciousStones.API().canPlace(player, location);
-    }
+	@Override
+	public Collection<? extends Region> getRegionsAt_i(Location location) {
+		return PreciousStones.API().getFieldsProtectingArea(FieldFlag.ALL, location).stream()
+				.map(PreciousStonesRegion::new)
+				.collect(Collectors.toSet());
+	}
 
-    @Override
-    public Collection<? extends Region> getRegionsAt_i(Location location) {
-	    return PreciousStones.API().getFieldsProtectingArea(FieldFlag.ALL, location).stream()
-	            .map(PreciousStonesRegion::new)
-	            .collect(Collectors.toSet());
-    }
+	@Override
+	public @Nullable Region getRegion_i(World world, String name) {
+		return null;
+	}
 
-    @Override
-    public @Nullable Region getRegion_i(World world, String name) {
-        return null;
-    }
+	@Override
+	public boolean hasMultipleOwners_i() {
+		return true;
+	}
 
-    @Override
-    public boolean hasMultipleOwners_i() {
-        return true;
-    }
+	@Override
+	protected Class<? extends Region> getRegionClass() {
+		return PreciousStonesRegion.class;
+	}
 
-    @Override
-    protected Class<? extends Region> getRegionClass() {
-        return PreciousStonesRegion.class;
-    }
-
-    @YggdrasilID("PreciousStonesRegion")
-    public final class PreciousStonesRegion extends Region {
+	@YggdrasilID("PreciousStonesRegion")
+	public final class PreciousStonesRegion extends Region {
 
 	@UnknownNullability
-        private transient Field field;
+		private transient Field field;
 
 	@SuppressWarnings("unused")
 	public PreciousStonesRegion() {}
 
-        public PreciousStonesRegion(Field field) {
-            this.field = field;
-        }
-
-        @Override
-        public boolean contains(Location location) {
-            return field.envelops(location);
-        }
-
-        @Override
-        public boolean isMember(OfflinePlayer player) {
-            return field.isInAllowedList(player.getName());
-        }
-
-        @Override
-        public Collection<OfflinePlayer> getMembers() {
-	        return field.getAllAllowed().stream()
-				.map(Bukkit::getOfflinePlayer)
-				.collect(Collectors.toSet());
-        }
-
-        @Override
-        public boolean isOwner(OfflinePlayer player) {
-            return field.isOwner(player.getName());
-        }
-
-        @Override
-        public Collection<OfflinePlayer> getOwners() {
-	        return Collections.singleton(Bukkit.getOfflinePlayer(field.getOwner()));
-        }
+		public PreciousStonesRegion(Field field) {
+			this.field = field;
+		}
 
 		@Override
-        public Iterator<Block> getBlocks() {
-            List<Vector> vectors = field.getCorners();
-            return new AABB(Bukkit.getWorld(field.getWorld()), vectors.get(0), vectors.get(7)).iterator();
-        }
+		public boolean contains(Location location) {
+			return field.envelops(location);
+		}
 
-        @Override
-        public String toString() {
-            return field.getName() + " in world " + field.getWorld();
-        }
+		@Override
+		public boolean isMember(OfflinePlayer player) {
+			return field.isInAllowedList(player.getName());
+		}
 
-        @Override
-        public RegionsPlugin getPlugin() {
-            return PreciousStonesHook.this;
-        }
+		@Override
+		public Collection<OfflinePlayer> getMembers() {
+			return field.getAllAllowed().stream()
+				.map(Bukkit::getOfflinePlayer)
+				.collect(Collectors.toSet());
+		}
 
-        @Override
-        public boolean equals(@Nullable Object other) {
-            if (this == other)
-                return true;
-            if (other == null || getClass() != other.getClass())
-                return false;
-            PreciousStonesRegion that = (PreciousStonesRegion) other;
-            return Objects.equals(field, that.field);
-        }
+		@Override
+		public boolean isOwner(OfflinePlayer player) {
+			return field.isOwner(player.getName());
+		}
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(field);
-        }
+		@Override
+		public Collection<OfflinePlayer> getOwners() {
+			return Collections.singleton(Bukkit.getOfflinePlayer(field.getOwner()));
+		}
 
-        @Override
-        public Fields serialize() throws NotSerializableException {
-            return new Fields(this);
-        }
+		@Override
+		public Iterator<Block> getBlocks() {
+			List<Vector> vectors = field.getCorners();
+			return new AABB(Bukkit.getWorld(field.getWorld()), vectors.get(0), vectors.get(7)).iterator();
+		}
 
-        @Override
-        public void deserialize(Fields fields) throws StreamCorruptedException, NotSerializableException {
-            new Fields(fields).setFields(this);
-        }
-    }
+		@Override
+		public String toString() {
+			return field.getName() + " in world " + field.getWorld();
+		}
+
+		@Override
+		public RegionsPlugin<PreciousStones> getPlugin() {
+			return PreciousStonesHook.this;
+		}
+
+		@Override
+		public boolean equals(@Nullable Object other) {
+			if (this == other)
+				return true;
+			if (other == null || getClass() != other.getClass())
+				return false;
+			PreciousStonesRegion that = (PreciousStonesRegion) other;
+			return Objects.equals(field, that.field);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(field);
+		}
+
+		@Override
+		public Fields serialize() throws NotSerializableException {
+			return new Fields(this);
+		}
+
+		@Override
+		public void deserialize(Fields fields) throws StreamCorruptedException, NotSerializableException {
+			new Fields(fields).setFields(this);
+		}
+	}
 }
