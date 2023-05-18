@@ -81,11 +81,11 @@ public final class PreciousStonesHook extends RegionsPlugin {
     @YggdrasilID("PreciousStonesRegion")
     public final class PreciousStonesRegion extends Region {
 
-		@UnknownNullability
+	@UnknownNullability
         private transient Field field;
 
-	    @SuppressWarnings("unused")
-	    public PreciousStonesRegion() {}
+	@SuppressWarnings("unused")
+	public PreciousStonesRegion() {}
 
         public PreciousStonesRegion(Field field) {
             this.field = field;
@@ -104,8 +104,8 @@ public final class PreciousStonesHook extends RegionsPlugin {
         @Override
         public Collection<OfflinePlayer> getMembers() {
 	        return field.getAllAllowed().stream()
-					.map(Bukkit::getOfflinePlayer)
-					.collect(Collectors.toSet());
+				.map(Bukkit::getOfflinePlayer)
+				.collect(Collectors.toSet());
         }
 
         @Override

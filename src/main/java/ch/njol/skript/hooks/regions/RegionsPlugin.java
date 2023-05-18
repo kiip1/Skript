@@ -48,7 +48,6 @@ public abstract class RegionsPlugin extends SimpleHook {
 					if (plugin.getRegionClass() == type)
 						return type.getSimpleName();
 				}
-
 				return null;
 			}
 

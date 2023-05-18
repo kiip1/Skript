@@ -568,7 +568,8 @@ public final class Skript extends JavaPlugin implements Listener {
 						PreciousStonesHook.class, PreciousStonesHook::new,
 						ResidenceHook.class, ResidenceHook::new,
 						WorldGuardHook.class, WorldGuardHook::new,
-						VaultHook.class, VaultHook::new);
+						VaultHook.class, VaultHook::new
+				);
 
 				for (Entry<Class<? extends Hook>, Supplier<Hook>> entry : hooks.entrySet()) {
 					if (!isHookEnabled(entry.getKey()))

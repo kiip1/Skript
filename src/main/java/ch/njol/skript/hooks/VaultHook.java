@@ -74,9 +74,7 @@ public final class VaultHook extends SimpleHook {
 
 	@Nullable
 	private static <T> T obtain(Class<T> clazz) {
-		ServicesManager manager = Bukkit.getServicesManager();
-		RegisteredServiceProvider<T> service = manager.getRegistration(clazz);
-
+		RegisteredServiceProvider<T> service = Bukkit.getServicesManager().getRegistration(clazz);
 		return service == null ? null : service.getProvider();
 	}
 
