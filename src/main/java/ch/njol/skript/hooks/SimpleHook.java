@@ -48,7 +48,6 @@ public abstract class SimpleHook<T extends Plugin> implements Hook {
 				if (Skript.logHigh())
 					Skript.info(HOOKED_MESSAGE.toString(getName()));
 			}
-
 			return;
 		}
 
