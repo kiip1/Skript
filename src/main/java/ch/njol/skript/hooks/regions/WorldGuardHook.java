@@ -52,7 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public final class WorldGuardHook extends RegionsPlugin {
+public final class WorldGuardHook extends RegionsPlugin<WorldGuardPlugin> {
 	
 	@Override
 	public boolean init() {
@@ -65,17 +65,12 @@ public final class WorldGuardHook extends RegionsPlugin {
 	}
 	
 	@Override
-	public String name() {
-		return "WorldGuard";
-	}
-	
-	@Override
 	public boolean canBuild_i(Player player, Location location) {
 		if (player.hasPermission("worldguard.region.bypass." + location.getWorld().getName()))
 			return true; // Build access always granted by permission
 		WorldGuardPlatform platform = WorldGuard.getInstance().getPlatform();
 		RegionQuery query = platform.getRegionContainer().createQuery();
-		return query.testBuild(BukkitAdapter.adapt(location), ((WorldGuardPlugin) plugin()).wrapPlayer(player));
+		return query.testBuild(BukkitAdapter.adapt(location), plugin().wrapPlayer(player));
 	}
 
 	@Override
@@ -148,7 +143,7 @@ public final class WorldGuardHook extends RegionsPlugin {
 		
 		@Override
 		public boolean isMember(OfflinePlayer player) {
-			return region.isMember(((WorldGuardPlugin) plugin()).wrapOfflinePlayer(player));
+			return region.isMember(plugin().wrapOfflinePlayer(player));
 		}
 		
 		@Override
@@ -162,7 +157,7 @@ public final class WorldGuardHook extends RegionsPlugin {
 		
 		@Override
 		public boolean isOwner(OfflinePlayer player) {
-			return region.isOwner(((WorldGuardPlugin) plugin()).wrapOfflinePlayer(player));
+			return region.isOwner(plugin().wrapOfflinePlayer(player));
 		}
 		
 		@Override
@@ -208,7 +203,7 @@ public final class WorldGuardHook extends RegionsPlugin {
 		}
 		
 		@Override
-		public RegionsPlugin getPlugin() {
+		public RegionsPlugin<WorldGuardPlugin> getPlugin() {
 			return WorldGuardHook.this;
 		}
 		
@@ -227,7 +222,6 @@ public final class WorldGuardHook extends RegionsPlugin {
 		public int hashCode() {
 			return world.hashCode() * 31 + region.hashCode();
 		}
-		
 	}
 	
 }

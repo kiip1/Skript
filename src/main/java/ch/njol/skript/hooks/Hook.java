@@ -25,6 +25,6 @@ public interface Hook {
 
 	boolean init();
 
-	String name();
+	String getName();
 
 }

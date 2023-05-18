@@ -44,16 +44,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public final class ResidenceHook extends RegionsPlugin {
+public final class ResidenceHook extends RegionsPlugin<Residence> {
 
 	@Override
 	public boolean init() {
 		return super.init();
-	}
-	
-	@Override
-	public String name() {
-		return "Residence";
 	}
 	
 	@Override
@@ -175,7 +170,7 @@ public final class ResidenceHook extends RegionsPlugin {
 		}
 
 		@Override
-		public RegionsPlugin getPlugin() {
+		public RegionsPlugin<Residence> getPlugin() {
 			return ResidenceHook.this;
 		}
 
@@ -192,6 +187,6 @@ public final class ResidenceHook extends RegionsPlugin {
 		public int hashCode() {
 			return residence.getName().hashCode();
 		}
-		
 	}
+
 }

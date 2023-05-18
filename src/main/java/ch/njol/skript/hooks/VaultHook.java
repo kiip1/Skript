@@ -19,20 +19,21 @@
 package ch.njol.skript.hooks;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
 import ch.njol.skript.doc.Documentation;
+import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.IOException;
 
 @ApiStatus.Internal
-public final class VaultHook extends SimpleHook {
+public final class VaultHook extends SimpleHook<Vault> {
 
 	public static final String NO_GROUP_SUPPORT = "The permissions plugin you are using does not support groups.";
 
@@ -53,20 +54,17 @@ public final class VaultHook extends SimpleHook {
 	}
 
 	@Override
-	public String name() {
-		return "Vault";
-	}
-
-	@Override
 	protected void loadClasses() {
 		try {
+			SkriptAddon addon = Skript.getAddonInstance();
+			String root = getClass().getPackage().getName() + ".";
 			boolean docs = Documentation.canGenerateUnsafeDocs();
 			if (economy != null || docs)
-				Skript.getAddonInstance().loadClasses(getClass().getPackage().getName() + ".economy");
+				addon.loadClasses(root + "economy");
 			if (chat != null || docs)
-				Skript.getAddonInstance().loadClasses(getClass().getPackage().getName() + ".chat");
+				addon.loadClasses(root + "chat");
 			if (permission != null || docs)
-				Skript.getAddonInstance().loadClasses(getClass().getPackage().getName() + ".permission");
+				addon.loadClasses(root + "permission");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

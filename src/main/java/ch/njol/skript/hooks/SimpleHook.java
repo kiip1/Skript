@@ -29,41 +29,47 @@ import org.jetbrains.annotations.UnknownNullability;
 import java.io.IOException;
 
 @ApiStatus.Internal
-public abstract class SimpleHook implements Hook {
+public abstract class SimpleHook<T extends Plugin> implements Hook {
 
 	private static final ArgsMessage HOOKED_MESSAGE = new ArgsMessage("hooks.hooked");
 	private static final ArgsMessage HOOK_ERROR_MESSAGE = new ArgsMessage("hooks.error");
 
 	@UnknownNullability
-	private final Plugin plugin;
+	private final T plugin;
 
+	@SuppressWarnings("unchecked")
 	public SimpleHook() {
-		plugin = Bukkit.getPluginManager().getPlugin(name());
+		plugin = (T) Bukkit.getPluginManager().getPlugin(getName());
 		if (plugin == null) {
 			if (Documentation.canGenerateUnsafeDocs()) {
 				loadClasses();
 				if (Skript.logHigh())
-					Skript.info(HOOKED_MESSAGE.toString(name()));
+					Skript.info(HOOKED_MESSAGE.toString(getName()));
 			}
 
 			return;
 		}
 
 		if (!init()) {
-			Skript.error(HOOK_ERROR_MESSAGE.toString(name()));
+			Skript.error(HOOK_ERROR_MESSAGE.toString(getName()));
 			return;
 		}
 
 		loadClasses();
 
 		if (Skript.logHigh())
-			Skript.info(HOOKED_MESSAGE.toString(name()));
+			Skript.info(HOOKED_MESSAGE.toString(getName()));
 	}
 
-	protected Plugin plugin() {
+	@Override
+	public String getName() {
+		return plugin.getName();
+	}
+
+	protected T plugin() {
 		return plugin;
 	}
-	
+
 	protected void loadClasses() {
 		try {
 			Skript.getAddonInstance().loadClasses(getClass().getPackage().getName());

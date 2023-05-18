@@ -26,6 +26,7 @@ import ch.njol.yggdrasil.ClassResolver;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -35,16 +36,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public abstract class RegionsPlugin extends SimpleHook {
+public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
-	private static final List<RegionsPlugin> plugins = new ArrayList<>();
+	private static final List<RegionsPlugin<?>> plugins = new ArrayList<>();
 
 	static {
 		Variables.yggdrasil.registerClassResolver(new ClassResolver() {
 			@Override
 			@Nullable
 			public String getID(Class<?> type) {
-				for (RegionsPlugin plugin : plugins) {
+				for (RegionsPlugin<?> plugin : plugins) {
 					if (plugin.getRegionClass() == type)
 						return type.getSimpleName();
 				}
@@ -54,7 +55,7 @@ public abstract class RegionsPlugin extends SimpleHook {
 			@Override
 			@Nullable
 			public Class<?> getClass(String id) {
-				for (RegionsPlugin plugin : plugins) {
+				for (RegionsPlugin<?> plugin : plugins) {
 					if (id.equals(plugin.getRegionClass().getSimpleName()))
 						return plugin.getRegionClass();
 				}
@@ -73,7 +74,7 @@ public abstract class RegionsPlugin extends SimpleHook {
 	public abstract boolean canBuild_i(Player player, Location location);
 
 	public static boolean canBuild(Player player, Location location) {
-		for (RegionsPlugin plugin : plugins) {
+		for (RegionsPlugin<?> plugin : plugins) {
 			if (!plugin.canBuild_i(player, location))
 				return false;
 		}
@@ -85,14 +86,14 @@ public abstract class RegionsPlugin extends SimpleHook {
 
 	public static Set<? extends Region> getRegionsAt(Location location) {
 		Set<Region> regions = new HashSet<>();
-		Iterator<RegionsPlugin> iterator = plugins.iterator();
+		Iterator<RegionsPlugin<?>> iterator = plugins.iterator();
 		while (iterator.hasNext()) {
-			RegionsPlugin plugin = iterator.next();
+			RegionsPlugin<?> plugin = iterator.next();
 
 			try {
 				regions.addAll(plugin.getRegionsAt_i(location));
 			} catch (Throwable e) { // Unstable WorldGuard API
-				Skript.error(plugin.name() + " hook crashed and was removed to prevent future errors.");
+				Skript.error(plugin.getName() + " hook crashed and was removed to prevent future errors.");
 				e.printStackTrace();
 				iterator.remove();
 			}
@@ -106,7 +107,7 @@ public abstract class RegionsPlugin extends SimpleHook {
 
 	@Nullable
 	public static Region getRegion(World world, String name) {
-		for (RegionsPlugin plugin : plugins) {
+		for (RegionsPlugin<?> plugin : plugins) {
 			return plugin.getRegion_i(world, name);
 		}
 
@@ -116,7 +117,7 @@ public abstract class RegionsPlugin extends SimpleHook {
 	public abstract boolean hasMultipleOwners_i();
 
 	public static boolean hasMultipleOwners() {
-		for (RegionsPlugin plugin : plugins) {
+		for (RegionsPlugin<?> plugin : plugins) {
 			if (plugin.hasMultipleOwners_i())
 				return true;
 		}
@@ -127,9 +128,9 @@ public abstract class RegionsPlugin extends SimpleHook {
 	protected abstract Class<? extends Region> getRegionClass();
 
 	@Nullable
-	public static RegionsPlugin getPlugin(String name) {
-		for (RegionsPlugin plugin : plugins) {
-			if (plugin.name().equalsIgnoreCase(name))
+	public static RegionsPlugin<?> getPlugin(String name) {
+		for (RegionsPlugin<?> plugin : plugins) {
+			if (plugin.getName().equalsIgnoreCase(name))
 				return plugin;
 		}
 

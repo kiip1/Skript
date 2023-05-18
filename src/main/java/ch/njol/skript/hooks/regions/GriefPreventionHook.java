@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public final class GriefPreventionHook extends RegionsPlugin {
+public final class GriefPreventionHook extends RegionsPlugin<GriefPrevention> {
 
 	boolean supportsUUIDs;
 	@Nullable
@@ -71,7 +71,7 @@ public final class GriefPreventionHook extends RegionsPlugin {
 				claimsField = null;
 		} catch (NoSuchFieldException | SecurityException ignored) {}
 		if (getClaim == null && claimsField == null) {
-			Skript.error("Skript " + Skript.getVersion() + " is not compatible with " + name() + " " + plugin().getDescription().getVersion() + "."
+			Skript.error("Skript " + Skript.getVersion() + " is not compatible with " + getName() + " " + plugin().getDescription().getVersion() + "."
 					+ " Please report this at https://github.com/SkriptLang/Skript/issues/ if this error occurred after you updated GriefPrevention.");
 			return false;
 		}
@@ -79,18 +79,13 @@ public final class GriefPreventionHook extends RegionsPlugin {
 	}
 
 	@Override
-	public String name() {
-		return "GriefPrevention";
-	}
-
-	@Override
 	public boolean canBuild_i(Player player, Location location) {
-		return ((GriefPrevention) plugin()).allowBuild(player, location) == null; // returns reason string if not allowed to build
+		return plugin().allowBuild(player, location) == null; // returns reason string if not allowed to build
 	}
 
 	@Override
 	public Collection<? extends Region> getRegionsAt_i(Location location) {
-		Claim claim = ((GriefPrevention) plugin()).dataStore.getClaimAt(location, false, null);
+		Claim claim = plugin().dataStore.getClaimAt(location, false, null);
 		if (claim != null)
 			return Collections.singletonList(new GriefPreventionRegion(claim));
 		return Collections.emptySet();
@@ -121,7 +116,7 @@ public final class GriefPreventionHook extends RegionsPlugin {
 
 	@Nullable
 	Claim getClaim(long id) {
-		GriefPrevention plugin = (GriefPrevention) plugin();
+		GriefPrevention plugin = plugin();
 
 		if (getClaim != null) {
 			try {
@@ -232,7 +227,7 @@ public final class GriefPreventionHook extends RegionsPlugin {
 		}
 
 		@Override
-		public RegionsPlugin getPlugin() {
+		public RegionsPlugin<GriefPrevention> getPlugin() {
 			return GriefPreventionHook.this;
 		}
 
@@ -251,7 +246,6 @@ public final class GriefPreventionHook extends RegionsPlugin {
 		public int hashCode() {
 			return claim.hashCode();
 		}
-
 	}
 
 }
