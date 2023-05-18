@@ -28,20 +28,29 @@ import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.IOException;
 
+/**
+ * A wrapper around {@link Hook} which allows for easier Bukkit plugin hooking.
+ *
+ * @see Hook
+ * @param <P> The plugin this hook is for
+ */
 @ApiStatus.Internal
-public abstract class SimpleHook<T extends Plugin> implements Hook {
+public abstract class SimpleHook<P extends Plugin> implements Hook {
 
 	private static final ArgsMessage HOOKED_MESSAGE = new ArgsMessage("hooks.hooked");
 	private static final ArgsMessage HOOK_ERROR_MESSAGE = new ArgsMessage("hooks.error");
 
 	@UnknownNullability
-	private final T plugin;
+	private final P plugin;
 	private final String name;
 
+	/**
+	 * @param name Exact name of the plugin
+	 */
 	@SuppressWarnings("unchecked")
 	public SimpleHook(String name) {
 		this.name = name;
-		plugin = (T) Bukkit.getPluginManager().getPlugin(getName());
+		plugin = (P) Bukkit.getPluginManager().getPlugin(getName());
 		if (plugin == null) {
 			if (Documentation.canGenerateUnsafeDocs()) {
 				loadClasses();
@@ -67,7 +76,7 @@ public abstract class SimpleHook<T extends Plugin> implements Hook {
 		return name;
 	}
 
-	protected T plugin() {
+	protected P plugin() {
 		return plugin;
 	}
 

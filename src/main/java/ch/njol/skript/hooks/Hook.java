@@ -20,6 +20,12 @@ package ch.njol.skript.hooks;
 
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * A hook attaches additional functionality to Skript, generally used
+ * to add syntaxes for specific plugins like WorldGuard and GriefPrevention.
+ *
+ * @see SimpleHook
+ */
 @ApiStatus.Internal
 public interface Hook {
 
