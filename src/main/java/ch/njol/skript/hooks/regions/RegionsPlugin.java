@@ -38,14 +38,14 @@ import java.util.Set;
 
 public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
-	private static final List<RegionsPlugin<?>> plugins = new ArrayList<>();
+	private static final List<RegionsPlugin<?>> PLUGINS = new ArrayList<>();
 
 	static {
 		Variables.yggdrasil.registerClassResolver(new ClassResolver() {
 			@Override
 			@Nullable
 			public String getID(Class<?> type) {
-				for (RegionsPlugin<?> plugin : plugins) {
+				for (RegionsPlugin<?> plugin : PLUGINS) {
 					if (plugin.getRegionClass() == type)
 						return type.getSimpleName();
 				}
@@ -55,7 +55,7 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 			@Override
 			@Nullable
 			public Class<?> getClass(String id) {
-				for (RegionsPlugin<?> plugin : plugins) {
+				for (RegionsPlugin<?> plugin : PLUGINS) {
 					if (id.equals(plugin.getRegionClass().getSimpleName()))
 						return plugin.getRegionClass();
 				}
@@ -71,14 +71,14 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
 	@Override
 	public boolean init() {
-		plugins.add(this);
+		PLUGINS.add(this);
 		return true;
 	}
 
 	public abstract boolean canBuild_i(Player player, Location location);
 
 	public static boolean canBuild(Player player, Location location) {
-		for (RegionsPlugin<?> plugin : plugins) {
+		for (RegionsPlugin<?> plugin : PLUGINS) {
 			if (!plugin.canBuild_i(player, location))
 				return false;
 		}
@@ -90,7 +90,7 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
 	public static Set<? extends Region> getRegionsAt(Location location) {
 		Set<Region> regions = new HashSet<>();
-		Iterator<RegionsPlugin<?>> iterator = plugins.iterator();
+		Iterator<RegionsPlugin<?>> iterator = PLUGINS.iterator();
 		while (iterator.hasNext()) {
 			RegionsPlugin<?> plugin = iterator.next();
 
@@ -111,7 +111,7 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
 	@Nullable
 	public static Region getRegion(World world, String name) {
-		for (RegionsPlugin<?> plugin : plugins) {
+		for (RegionsPlugin<?> plugin : PLUGINS) {
 			return plugin.getRegion_i(world, name);
 		}
 
@@ -121,7 +121,7 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 	public abstract boolean hasMultipleOwners_i();
 
 	public static boolean hasMultipleOwners() {
-		for (RegionsPlugin<?> plugin : plugins) {
+		for (RegionsPlugin<?> plugin : PLUGINS) {
 			if (plugin.hasMultipleOwners_i())
 				return true;
 		}
@@ -133,7 +133,7 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 
 	@Nullable
 	public static RegionsPlugin<?> getPlugin(String name) {
-		for (RegionsPlugin<?> plugin : plugins) {
+		for (RegionsPlugin<?> plugin : PLUGINS) {
 			if (plugin.getName().equalsIgnoreCase(name))
 				return plugin;
 		}
