@@ -46,6 +46,10 @@ import java.util.stream.Collectors;
 
 public final class PreciousStonesHook extends RegionsPlugin<PreciousStones> {
 
+	public PreciousStonesHook() {
+		super("PreciousStones");
+	}
+
 	@Override
 	public boolean canBuild_i(Player player, Location location) {
 		return PreciousStones.API().canBreak(player, location) && PreciousStones.API().canPlace(player, location);

@@ -46,6 +46,10 @@ import java.util.List;
 
 public final class ResidenceHook extends RegionsPlugin<Residence> {
 
+	public ResidenceHook() {
+		super("Residence");
+	}
+
 	@Override
 	public boolean init() {
 		return super.init();

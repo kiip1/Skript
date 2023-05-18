@@ -53,7 +53,11 @@ import java.util.List;
 import java.util.UUID;
 
 public final class WorldGuardHook extends RegionsPlugin<WorldGuardPlugin> {
-	
+
+	public WorldGuardHook() {
+		super("WorldGuard");
+	}
+
 	@Override
 	public boolean init() {
 		if (!Skript.classExists("com.sk89q.worldedit.math.BlockVector3")) {

@@ -36,9 +36,11 @@ public abstract class SimpleHook<T extends Plugin> implements Hook {
 
 	@UnknownNullability
 	private final T plugin;
+	private final String name;
 
 	@SuppressWarnings("unchecked")
-	public SimpleHook() {
+	public SimpleHook(String name) {
+		this.name = name;
 		plugin = (T) Bukkit.getPluginManager().getPlugin(getName());
 		if (plugin == null) {
 			if (Documentation.canGenerateUnsafeDocs()) {
@@ -63,7 +65,7 @@ public abstract class SimpleHook<T extends Plugin> implements Hook {
 
 	@Override
 	public String getName() {
-		return plugin.getName();
+		return name;
 	}
 
 	protected T plugin() {

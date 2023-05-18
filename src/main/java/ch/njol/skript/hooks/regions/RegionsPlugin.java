@@ -65,6 +65,10 @@ public abstract class RegionsPlugin<T extends Plugin> extends SimpleHook<T> {
 		});
 	}
 
+	public RegionsPlugin(String name) {
+		super(name);
+	}
+
 	@Override
 	public boolean init() {
 		plugins.add(this);

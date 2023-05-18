@@ -44,6 +44,10 @@ public final class VaultHook extends SimpleHook<Vault> {
 	@Nullable
 	public static Permission permission;
 
+	public VaultHook() {
+		super("Vault");
+	}
+
 	@Override
 	public boolean init() {
 		economy = obtain(Economy.class);

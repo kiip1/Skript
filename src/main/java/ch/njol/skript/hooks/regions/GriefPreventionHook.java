@@ -54,6 +54,10 @@ public final class GriefPreventionHook extends RegionsPlugin<GriefPrevention> {
 	@Nullable
 	Field claimsField;
 
+	public GriefPreventionHook() {
+		super("GriefPrevention");
+	}
+
 	@Override
 	public boolean init() {
 		// ownerID is a public field
