@@ -37,7 +37,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Long> {
 	
 	static {
-		register(ExprNoDamageTicks.class, Long.class, "(invulnerability|no damage) tick[s]", "livingentities");
+		register(ExprNoDamageTicks.class, Long.class, "(invulnerability|invincibility|no damage) tick[s]", "livingentities");
 	}
 	
 	@Override
