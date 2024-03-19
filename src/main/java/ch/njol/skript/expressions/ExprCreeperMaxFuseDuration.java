@@ -59,9 +59,9 @@ public class ExprCreeperMaxFuseDuration extends SimplePropertyExpression<LivingE
 		LivingEntity[] entities = getExpr().getArray(event);
 		int amount = delta == null ? 0 : (int) ((Timespan) delta[0]).getTicks_i();
 		for (LivingEntity entity : entities) {
-			if (!(entity instanceof Creeper)) continue;
+			if (!(entity instanceof Creeper))
+				continue;
 			Creeper creeper = (Creeper) entity;
-			
 			switch (mode) {
 				case REMOVE:
 					amount = -amount;
