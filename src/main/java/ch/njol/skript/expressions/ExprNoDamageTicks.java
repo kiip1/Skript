@@ -24,16 +24,16 @@ import ch.njol.skript.doc.NoDoc;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.util.MarkedForRemoval;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
 
 @NoDoc
 @Deprecated
-@MarkedForRemoval(version = "2.8")
+@ApiStatus.ScheduledForRemoval(inVersion = "2.10")
 public class ExprNoDamageTicks extends SimplePropertyExpression<LivingEntity, Long> {
 	
 	static {
