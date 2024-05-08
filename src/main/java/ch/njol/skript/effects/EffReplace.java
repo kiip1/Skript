@@ -32,7 +32,6 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionList;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import ch.njol.util.StringUtils;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +39,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Name("Replace")
 @Description("Replaces all occurrences of a given text with another text. Please note that you can only change variables and a few expressions, e.g. a <a href='./expressions.html#ExprMessage'>message</a> or a line of a sign.")
@@ -110,13 +110,19 @@ public class EffReplace extends Effect {
 				for (int x = 0; x < haystack.length; x++)
 					for (Object n : needles) {
 						assert n != null;
-						haystack[x] = StringUtils.replaceFirst((String)haystack[x], (String)n, Matcher.quoteReplacement((String)replacement), caseSensitive);
+						if (caseSensitive)
+							haystack[x] = ((String)haystack[x]).replaceFirst((String)n, Matcher.quoteReplacement((String)replacement));
+						else
+							haystack[x] = ((String)haystack[x]).replaceFirst("(?ui)" + Pattern.quote((String)n), Matcher.quoteReplacement((String)replacement));
 					}
 			} else {
 				for (int x = 0; x < haystack.length; x++)
 					for (Object n : needles) {
 						assert n != null;
-						haystack[x] = StringUtils.replace((String) haystack[x], (String) n, (String) replacement, caseSensitive);
+						if (caseSensitive)
+							haystack[x] =  ((String) haystack[x]).replace((String) n, (String) replacement);
+						else
+							haystack[x] =  ((String) haystack[x]).replaceAll("(?ui)" + Pattern.quote((String) n), Matcher.quoteReplacement((String) replacement));
 					}
 			}
 			haystackExpr.change(event, haystack, ChangeMode.SET);

@@ -18,10 +18,6 @@
  */
 package ch.njol.skript.effects;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -31,7 +27,10 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import ch.njol.util.StringUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
 
 @Name("Send Resource Pack")
 @Description({"Request that the player's client download and switch resource packs. The client will download ",
@@ -99,7 +98,7 @@ public class EffSendResourcePack extends Effect {
 					if (PAPER_METHOD_EXISTS)
 						p.setResourcePack(address, hash);
 					else
-						p.setResourcePack(address, StringUtils.hexStringToByteArray(hash));
+						p.setResourcePack(address, hexStringToByteArray(hash));
 				}
 			} catch (Exception ignored) {}
 		}
@@ -110,6 +109,19 @@ public class EffSendResourcePack extends Effect {
 		return "send the resource pack from " + url.toString(e, debug) +
 				(hash != null ? " with hash " + hash.toString(e, debug) : "") +
 				" to " + recipients.toString(e, debug);
+	}
+
+	// TODO Mark as private next version after StringUtils deletion
+	@ApiStatus.Internal
+	public static byte[] hexStringToByteArray(String value) {
+		int length = value.length();
+		byte[] data = new byte[length / 2];
+		for (int i = 0; i < length; i += 2) {
+			data[i / 2] = (byte) ((Character.digit(value.charAt(i), 16) << 4)
+				+ Character.digit(value.charAt(i+1), 16));
+		}
+
+		return data;
 	}
 
 }

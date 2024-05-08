@@ -41,7 +41,6 @@ import ch.njol.skript.util.WeatherType;
 import ch.njol.skript.util.slot.EquipmentSlot;
 import ch.njol.skript.util.slot.Slot;
 import ch.njol.skript.util.slot.SlotWithIndex;
-import ch.njol.util.StringUtils;
 import ch.njol.util.coll.CollectionUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -407,7 +406,8 @@ public class DefaultComparators {
 		Comparators.registerComparator(String.class, String.class, new Comparator<String, String>() {
 			@Override
 			public Relation compare(String s1, String s2) {
-				return Relation.get(StringUtils.equals(s1, s2, SkriptConfig.caseSensitive.value()));
+				return Relation.get(SkriptConfig.caseSensitive.value()
+					? s1.equals(s2) : s1.equalsIgnoreCase(s2));
 			}
 
 			@Override

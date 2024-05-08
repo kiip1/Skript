@@ -21,7 +21,6 @@ package ch.njol.skript.conditions;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptConfig;
 import ch.njol.skript.aliases.ItemType;
-import org.skriptlang.skript.lang.comparator.Relation;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
@@ -30,13 +29,13 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
-import org.skriptlang.skript.lang.comparator.Comparators;
 import ch.njol.util.Kleenean;
-import ch.njol.util.StringUtils;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.eclipse.jdt.annotation.Nullable;
+import org.skriptlang.skript.lang.comparator.Comparators;
+import org.skriptlang.skript.lang.comparator.Relation;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -138,7 +137,9 @@ public class CondContains extends Condition {
 
 				return items.check(e, o1 -> {
 					if (o1 instanceof String) {
-						return StringUtils.contains(string, (String) o1, caseSensitive);
+						if (caseSensitive)
+							return string.contains((String) o1);
+						return string.toLowerCase().contains(((String) o1).toLowerCase());
 					} else {
 						return false;
 					}

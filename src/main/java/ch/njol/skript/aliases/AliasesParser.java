@@ -18,17 +18,6 @@
  */
 package ch.njol.skript.aliases;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.AliasesProvider.Variation;
 import ch.njol.skript.aliases.AliasesProvider.VariationGroup;
@@ -39,7 +28,17 @@ import ch.njol.skript.localization.ArgsMessage;
 import ch.njol.skript.localization.Message;
 import ch.njol.skript.localization.Noun;
 import ch.njol.util.NonNullPair;
-import ch.njol.util.StringUtils;
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Parses aliases.
@@ -606,7 +605,7 @@ public class AliasesParser {
 		int start = 0; // Start of next substring
 		int indexStart = 0; // Start of next comma lookup
 		while (start - 1 != data.length()) {
-			int comma = StringUtils.indexOfOutsideGroup(data, ',', '{', '}', indexStart);
+			int comma = indexOfOutsideGroup(data, ',', '{', '}', indexStart);
 			if (comma == -1) { // No more items than this
 				if (indexStart == 0) { // Nothing was loaded, so no commas at all
 					String item = data.trim();
@@ -771,4 +770,27 @@ public class AliasesParser {
 	public void registerCondition(String name, Function<String, Boolean> condition) {
 		conditions.put(name, condition);
 	}
+
+	// TODO Mark as private next version after StringUtils deletion
+	@ApiStatus.Internal
+	public static int indexOfOutsideGroup(String string, char find, char groupOpen, char groupClose, int i) {
+		int group = 0;
+		while (i < string.length()) {
+			char c = string.charAt(i);
+			if (c == '\\') {
+				i++;
+			} else if (c == groupOpen) {
+				group++;
+			} else if (c == groupClose) {
+				group--;
+			} else if (c == find && group == 0) {
+				return i;
+			}
+
+			i++;
+		}
+
+		return -1;
+	}
+
 }

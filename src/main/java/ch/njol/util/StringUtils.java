@@ -18,6 +18,8 @@
  */
 package ch.njol.util;
 
+import ch.njol.skript.aliases.AliasesParser;
+import ch.njol.skript.effects.EffSendResourcePack;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -393,33 +395,10 @@ public final class StringUtils {
 	}
 
 	public static byte[] hexStringToByteArray(String value) {
-		int length = value.length();
-		byte[] data = new byte[length / 2];
-		for (int i = 0; i < length; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(value.charAt(i), 16) << 4)
-					+ Character.digit(value.charAt(i+1), 16));
-		}
-
-		return data;
+		return EffSendResourcePack.hexStringToByteArray(value);
 	}
 
 	public static int indexOfOutsideGroup(String string, char find, char groupOpen, char groupClose, int i) {
-		int group = 0;
-		while (i < string.length()) {
-			char c = string.charAt(i);
-			if (c == '\\') {
-				i++;
-			} else if (c == groupOpen) {
-				group++;
-			} else if (c == groupClose) {
-				group--;
-			} else if (c == find && group == 0) {
-				return i;
-			}
-
-			i++;
-		}
-
-		return -1;
+		return AliasesParser.indexOfOutsideGroup(string, find, groupOpen, groupClose, i);
 	}
 }

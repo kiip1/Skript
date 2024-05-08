@@ -182,8 +182,13 @@ public class Documentation {
 	}
 
 	private static String convertRegex(String regex, boolean escapeHTML) {
-		if (StringUtils.containsAny(regex, ".[]\\*+"))
-			Skript.error("Regex '" + regex + "' contains unconverted Regex syntax");
+		for (int i = 0; i < ".[]\\*+".length(); i++) {
+			if (regex.indexOf(".[]\\*+".charAt(i)) != -1) {
+				Skript.error("Regex '" + regex + "' contains unconverted Regex syntax");
+				break;
+			}
+		}
+
 		regex = escapeHTML ? escapeHTML(regex) : regex;
 		return regex.replaceAll("\\((.+?)\\)\\?", "[$1]").replaceAll("(.)\\?", "[$1]");
 	}
