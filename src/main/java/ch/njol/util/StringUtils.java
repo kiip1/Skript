@@ -18,22 +18,26 @@
  */
 package ch.njol.util;
 
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jdt.annotation.Nullable;
+@Deprecated
+@ApiStatus.ScheduledForRemoval
+// TODO Move methods to usage
+public final class StringUtils {
 
-/**
- * @author Peter Güttinger
- */
-public abstract class StringUtils {
-	
-	public static void checkIndices(final String s, final int start, final int end) {
-		if (start < 0 || end > s.length())
-			throw new StringIndexOutOfBoundsException("invalid start/end indices " + start + "," + end + " for string \"" + s + "\" (length " + s.length() + ")");
+	private StringUtils() {}
+
+	public static void checkIndices(String value, int start, int end) {
+		if (start < 0 || end > value.length())
+			throw new StringIndexOutOfBoundsException("invalid start/end indices " + start + "," + end + " for string \"" + value + "\" (length " + value.length() + ")");
 	}
 	
 	/**
@@ -61,11 +65,9 @@ public abstract class StringUtils {
 	 * @param regex the Regex to match
 	 * @param callback the callback will be run for every match of the regex in the string, and should return the replacement string for the given match.
 	 *            If the callback returns null for any given match this function will immediately terminate and return null.
-	 * @return
 	 */
-	@SuppressWarnings("null")
 	@Nullable
-	public static String replaceAll(final CharSequence string, final String regex, final Function<Matcher, String> callback) {
+	public static String replaceAll(CharSequence string, String regex, Function<Matcher, String> callback) {
 		return replaceAll(string, Pattern.compile(regex), callback);
 	}
 	
@@ -79,41 +81,41 @@ public abstract class StringUtils {
 	 * @return
 	 */
 	@Nullable
-	public static String replaceAll(final CharSequence string, final Pattern regex, final Function<Matcher, String> callback) {
-		final Matcher m = regex.matcher(string);
-		final StringBuffer sb = new StringBuffer();
-		while (m.find()) {
-			final String r = callback.apply(m);
-			if (r == null)
+	public static String replaceAll(CharSequence string, Pattern regex, Function<Matcher, String> callback) {
+		final Matcher matcher = regex.matcher(string);
+		final StringBuffer buffer = new StringBuffer();
+		while (matcher.find()) {
+			final String value = callback.apply(matcher);
+			if (value == null)
 				return null;
-			m.appendReplacement(sb, r);
+			matcher.appendReplacement(buffer, value);
 		}
-		m.appendTail(sb);
-		return sb.toString();
+		matcher.appendTail(buffer);
+		return buffer.toString();
 	}
 	
-	public static int count(final String s, final char c) {
-		return count(s, c, 0, s.length());
+	public static int count(String value, char character) {
+		return count(value, character, 0, value.length());
 	}
 	
-	public static int count(final String s, final char c, final int start) {
-		return count(s, c, start, s.length());
+	public static int count(String value, char character, final int start) {
+		return count(value, character, start, value.length());
 	}
 	
-	public static int count(final String s, final char c, final int start, final int end) {
-		checkIndices(s, start, end);
+	public static int count(String value, char character, int start, int end) {
+		checkIndices(value, start, end);
 		int r = 0;
 		for (int i = start; i < end; i++) {
-			if (s.charAt(i) == c)
+			if (value.charAt(i) == character)
 				r++;
 		}
 		return r;
 	}
 	
-	public static boolean contains(final String s, final char c, final int start, final int end) {
-		checkIndices(s, start, end);
+	public static boolean contains(String value, char character, int start, int end) {
+		checkIndices(value, start, end);
 		for (int i = start; i < end; i++) {
-			if (s.charAt(i) == c)
+			if (value.charAt(i) == character)
 				return true;
 		}
 		return false;
@@ -122,29 +124,27 @@ public abstract class StringUtils {
 	/**
 	 * Gets a rounded english (##.##) representation of a number
 	 * 
-	 * @param d The number to be turned into a string
+	 * @param number The number to be turned into a string
 	 * @param accuracy Maximum number of digits after the period
-	 * @return
 	 */
-	public static String toString(final double d, final int accuracy) {
-		assert accuracy >= 0;
+	public static String toString(double number, int accuracy) {
 		if (accuracy <= 0)
-			return "" + Math.round(d);
-		final String s = String.format(Locale.ENGLISH, "%." + accuracy + "f", d);
-		int c = s.length() - 1;
-		while (s.charAt(c) == '0')
+			return "" + Math.round(number);
+		final String formatted = String.format(Locale.ENGLISH, "%." + accuracy + "f", number);
+		int c = formatted.length() - 1;
+		while (formatted.charAt(c) == '0')
 			c--;
-		if (s.charAt(c) == '.')
+		if (formatted.charAt(c) == '.')
 			c--;
-		return "" + s.substring(0, c + 1);
+		return formatted.substring(0, c + 1);
 	}
 	
-	public static String firstToUpper(final String s) {
-		if (s.isEmpty())
-			return s;
-		if (Character.isUpperCase(s.charAt(0)))
-			return s;
-		return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+	public static String firstToUpper(String value) {
+		if (value.isEmpty())
+			return value;
+		if (Character.isUpperCase(value.charAt(0)))
+			return value;
+		return Character.toUpperCase(value.charAt(0)) + value.substring(1);
 	}
 	
 	/**
@@ -162,34 +162,32 @@ public abstract class StringUtils {
 			end = end + s.length();
 		if (end < start)
 			throw new IllegalArgumentException("invalid indices");
-		return "" + s.substring(start, end);
+		return s.substring(start, end);
 	}
 	
 	/**
 	 * Capitalises the first character of the string and all characters that follow periods, exclamation and question marks.
-	 * 
-	 * @param string
-	 * @return
 	 */
-	public static String fixCapitalization(final String string) {
-		final char[] s = string.toCharArray();
-		int c = 0;
-		while (c != -1) {
-			while (c < s.length && (s[c] == '.' || s[c] == '!' || s[c] == '?' || Character.isWhitespace(s[c])))
-				c++;
-			if (c == s.length)
-				return new String(s);
-			if (c == 0 || Character.isWhitespace(s[c - 1]))
-				s[c] = Character.toUpperCase(s[c]);
-			c = indexOf(s, c + 1, '.', '!', '?');
+	public static String fixCapitalization(String value) {
+		final char[] chars = value.toCharArray();
+		int i = 0;
+		while (i != -1) {
+			while (i < chars.length && (chars[i] == '.' || chars[i] == '!' || chars[i] == '?' || Character.isWhitespace(chars[i])))
+				i++;
+			if (i == chars.length)
+				return new String(chars);
+			if (i == 0 || Character.isWhitespace(chars[i - 1]))
+				chars[i] = Character.toUpperCase(chars[i]);
+			i = indexOf(chars, i + 1, '.', '!', '?');
 		}
-		return new String(s);
+
+		return new String(chars);
 	}
 	
-	private static int indexOf(final char[] s, final int start, final char... cs) {
-		for (int i = start; i < s.length; i++) {
-			for (final char c : cs)
-				if (s[i] == c)
+	private static int indexOf(char[] chars, int start, char... test) {
+		for (int i = start; i < chars.length; i++) {
+			for (char c : test)
+				if (chars[i] == c)
 					return i;
 		}
 		return -1;
@@ -197,24 +195,16 @@ public abstract class StringUtils {
 	
 	/**
 	 * Shorthand for <tt>{@link #numberAt(CharSequence, int, boolean) numberAt}(s, index, true)</tt>
-	 * 
-	 * @param s
-	 * @param index
-	 * @return
 	 */
-	public static double numberAfter(final CharSequence s, final int index) {
-		return numberAt(s, index, true);
+	public static double numberAfter(CharSequence sequence, int index) {
+		return numberAt(sequence, index, true);
 	}
 	
 	/**
 	 * Shorthand for <tt>{@link #numberAt(CharSequence, int, boolean) numberAt}(s, index, false)</tt>
-	 * 
-	 * @param s
-	 * @param index
-	 * @return
 	 */
-	public static double numberBefore(final CharSequence s, final int index) {
-		return numberAt(s, index, false);
+	public static double numberBefore(CharSequence sequence, int index) {
+		return numberAt(sequence, index, false);
 	}
 	
 	/**
@@ -223,20 +213,19 @@ public abstract class StringUtils {
 	 * The number has to start exactly at the given index (ignoring whitespace), and will only count if the other end of the number is either at an end of the string or padded by
 	 * whitespace.
 	 * 
-	 * @param s The ChatSequence to search the number in
+	 * @param sequence The ChatSequence to search the number in
 	 * @param index The index to start searching at (inclusive)
 	 * @param forward Whether to search forwards or backwards
 	 * @return The number found or -1 if no matching number was found
 	 */
-	public static double numberAt(final CharSequence s, final int index, final boolean forward) {
-		assert s != null;
-		assert index >= 0 && index < s.length() : index;
+	public static double numberAt(CharSequence sequence, int index, boolean forward) {
+		assert index >= 0 && index < sequence.length() : index;
 		final int direction = forward ? 1 : -1;
 		boolean stillWhitespace = true;
 		boolean hasDot = false;
 		int d1 = -1, d2 = -1;
-		for (int i = index; i >= 0 && i < s.length(); i += direction) {
-			final char c = s.charAt(i);
+		for (int i = index; i >= 0 && i < sequence.length(); i += direction) {
+			final char c = sequence.charAt(i);
 			if ('0' <= c && c <= '9') {
 				if (d1 == -1)
 					d1 = d2 = i;
@@ -262,70 +251,65 @@ public abstract class StringUtils {
 		}
 		if (d1 == -1)
 			return -1;
-		if (s.charAt(Math.min(d1, d2)) == '.')
+		if (sequence.charAt(Math.min(d1, d2)) == '.')
 			return -1;
-		if (d1 + direction > 0 && d1 + direction < s.length() && !Character.isWhitespace(s.charAt(d1 + direction)))
+		if (d1 + direction > 0 && d1 + direction < sequence.length() && !Character.isWhitespace(sequence.charAt(d1 + direction)))
 			return -1;
-		return Double.parseDouble(s.subSequence(Math.min(d1, d2), Math.max(d1, d2) + 1).toString());
+		return Double.parseDouble(sequence.subSequence(Math.min(d1, d2), Math.max(d1, d2) + 1).toString());
 	}
 	
-	public static boolean startsWithIgnoreCase(final String string, final String start) {
-		return startsWithIgnoreCase(string, start, 0);
+	public static boolean startsWithIgnoreCase(String value, String start) {
+		return startsWithIgnoreCase(value, start, 0);
 	}
 	
-	public static boolean startsWithIgnoreCase(final String string, final String start, final int offset) {
-		assert string != null;
-		assert start != null;
-		if (string.length() < offset + start.length())
+	public static boolean startsWithIgnoreCase(String value, String start, int offset) {
+		if (value.length() < offset + start.length())
 			return false;
-		return string.substring(offset, start.length()).equalsIgnoreCase(start);
+		return value.substring(offset, start.length()).equalsIgnoreCase(start);
 	}
 	
-	public static boolean endsWithIgnoreCase(final String string, final String end) {
-		assert string != null;
-		assert end != null;
-		if (string.length() < end.length())
+	public static boolean endsWithIgnoreCase(String value, String end) {
+		if (value.length() < end.length())
 			return false;
-		return string.substring(string.length() - end.length()).equalsIgnoreCase(end);
+		return value.substring(value.length() - end.length()).equalsIgnoreCase(end);
 	}
 	
-	public static String multiply(final @Nullable String s, final int amount) {
+	public static String multiply(@Nullable String value, int amount) {
 		assert amount >= 0 : amount;
-		if (s == null)
+		if (value == null)
 			return "";
 		if (amount <= 0)
 			return "";
 		if (amount == 1)
-			return s;
-		final char[] input = s.toCharArray();
+			return value;
+		final char[] input = value.toCharArray();
 		final char[] multiplied = new char[input.length * amount];
 		for (int i = 0; i < amount; i++)
 			System.arraycopy(input, 0, multiplied, i * input.length, input.length);
 		return new String(multiplied);
 	}
 	
-	public static String multiply(final char c, final int amount) {
+	public static String multiply(char c, int amount) {
 		if (amount == 0)
 			return "";
 		final char[] multiplied = new char[amount];
-		for (int i = 0; i < amount; i++)
-			multiplied[i] = c;
+		Arrays.fill(multiplied, c);
 		return new String(multiplied);
 	}
 	
-	public static String join(final @Nullable Object[] strings) {
+	public static String join(Object @Nullable [] strings) {
 		if (strings == null)
 			return "";
 		return join(strings, "", 0, strings.length);
 	}
 	
-	public static String join(final @Nullable Object[] strings, final String delimiter) {
+	public static String join(Object @Nullable [] strings, String delimiter) {
 		if (strings == null)
 			return "";
 		return join(strings, delimiter, 0, strings.length);
 	}
 	
-	public static String join(final @Nullable Object[] strings, final String delimiter, final int start, final int end) {
+	public static String join(Object @Nullable [] strings, String delimiter, int start, int end) {
 		if (strings == null)
 			return "";
 		assert start >= 0 && start <= end && end <= strings.length : start + ", " + end + ", " + strings.length;
@@ -339,19 +323,19 @@ public abstract class StringUtils {
 		return "" + b;
 	}
 	
-	public static String join(final @Nullable Iterable<?> strings) {
+	public static String join(@Nullable Iterable<?> strings) {
 		if (strings == null)
 			return "";
 		return join(strings.iterator(), "");
 	}
 	
-	public static String join(final @Nullable Iterable<?> strings, final String delimiter) {
+	public static String join(@Nullable Iterable<?> strings, String delimiter) {
 		if (strings == null)
 			return "";
 		return join(strings.iterator(), delimiter);
 	}
 	
-	public static String join(final @Nullable Iterator<?> strings, final String delimiter) {
+	public static String join(@Nullable Iterator<?> strings, String delimiter) {
 		if (strings == null || !strings.hasNext())
 			return "";
 		final StringBuilder b = new StringBuilder("" + strings.next());
@@ -364,68 +348,64 @@ public abstract class StringUtils {
 	
 	/**
 	 * Scans the string starting at <tt>start</tt> for digits.
-	 * 
-	 * @param s
+	 *
 	 * @param start Index of the first digit
 	 * @return The index <i>after</i> the last digit or <tt>start</tt> if there are no digits at the given index
 	 */
-	public static int findLastDigit(final String s, final int start) {
+	public static int findLastDigit(String value, int start) {
 		int end = start;
-		while (end < s.length() && '0' <= s.charAt(end) && s.charAt(end) <= '9')
+		while (end < value.length() && '0' <= value.charAt(end) && value.charAt(end) <= '9')
 			end++;
 		return end;
 	}
-	
+
 	/**
 	 * Searches for whether a String contains any of the characters of another string.
-	 * 
-	 * @param s
-	 * @param chars
-	 * @return
 	 */
-	public static boolean containsAny(final String s, final String chars) {
+	public static boolean containsAny(String value, String chars) {
 		for (int i = 0; i < chars.length(); i++) {
-			if (s.indexOf(chars.charAt(i)) != -1)
+			if (value.indexOf(chars.charAt(i)) != -1)
 				return true;
 		}
 		return false;
 	}
-	
-	public static boolean equals(final String s1, final String s2, final boolean caseSensitive) {
-		return caseSensitive ? s1.equals(s2) : s1.equalsIgnoreCase(s2);
+
+	public static boolean equals(String one, String other, boolean caseSensitive) {
+		return caseSensitive ? one.equals(other) : one.equalsIgnoreCase(other);
 	}
-	
-	public static boolean contains(final String haystack, final String needle, final boolean caseSensitive) {
+
+	public static boolean contains(String haystack, String needle, boolean caseSensitive) {
 		if (caseSensitive)
 			return haystack.contains(needle);
 		return haystack.toLowerCase().contains(needle.toLowerCase());
 	}
-	
-	public static String replace(final String haystack, final String needle, final String replacement, final boolean caseSensitive) {
+
+	public static String replace(String haystack, String needle, String replacement, boolean caseSensitive) {
 		if (caseSensitive)
-			return "" + haystack.replace(needle, replacement);
-		return "" + haystack.replaceAll("(?ui)" + Pattern.quote(needle), Matcher.quoteReplacement(replacement));
-	}
-	
-	public static String replaceFirst(final String haystack, final String needle, final String replacement, final boolean caseSensitive) {
-		if (caseSensitive)
-			return "" + haystack.replaceFirst(needle, replacement);
-		return "" + haystack.replaceFirst("(?ui)" + Pattern.quote(needle), replacement);
+			return haystack.replace(needle, replacement);
+		return haystack.replaceAll("(?ui)" + Pattern.quote(needle), Matcher.quoteReplacement(replacement));
 	}
 
-	public static byte[] hexStringToByteArray(String s) {
-		int len = s.length();
-		byte[] data = new byte[len / 2];
-		for (int i = 0; i < len; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-					+ Character.digit(s.charAt(i+1), 16));
+	public static String replaceFirst(String haystack, String needle, String replacement, boolean caseSensitive) {
+		if (caseSensitive)
+			return haystack.replaceFirst(needle, replacement);
+		return haystack.replaceFirst("(?ui)" + Pattern.quote(needle), replacement);
+	}
+
+	public static byte[] hexStringToByteArray(String value) {
+		int length = value.length();
+		byte[] data = new byte[length / 2];
+		for (int i = 0; i < length; i += 2) {
+			data[i / 2] = (byte) ((Character.digit(value.charAt(i), 16) << 4)
+					+ Character.digit(value.charAt(i+1), 16));
 		}
+
 		return data;
 	}
-	
+
 	public static int indexOfOutsideGroup(String string, char find, char groupOpen, char groupClose, int i) {
 		int group = 0;
-		for (; i < string.length(); i++) {
+		while (i < string.length()) {
 			char c = string.charAt(i);
 			if (c == '\\') {
 				i++;
@@ -436,8 +416,10 @@ public abstract class StringUtils {
 			} else if (c == find && group == 0) {
 				return i;
 			}
+
+			i++;
 		}
+
 		return -1;
 	}
-	
 }
