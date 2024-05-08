@@ -18,11 +18,16 @@
  */
 package ch.njol.util;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
- * @author Peter Güttinger
+ * @deprecated Use {@link java.util.function.Consumer}
  */
+@FunctionalInterface
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface Setter<T> {
 	
-	public void set(T t);
+	void set(T t);
 	
 }
