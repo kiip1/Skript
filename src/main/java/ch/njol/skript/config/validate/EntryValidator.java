@@ -18,13 +18,15 @@
  */
 package ch.njol.skript.config.validate;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.EntryNode;
 import ch.njol.skript.config.Node;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Setter;
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.function.Consumer;
 
 /**
  * @author Peter Güttinger
@@ -32,13 +34,20 @@ import ch.njol.util.Setter;
 public class EntryValidator implements NodeValidator {
 	
 	@Nullable
-	private final Setter<String> setter;
+	private final Consumer<String> setter;
 	
 	public EntryValidator() {
 		setter = null;
 	}
-	
-	public EntryValidator(final Setter<String> setter) {
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public EntryValidator(Setter<String> setter) {
+		this((Consumer<String>) setter::set);
+	}
+
+	public EntryValidator(Consumer<String> setter) {
 		this.setter = setter;
 	}
 	
@@ -49,7 +58,7 @@ public class EntryValidator implements NodeValidator {
 			return false;
 		}
 		if (setter != null)
-			setter.set(((EntryNode) node).getValue());
+			setter.accept(((EntryNode) node).getValue());
 		return true;
 	}
 	

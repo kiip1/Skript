@@ -18,10 +18,6 @@
  */
 package ch.njol.skript.config.validate;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map.Entry;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.config.EntryNode;
@@ -29,6 +25,12 @@ import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Setter;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 /**
  * @author Peter Güttinger
@@ -62,13 +64,27 @@ public class SectionValidator implements NodeValidator {
 		addNode(name, new EntryValidator(), optional);
 		return this;
 	}
-	
-	public SectionValidator addEntry(final String name, final Setter<String> setter, final boolean optional) {
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public SectionValidator addEntry(String name, Setter<String> setter, boolean optional) {
+		return addEntry(name, (Consumer<String>) setter::set, optional);
+	}
+
+	public SectionValidator addEntry(String name, Consumer<String> setter, boolean optional) {
 		addNode(name, new EntryValidator(setter), optional);
 		return this;
 	}
-	
-	public <T> SectionValidator addEntry(final String name, final Parser<? extends T> parser, final Setter<T> setter, final boolean optional) {
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public <T> SectionValidator addEntry(String name, Parser<? extends T> parser, Setter<T> setter, boolean optional) {
+		return addEntry(name, parser, (Consumer<T>) setter::set, optional);
+	}
+
+	public <T> SectionValidator addEntry(String name, Parser<? extends T> parser, Consumer<T> setter, boolean optional) {
 		addNode(name, new ParsedEntryValidator<>(parser, setter), optional);
 		return this;
 	}

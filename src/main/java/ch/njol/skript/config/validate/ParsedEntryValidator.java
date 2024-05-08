@@ -23,6 +23,9 @@ import ch.njol.skript.config.EntryNode;
 import ch.njol.skript.config.Node;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.util.Setter;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.function.Consumer;
 
 /**
  * @author Peter Güttinger
@@ -30,15 +33,22 @@ import ch.njol.util.Setter;
 public class ParsedEntryValidator<T> extends EntryValidator {
 	
 	private final Parser<? extends T> parser;
-	private final Setter<T> setter;
-	
-	public ParsedEntryValidator(final Parser<? extends T> parser, final Setter<T> setter) {
+	private final Consumer<T> setter;
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public ParsedEntryValidator(Parser<? extends T> parser, Setter<T> setter) {
+		this(parser, (Consumer<T>) setter::set);
+	}
+
+	public ParsedEntryValidator(Parser<? extends T> parser, Consumer<T> setter) {
 		assert parser != null;
 		assert setter != null;
 		this.parser = parser;
 		this.setter = setter;
 	}
-	
+
 	@Override
 	public boolean validate(final Node node) {
 		if (!super.validate(node))
@@ -46,7 +56,7 @@ public class ParsedEntryValidator<T> extends EntryValidator {
 		final T t = parser.parse(((EntryNode) node).getValue(), ParseContext.CONFIG);
 		if (t == null)
 			return false;
-		setter.set(t);
+		setter.accept(t);
 		return true;
 	}
 	

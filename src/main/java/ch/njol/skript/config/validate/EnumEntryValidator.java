@@ -18,14 +18,15 @@
  */
 package ch.njol.skript.config.validate;
 
-import java.util.Locale;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.EntryNode;
 import ch.njol.skript.config.Node;
 import ch.njol.util.Setter;
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.Locale;
+import java.util.function.Consumer;
 
 /**
  * @author Peter Güttinger
@@ -33,11 +34,18 @@ import ch.njol.util.Setter;
 public class EnumEntryValidator<E extends Enum<E>> extends EntryValidator {
 	
 	private final Class<E> enumType;
-	private final Setter<E> setter;
+	private final Consumer<E> setter;
 	@Nullable
 	private String allowedValues = null;
-	
-	public EnumEntryValidator(final Class<E> enumType, final Setter<E> setter) {
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public EnumEntryValidator(Class<E> enumType, Setter<E> setter) {
+		this(enumType, (Consumer<E>) setter::set);
+	}
+
+	public EnumEntryValidator(Class<E> enumType, Consumer<E> setter) {
 		assert enumType != null;
 		this.enumType = enumType;
 		this.setter = setter;
@@ -51,8 +59,15 @@ public class EnumEntryValidator<E extends Enum<E>> extends EntryValidator {
 			allowedValues = "" + b.toString();
 		}
 	}
-	
-	public EnumEntryValidator(final Class<E> enumType, final Setter<E> setter, final String allowedValues) {
+
+	// TODO Remove when Setter gets removed
+	@Deprecated
+	@ApiStatus.ScheduledForRemoval
+	public EnumEntryValidator(Class<E> enumType, Setter<E> setter, String allowedValues) {
+		this(enumType, (Consumer<E>) setter::set, allowedValues);
+	}
+
+	public EnumEntryValidator(Class<E> enumType, Consumer<E> setter, String allowedValues) {
 		assert enumType != null;
 		this.enumType = enumType;
 		this.setter = setter;
@@ -68,7 +83,7 @@ public class EnumEntryValidator<E extends Enum<E>> extends EntryValidator {
 			final E e = Enum.valueOf(enumType, n.getValue().toUpperCase(Locale.ENGLISH).replace(' ', '_'));
 			assert e != null;
 //			if (setter != null)
-			setter.set(e);
+			setter.accept(e);
 		} catch (final IllegalArgumentException e) {
 			Skript.error("'" + n.getValue() + "' is not a valid value for '" + n.getKey() + "'" + (allowedValues == null ? "" : ". Allowed values are: " + allowedValues));
 			return false;
