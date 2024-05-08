@@ -18,15 +18,15 @@
  */
 package ch.njol.util;
 
+import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+
 import java.io.Serializable;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-/**
- * @author Peter Güttinger
- */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 	private static final long serialVersionUID = 8296563685697678334L;
 	
@@ -40,14 +40,14 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 		second = null;
 	}
 	
-	public Pair(final @Nullable T1 first, final @Nullable T2 second) {
+	public Pair(@Nullable T1 first, @Nullable T2 second) {
 		this.first = first;
 		this.second = second;
 	}
 	
-	public Pair(final Entry<T1, T2> e) {
-		this.first = e.getKey();
-		this.second = e.getValue();
+	public Pair(Entry<T1, T2> entry) {
+		this.first = entry.getKey();
+		this.second = entry.getValue();
 	}
 	
 	@Nullable
@@ -55,7 +55,7 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 		return first;
 	}
 	
-	public void setFirst(final @Nullable T1 first) {
+	public void setFirst(@Nullable T1 first) {
 		this.first = first;
 	}
 	
@@ -64,7 +64,7 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 		return second;
 	}
 	
-	public void setSecond(final @Nullable T2 second) {
+	public void setSecond(@Nullable T2 second) {
 		this.second = second;
 	}
 	
@@ -73,14 +73,14 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "" + first + "," + second;
+		return first + "," + second;
 	}
 	
 	/**
 	 * Checks for equality with Entries to match {@link #hashCode()}
 	 */
 	@Override
-	public final boolean equals(final @Nullable Object obj) {
+	public final boolean equals(@Nullable Object obj) {
 		if (obj == this)
 			return true;
 		if (!(obj instanceof Entry))
@@ -114,7 +114,7 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 	
 	@Override
 	@Nullable
-	public T2 setValue(final @Nullable T2 value) {
+	public T2 setValue(@Nullable T2 value) {
 		final T2 old = second;
 		second = value;
 		return old;
@@ -127,5 +127,4 @@ public class Pair<T1, T2> implements Entry<T1, T2>, Cloneable, Serializable {
 	public Pair<T1, T2> clone() {
 		return new Pair<>(this);
 	}
-	
 }
